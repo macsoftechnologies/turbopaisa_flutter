@@ -1,0 +1,26 @@
+import 'package:flutter/material.dart';
+import 'package:offersapp/pages/splashscreen_page.dart';
+import 'package:offersapp/utils/app_colors.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+          primaryColor: AppColors.primaryColor1,
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          fontFamily: "Poppins"
+          // useMaterial3: true,
+          ),
+      home: SplashScreenPage(),
+    );
+  }
+}
