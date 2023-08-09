@@ -35,6 +35,89 @@ class _HomePageState extends State<HomePage> {
           //Segment Buttons
           // buildSegmentButtons(),
           // buildBanners(),
+
+          Padding(
+            padding: const EdgeInsets.all(14.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  children: [
+                    CircleAvatar(
+                      radius: 40,
+                      backgroundColor: Colors.yellow,
+                      child: Image.asset(
+                        "assets/images/img.png",
+                        fit: BoxFit.cover,
+                        width: 90,
+                        height: 90,
+                        //height: 10,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Text("Task",style: TextStyle(fontWeight: FontWeight.bold))
+                  ],
+                ),
+                Column(
+                  children: [
+                    CircleAvatar(
+                      radius: 40,
+                      backgroundColor: Colors.cyanAccent,
+                      child: Image.asset(
+                        "assets/images/scratch_card_image.png",
+                        fit: BoxFit.cover,
+                        width: 70,
+                        height: 70,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Text("Scratch card",style: TextStyle(fontWeight: FontWeight.bold))
+                  ],
+                ),
+                Column(
+                  children: [
+                    CircleAvatar(
+                      radius: 40,
+                      backgroundColor: Colors.red.withOpacity(0.8),
+                      child: Image.asset(
+                        "assets/images/survey_image.png",
+                        fit: BoxFit.cover,
+                        width: 60,
+                        height: 60,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Text("Survey",style: TextStyle(fontWeight: FontWeight.bold),)
+                  ],
+                ),
+                Column(
+                  children: [
+                    CircleAvatar(
+                      radius: 40,
+                      backgroundColor: Colors.pinkAccent.withOpacity(0.7),
+                      child: Image.asset(
+                        "assets/images/earn_on_games_image.png",
+                        fit: BoxFit.cover,
+                        width: 60,
+                        height: 60,
+                        // height: 80,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Text("Earn on Games",style: TextStyle(fontWeight: FontWeight.bold))
+                  ],
+                ),
+              ],
+            ),
+          ),
           Container(
             width: MediaQuery.of(context).size.width * 0.9,
             margin: EdgeInsets.all(10),
@@ -52,7 +135,7 @@ class _HomePageState extends State<HomePage> {
                 ]),
             child: CupertinoSlidingSegmentedControl<int>(
               backgroundColor: CupertinoColors.white,
-              thumbColor: Colors.blue,
+              thumbColor: Colors.red,
               // padding: EdgeInsets.all(8),
               groupValue: groupValue,
               children: {
