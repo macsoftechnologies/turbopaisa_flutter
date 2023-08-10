@@ -22,12 +22,55 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
     return Scaffold(
       body: SafeArea(
           child: Container(
-        color: Colors.white,
-        child: Center(
-          child: Image.asset(
-            "assets/images/splash_logo.jpeg",
-            width: 300,
-          ),
+        color: Colors.lightBlueAccent.withOpacity(0.2),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 240,
+            ),
+            Center(
+              child: Image.asset(
+                "assets/images/turbopaisa_logo_two.png",
+                fit: BoxFit.cover,
+                //width: 300,
+              ),
+            ),
+            SizedBox(
+              height: 80,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 70),
+              child: Row(
+                children: [
+                  Image.asset(
+                    "assets/images/coin.png",
+                    // width: 80,
+                  ),
+                ],
+              ),
+            ),
+            // SizedBox(
+            //   height: 10,
+            // ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text(""),
+                SizedBox(
+                  width: 1,
+                ),
+                Image.asset(
+                  "assets/images/coin_two.png",
+                  //width: 80,
+                ),
+              ],
+            ),
+            Image.asset(
+              "assets/images/splash_screen_image.png",
+              fit: BoxFit.cover,
+              width: 240,
+            ),
+          ],
         ),
       )),
     );

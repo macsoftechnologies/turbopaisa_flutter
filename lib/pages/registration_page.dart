@@ -34,6 +34,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
         // ),
         body: SingleChildScrollView(
           child: Container(
+            color: Colors.lightBlueAccent.withOpacity(0.2),
             child: Column(
               children: [
                 SizedBox(
@@ -63,77 +64,114 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 SizedBox(
                   height: 20,
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.person),
-                      hintText: "Type your name",
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 40),
+                        child: Text(
+                          "Username",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        )),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 40, right: 40),
+                      child: TextField(
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.person),
+                          hintText: "Type your name",
+                        ),
+                        onChanged: (value) {
+                          _name = value;
+                        },
+                      ),
                     ),
-                    onChanged: (value) {
-                      _name = value;
-                    },
-                  ),
+                  ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.lock),
-                      hintText: "Type your Password",
-                    ),
-                    onChanged: (value) {
-                      _mobile = value;
-                    },
-                    //decoration: InputDecoration(hintText: "Enter Phone number"),
-                  ),
+                SizedBox(
+                  height: 10,
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.phone),
-                      hintText: "Type your Phone number",
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 40),
+                        child: Text(
+                          "Password",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        )),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 40, right: 40),
+                      child: TextField(
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.lock),
+                          hintText: "Type your Password",
+                        ),
+                        onChanged: (value) {
+                          _mobile = value;
+                        },
+                        //decoration: InputDecoration(hintText: "Enter Phone number"),
+                      ),
                     ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 40),
+                      child: Text(
+                        "phone",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 40, right: 40),
+                      child: TextField(
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.phone),
+                          hintText: "Type your Phone number",
+                        ),
 
-                    onChanged: (value) {
-                      _email = value;
-                    },
-                    // decoration: InputDecoration(hintText: "Enter Email"),
-                  ),
-                ),
-                // Padding(
-                //   padding: const EdgeInsets.all(8.0),
-                //   child: TextField(
-                //     onChanged: (value) {
-                //       _pincode = value;
-                //     },
-                //     decoration: InputDecoration(hintText: "Enter Pincode"),
-                //   ),
-                // ),
-                // Padding(
-                //   padding: const EdgeInsets.all(8.0),
-                //   child: TextField(
-                //     onChanged: (value) {
-                //       _password = value;
-                //     },
-                //     obscureText: true,
-                //     decoration: InputDecoration(hintText: "Enter Password"),
-                //   ),
-                // ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.person_sharp),
-                      hintText: "Referral Code (Optional)",
+                        onChanged: (value) {
+                          _email = value;
+                        },
+                        // decoration: InputDecoration(hintText: "Enter Email"),
+                      ),
                     ),
-                    onChanged: (value) {
-                      _referralCode = value;
-                    },
-                    // decoration:
-                    //     InputDecoration(hintText: "Referral Code (Optional)"),
-                  ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 40),
+                      child: Text(
+                        "Referral Code",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 40, right: 40),
+                      child: TextField(
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.person_sharp),
+                          //contentPadding: EdgeInsets.all(50.0),
+                          hintText: "Referral Code (Optional)",
+                        ),
+                        onChanged: (value) {
+                          _referralCode = value;
+                        },
+                        // decoration:
+                        //     InputDecoration(hintText: "Referral Code (Optional)"),
+                      ),
+                    ),
+                  ],
                 ),
                 SizedBox(
                   height: 34,
@@ -163,6 +201,37 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 SizedBox(
                   height: 20,
                 ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 60),
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        "assets/images/coin.png",
+                        // width: 80,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text(""),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Image.asset(
+                      "assets/images/coin_two.png",
+                      //width: 80,
+                    ),
+                  ],
+                ),
+                // Image.asset(
+                //   "assets/images/rectangle .png",
+                //   //width: 80,
+                // ),
               ],
             ),
           ),

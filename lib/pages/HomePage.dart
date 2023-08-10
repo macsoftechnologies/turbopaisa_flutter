@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(
                       height: 16,
                     ),
-                    Text("Task",style: TextStyle(fontWeight: FontWeight.bold))
+                    Text("Task", style: TextStyle(fontWeight: FontWeight.bold))
                   ],
                 ),
                 Column(
@@ -75,7 +75,8 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(
                       height: 16,
                     ),
-                    Text("Scratch card",style: TextStyle(fontWeight: FontWeight.bold))
+                    Text("Scratch card",
+                        style: TextStyle(fontWeight: FontWeight.bold))
                   ],
                 ),
                 Column(
@@ -93,7 +94,10 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(
                       height: 16,
                     ),
-                    Text("Survey",style: TextStyle(fontWeight: FontWeight.bold),)
+                    Text(
+                      "Survey",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    )
                   ],
                 ),
                 Column(
@@ -112,11 +116,15 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(
                       height: 16,
                     ),
-                    Text("Earn on Games",style: TextStyle(fontWeight: FontWeight.bold))
+                    Text("Earn on Games",
+                        style: TextStyle(fontWeight: FontWeight.bold))
                   ],
                 ),
               ],
             ),
+          ),
+          SizedBox(
+            height: 24,
           ),
           Container(
             width: MediaQuery.of(context).size.width * 0.9,
@@ -286,9 +294,9 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            Center(
-                child: Text(
-                    "${(index + 1).toString() ?? ""}/${banners.length.toString()}"))
+            // Center(
+            //     child: Text(
+            //         "${(index + 1).toString() ?? ""}/${banners.length.toString()}"))
           ],
         ),
       ),
@@ -315,11 +323,14 @@ class _HomePageState extends State<HomePage> {
                       padding: EdgeInsets.all(10),
                       child: Row(
                         children: [
-                          Image.network(
-                            offersData[index].images![0].image.toString(),
-                            width: 120,
-                            height: 80,
-                            fit: BoxFit.cover,
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(16),
+                            child: Image.network(
+                              offersData[index].images![0].image.toString(),
+                              width: 120,
+                              height: 80,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                           SizedBox(
                             width: 20,
