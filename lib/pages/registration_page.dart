@@ -27,106 +27,144 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Registration"),
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 30,
-              ),
-              Image.asset(
-                "assets/images/app_logo.jpeg",
-                width: 80,
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  onChanged: (value) {
-                    _name = value;
-                  },
-                  decoration: InputDecoration(hintText: "Enter Name"),
+    return SafeArea(
+      child: Scaffold(
+        // appBar: AppBar(
+        //   title: Text("Registration"),
+        // ),
+        body: SingleChildScrollView(
+          child: Container(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 30,
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  onChanged: (value) {
-                    _mobile = value;
-                  },
-                  decoration: InputDecoration(hintText: "Enter Phone number"),
+                Image.asset(
+                  "assets/images/turbopaisa_logo.jpeg",
+                  width: 80,
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  onChanged: (value) {
-                    _email = value;
-                  },
-                  decoration: InputDecoration(hintText: "Enter Email"),
+                SizedBox(
+                  height: 30,
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  onChanged: (value) {
-                    _pincode = value;
-                  },
-                  decoration: InputDecoration(hintText: "Enter Pincode"),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  onChanged: (value) {
-                    _password = value;
-                  },
-                  obscureText: true,
-                  decoration: InputDecoration(hintText: "Enter Password"),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  onChanged: (value) {
-                    _referralCode = value;
-                  },
-                  decoration:
-                      InputDecoration(hintText: "Referral Code (Optional)"),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              InkWell(
-                onTap: () {
-                  submitData();
-                },
-                child: Container(
-                  width: 200,
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(20),
+                Stack(children: [
+                  Image.asset(
+                    "assets/images/login_rectangle.jpeg",
+                    width: 220,
                   ),
-                  child: Center(
-                    child: Text(
-                      "Sign up",
-                      style: TextStyle(color: Colors.white),
+                  Positioned.fill(
+                      child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Registration",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
+                          ))),
+                ]),
+                SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.person),
+                      hintText: "Type your name",
+                    ),
+                    onChanged: (value) {
+                      _name = value;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.lock),
+                      hintText: "Type your Password",
+                    ),
+                    onChanged: (value) {
+                      _mobile = value;
+                    },
+                    //decoration: InputDecoration(hintText: "Enter Phone number"),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.phone),
+                      hintText: "Type your Phone number",
+                    ),
+
+                    onChanged: (value) {
+                      _email = value;
+                    },
+                    // decoration: InputDecoration(hintText: "Enter Email"),
+                  ),
+                ),
+                // Padding(
+                //   padding: const EdgeInsets.all(8.0),
+                //   child: TextField(
+                //     onChanged: (value) {
+                //       _pincode = value;
+                //     },
+                //     decoration: InputDecoration(hintText: "Enter Pincode"),
+                //   ),
+                // ),
+                // Padding(
+                //   padding: const EdgeInsets.all(8.0),
+                //   child: TextField(
+                //     onChanged: (value) {
+                //       _password = value;
+                //     },
+                //     obscureText: true,
+                //     decoration: InputDecoration(hintText: "Enter Password"),
+                //   ),
+                // ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.person_sharp),
+                      hintText: "Referral Code (Optional)",
+                    ),
+                    onChanged: (value) {
+                      _referralCode = value;
+                    },
+                    // decoration:
+                    //     InputDecoration(hintText: "Referral Code (Optional)"),
+                  ),
+                ),
+                SizedBox(
+                  height: 34,
+                ),
+                InkWell(
+                  onTap: () {
+                    submitData();
+                  },
+                  child: Container(
+                    width: 260,
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.pinkAccent,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Text(
+                          "Sign up",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-            ],
+                SizedBox(
+                  height: 20,
+                ),
+              ],
+            ),
           ),
         ),
       ),
