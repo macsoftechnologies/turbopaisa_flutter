@@ -49,7 +49,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 ),
                 Stack(children: [
                   Image.asset(
-                    "assets/images/login_rectangle.jpeg",
+                    "assets/images/login_rectangle.png",
                     width: 220,
                   ),
                   Positioned.fill(

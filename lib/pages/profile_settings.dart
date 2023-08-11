@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:offersapp/pages/LoginPage.dart';
+import 'package:offersapp/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/model/UserData.dart';
@@ -240,22 +241,30 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                 indent: 10.0,
                 endIndent: 10.0,
               ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: Image.asset(
-                      'assets/images/log_out_icon.png',
+              InkWell(
+                onTap: () async {
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  await prefs.remove("user");
+                  navigateToNextReplace(context, LoginPage());
+                },
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Image.asset(
+                        'assets/images/log_out_icon.png',
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 26,
-                  ),
-                  Text(
-                    "Log out",
-                    style: TextStyle(fontWeight: FontWeight.w600),
-                  )
-                ],
+                    SizedBox(
+                      width: 26,
+                    ),
+                    Text(
+                      "Log out",
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    )
+                  ],
+                ),
               ),
               Divider(
                 //width: 5,
@@ -268,8 +277,13 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
               SizedBox(
                 height: 30,
               ),
-              Text("FOLLOW US",style: TextStyle(fontWeight: FontWeight.bold),),
-              SizedBox(height: 20,),
+              Text(
+                "FOLLOW US",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 20,
+              ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 60),
                 child: Row(
@@ -306,7 +320,6 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                   ],
                 ),
               ),
-
 
               // buildRow(Icons.language, "Languages"),
               // Divider(),

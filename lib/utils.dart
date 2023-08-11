@@ -9,7 +9,7 @@ const orangeColor = Color(0xFFF2BA47);
 const Color lightGrey = Color.fromRGBO(242, 242, 242, 1);
 //http://mcg.mbitson.com/
 const MaterialColor mcgpalette0 =
-MaterialColor(_mcgpalette0PrimaryValue, <int, Color>{
+    MaterialColor(_mcgpalette0PrimaryValue, <int, Color>{
   50: Color(0xFFE1E6EA),
   100: Color(0xFFB5BFC9),
   200: Color(0xFF8395A6),
@@ -24,7 +24,7 @@ MaterialColor(_mcgpalette0PrimaryValue, <int, Color>{
 const int _mcgpalette0PrimaryValue = 0xFF072B4C;
 
 const MaterialColor mcgpalette0Accent =
-MaterialColor(_mcgpalette0AccentValue, <int, Color>{
+    MaterialColor(_mcgpalette0AccentValue, <int, Color>{
   100: Color(0xFF5F92FF),
   200: Color(_mcgpalette0AccentValue),
   400: Color(0xFF004FF8),
@@ -43,6 +43,16 @@ showSnackBar(BuildContext context, String text) {
 
 navigateToNext(BuildContext context, Widget target) {
   Navigator.of(context).push(
+    new MaterialPageRoute(
+      builder: (context) {
+        return target;
+      },
+    ),
+  );
+}
+
+navigateToNextReplace(BuildContext context, Widget target) {
+  Navigator.of(context).pushReplacement(
     new MaterialPageRoute(
       builder: (context) {
         return target;

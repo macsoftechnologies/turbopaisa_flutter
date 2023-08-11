@@ -3,6 +3,8 @@ import 'package:offersapp/pages/LoginPage.dart';
 import 'package:offersapp/pages/dashboard_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../utils/app_colors.dart';
+
 class SplashScreenPage extends StatefulWidget {
   const SplashScreenPage({Key? key}) : super(key: key);
 
@@ -22,7 +24,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
     return Scaffold(
       body: SafeArea(
           child: Container(
-        color: Colors.lightBlueAccent.withOpacity(0.2),
+        decoration: BoxDecoration(gradient: AppColors.appGradientBg),
         child: Column(
           children: [
             SizedBox(
