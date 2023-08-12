@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:offersapp/pages/LoginPage.dart';
 import 'package:offersapp/utils.dart';
+import 'package:offersapp/utils/app_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/model/UserData.dart';
@@ -40,7 +41,9 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.lightBlueAccent.withOpacity(0.2),
+        decoration: BoxDecoration(
+        gradient: AppColors.appGradientBg,),
+      //color: Colors.lightBlueAccent.withOpacity(0.2),
       padding: EdgeInsets.all(10),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         SizedBox(
@@ -61,31 +64,13 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
               SizedBox(
                 height: 14,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    userData?.name?.toUpperCase() ?? "",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                  ),
-                  SizedBox(
-                    height: 2,
-                  ),
-                  // Text(
-                  //   // "Senior Designer",
-                  //   "",
-                  //   style: TextStyle(fontSize: 12, color: Colors.grey),
-                  // ),
-                  // SizedBox(
-                  //   height: 20,
-                  // ),
-                  // ElevatedButton(
-                  //   style:
-                  //       ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-                  //   onPressed: () {},
-                  //   child: Text("Edit Profile"),
-                  // ),
-                ],
+              Text(
+                userData?.name?.toUpperCase() ?? "",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+              Text(userData!.email??""),
+              SizedBox(
+                height: 2,
               ),
             ],
           ),

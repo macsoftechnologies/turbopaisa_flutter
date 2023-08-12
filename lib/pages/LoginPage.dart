@@ -85,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
                         hintText: "Type your user name",
                       ),
                       onChanged: (value) {
-                        _name = value;
+                        _email = value;
                       },
                     ),
                   ),

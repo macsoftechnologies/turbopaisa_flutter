@@ -117,7 +117,7 @@ class _HomePageState extends State<HomePage> {
                       height: 16,
                     ),
                     Text("Earn on Games",
-                        style: TextStyle(fontWeight: FontWeight.bold))
+                        style: TextStyle(fontWeight: FontWeight.bold)),
                   ],
                 ),
               ],

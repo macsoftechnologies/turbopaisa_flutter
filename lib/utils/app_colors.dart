@@ -17,7 +17,6 @@ class AppColors {
 
   static List<Color> get secondaryG => [secondaryColor1, secondaryColor2];
 
-
   static const appGradientBg = LinearGradient(
     begin: Alignment.topRight,
     end: Alignment.bottomLeft,
@@ -26,5 +25,5 @@ class AppColors {
       Color.fromARGB(166, 224, 234, 255),
       Color.fromARGB(255, 224, 234, 255),
     ],
-  )
+  );
 }
