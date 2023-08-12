@@ -1,4 +1,6 @@
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:offersapp/utils/app_colors.dart';
 
 class ReferPage extends StatefulWidget {
   const ReferPage({Key? key}) : super(key: key);
@@ -12,135 +14,146 @@ class _ReferPageState extends State<ReferPage> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
+        padding: EdgeInsets.all(10),
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
+          gradient: AppColors.appGradientBg,
+        ),
         child: Column(
           children: [
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: 75,
-              margin: EdgeInsets.all(10),
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              // height: 100,
-              decoration: BoxDecoration(
-                color: Colors.deepPurple,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Share this app to 10 friends and get ",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  Text(
-                    "450/-",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18),
-                  ),
-                ],
-              ),
+            SizedBox(
+              height: 50,
             ),
-            Container(
-              padding: EdgeInsets.all(10),
-              child: Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                shadowColor: Colors.blue,
-                elevation: 5,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Here is how to share with Friends",
-                        style: TextStyle(color: Colors.teal),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        "Step#1",
-                        style: TextStyle(
-                            color: Colors.purple, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                          "Invite your friends  to this app using refer code."),
-                      Divider(),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        "Step#2",
-                        style: TextStyle(
-                            color: Colors.purple, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                          "Invite your friends  to this app using refer code."),
-                      Divider(),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        "Step#3",
-                        style: TextStyle(
-                            color: Colors.purple, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                          "Invite your friends  to this app using refer code."),
-                    ],
-                  ),
-                ),
-              ),
+            Image.asset(
+              "assets/images/refer_friend.png",
+              fit: BoxFit.cover,
             ),
             SizedBox(
-              height: 20,
+              height: 50,
             ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
+            Column(
               children: [
-                Column(
+                Row(
                   children: [
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.fromBorderSide(
-                              BorderSide(color: Colors.grey, width: 1))),
-                      child: Column(
-                        children: [
-                          Text("2FDBFC"),
-                        ],
-                      ),
-                    ),
                     SizedBox(
-                      height: 10,
+                      width: 30,
                     ),
                     Text(
-                      "Tap to copy",
-                      style: TextStyle(color: Colors.grey, fontSize: 12),
+                      "Refer Now & Earn Up to",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                    ),
+                    Text(
+                      " ₹ 350",
+                      style: TextStyle(
+                          color: Colors.redAccent,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 22),
                     ),
                   ],
                 ),
-                SizedBox(
-                  width: 10,
+                Text(
+                  "Send a referral link to your friends via",
+                  style: TextStyle(color: Colors.black.withOpacity(0.4)),
                 ),
-                Icon(Icons.share)
+                Text("WhatsApp / Facebook / Instagram",
+                    style: TextStyle(color: Colors.black.withOpacity(0.4))),
               ],
-            )
+            ),
+            SizedBox(
+              height: 60,
+            ),
+            Column(
+              children: [
+                Text(
+                  "Your referral ID",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 24,
+                    ),
+                    DottedBorder(
+                      color: Colors.black,
+                      strokeWidth: 0.6,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "TURBOPAISA03",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 14,
+                    ),
+                    Image.asset(
+                      "assets/images/solar_copy_linear.png",
+                      fit: BoxFit.cover,
+                    ),
+                  ],
+                )
+                // Row(
+                //   crossAxisAlignment: CrossAxisAlignment.start,
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     Column(
+                //       children: [
+                //         Container(
+                //           padding:
+                //               EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                //           decoration: BoxDecoration(
+                //               borderRadius: BorderRadius.circular(10),
+                //               border: Border.fromBorderSide(
+                //                   BorderSide(color: Colors.grey, width: 1))),
+                //           child: Text(
+                //             "TURBOPAISA03",
+                //             style: TextStyle(fontWeight: FontWeight.bold),
+                //           ),
+                //         ),
+                //
+                //         // Text(
+                //         //   "Tap to copy",
+                //         //   style: TextStyle(color: Colors.grey, fontSize: 12),
+                //         // ),
+                //       ],
+                //     ),
+                //     SizedBox(
+                //       width: 10,
+                //     ),
+                //     Image.asset(
+                //       "assets/images/solar_copy_linear.png",
+                //       fit: BoxFit.cover,
+                //     ),
+                //   ],
+                // ),
+              ],
+            ),
+            SizedBox(
+              height: 50,
+            ),
+            Container(
+              width: 260,
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: Colors.pinkAccent,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(6.0),
+                  child: Text(
+                    "Share",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
