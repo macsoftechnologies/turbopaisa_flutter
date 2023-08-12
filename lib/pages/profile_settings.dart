@@ -41,8 +41,12 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        decoration: BoxDecoration(
-        gradient: AppColors.appGradientBg,),
+      // padding: EdgeInsets.all(10),
+      height: MediaQuery.of(context).size.height,
+      decoration: BoxDecoration(
+        gradient: AppColors.appGradientBg,
+      ),
+
       //color: Colors.lightBlueAccent.withOpacity(0.2),
       padding: EdgeInsets.all(10),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -68,7 +72,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                 userData?.name?.toUpperCase() ?? "",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
-              Text(userData!.email??""),
+              Text(userData!.email ?? ""),
               SizedBox(
                 height: 2,
               ),

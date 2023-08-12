@@ -125,7 +125,10 @@ class _LoginPageState extends State<LoginPage> {
               ),
               Align(
                 alignment: Alignment.bottomRight,
-                child: Text("Forgot Password?"),
+                child: Text(
+                  "Forgot Password?",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
               ),
               SizedBox(
                 height: 10,
@@ -161,7 +164,7 @@ class _LoginPageState extends State<LoginPage> {
                 height: 36,
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 60),
+                padding: EdgeInsets.symmetric(horizontal: 30),
                 child: Row(
                   children: [
                     Image.asset(
@@ -171,30 +174,38 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
               ),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text(""),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Image.asset(
-                    "assets/images/coin_two.png",
-                    //width: 80,
-                  ),
-                ],
-              ),
+              // SizedBox(
+              //   height: 10,
+              // ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+              //   children: [
+              //     Text(""),
+              //     SizedBox(
+              //       width: 100,
+              //     ),
+              //     Image.asset(
+              //       "assets/images/coin_two.png",
+              //       //width: 80,
+              //     ),
+              //   ],
+              // ),
 
               SizedBox(
                 height: 20,
               ),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Already have an account? "),
+                  SizedBox(width: 110,),
+                  Text(
+                    "or",
+                    style: TextStyle(color: Colors.black.withOpacity(0.1)),
+                  ),
+                  SizedBox(
+                    width: 2,
+                  ),
                   InkWell(
                     onTap: () {
                       Navigator.of(context).push(new MaterialPageRoute(
@@ -202,9 +213,14 @@ class _LoginPageState extends State<LoginPage> {
                       ));
                     },
                     child: Text(
-                      "Sign up",
-                      style: TextStyle(color: Colors.purple),
+                      "Sign up with",
+                      //style: TextStyle(color: Colors.purple),
                     ),
+                  ),
+                  SizedBox(width: 85,),
+                  Image.asset(
+                    "assets/images/coin_two.png",
+                    //width: 80,
                   ),
                 ],
               ),
@@ -220,9 +236,9 @@ class _LoginPageState extends State<LoginPage> {
                       radius: 22,
                       backgroundColor: Colors.white.withOpacity(0.8),
                       child: Image.asset(
-                        'assets/images/facebook_logo.png',
+                        'assets/images/gmail_logo.png',
                         fit: BoxFit.cover,
-                        width: 30,
+                        width: 40,
                         //height: 40,
                       ),
                     ),
@@ -230,16 +246,16 @@ class _LoginPageState extends State<LoginPage> {
                       radius: 22,
                       backgroundColor: Colors.white.withOpacity(0.8),
                       child: Image.asset(
-                        'assets/images/instagram_logo.png',
+                        'assets/images/google_logo.png',
                         fit: BoxFit.cover,
-                        width: 26,
+                        width: 40,
                       ),
                     ),
                     CircleAvatar(
                       radius: 22,
                       backgroundColor: Colors.white.withOpacity(0.8),
                       child: Image.asset(
-                        'assets/images/youtube_logo.png',
+                        'assets/images/facebook_logo.png',
                         fit: BoxFit.cover,
                         width: 30,
                       ),

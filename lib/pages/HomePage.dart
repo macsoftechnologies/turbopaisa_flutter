@@ -30,6 +30,11 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      // padding: EdgeInsets.all(10),
+      height: MediaQuery.of(context).size.height,
+      decoration: BoxDecoration(
+        gradient: AppColors.appGradientBg,
+      ),
       child: Column(
         children: [
           //Segment Buttons
