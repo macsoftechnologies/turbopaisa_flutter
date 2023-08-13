@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:offersapp/utils/app_colors.dart';
 
 class WalletBalacePage extends StatefulWidget {
   const WalletBalacePage({Key? key}) : super(key: key);
@@ -12,6 +13,7 @@ class _WalletBalacePageState extends State<WalletBalacePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
+        color: Color(0xFFF3F6FF),
         child: Column(
           children: [
             SizedBox(
@@ -20,7 +22,7 @@ class _WalletBalacePageState extends State<WalletBalacePage> {
             Text("Balance"),
             Text(
               "27,350/-",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 36),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -28,7 +30,7 @@ class _WalletBalacePageState extends State<WalletBalacePage> {
                 Container(
                   padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                   decoration: BoxDecoration(
-                      color: Colors.blue.withOpacity(0.2),
+                      color: Color(0xFFE3EAFF),
                       borderRadius: BorderRadius.circular(10)),
                   child: Column(
                     children: [
@@ -43,7 +45,7 @@ class _WalletBalacePageState extends State<WalletBalacePage> {
                 Container(
                   padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                   decoration: BoxDecoration(
-                      color: Colors.blue.withOpacity(0.2),
+                      color: Color(0xFFE3EAFF),
                       borderRadius: BorderRadius.circular(10)),
                   child: Column(
                     children: [
@@ -62,19 +64,14 @@ class _WalletBalacePageState extends State<WalletBalacePage> {
             ),
             Expanded(
               child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey.withOpacity(0.1),
-                  // boxShadow: [
-                  //   BoxShadow(
-                  //       color: Colors.grey.withOpacity(0.1),
-                  //       blurRadius: 1,
-                  //       offset: Offset(0, -10))
-                  // ],
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
-                  ),
-                ),
+                // decoration: BoxDecoration(
+                //   color: Colors.grey.withOpacity(0.1),
+                //
+                //   borderRadius: BorderRadius.only(
+                //     topLeft: Radius.circular(30),
+                //     topRight: Radius.circular(30),
+                //   ),
+                // ),
                 child: Column(
                   children: [
                     SizedBox(
@@ -85,8 +82,8 @@ class _WalletBalacePageState extends State<WalletBalacePage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("Transaction From"),
-                          Text("Value"),
+                          Text("Recent Transactions"),
+                          // Text("Value"),
                         ],
                       ),
                     ),
@@ -102,12 +99,12 @@ class _WalletBalacePageState extends State<WalletBalacePage> {
                                   children: [
                                     CircleAvatar(
                                       child: Icon(
-                                        Icons.person,
-                                        color: Colors.blue,
+                                        Icons.wallet,
+                                        color: Colors.orange,
                                       ),
                                       radius: 25,
                                       backgroundColor:
-                                          Colors.blue.withOpacity(0.2),
+                                          Colors.orange.withOpacity(0.2),
                                     ),
                                     SizedBox(
                                       width: 20,
@@ -117,16 +114,16 @@ class _WalletBalacePageState extends State<WalletBalacePage> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "James Rake",
+                                          "Order Id :6519",
                                           style: TextStyle(
-                                              fontSize: 16,
+                                              fontSize: 14,
                                               color: Colors.black,
                                               fontWeight: FontWeight.bold),
                                         ),
                                         SizedBox(height: 10,),
                                         Text(
-                                          "Cr. 4,400",
-                                          style: TextStyle(color: Colors.green),
+                                          "25 Dec 2023",
+                                          style: TextStyle(color: Colors.grey),
                                         ),
                                       ],
                                     ),
@@ -135,13 +132,14 @@ class _WalletBalacePageState extends State<WalletBalacePage> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text("Balance"),
-                                        SizedBox(height: 10,),
-                                        Text("4,400/-",
+                                        Text("- 4,400/-",
                                             style: TextStyle(
                                                 fontSize: 16,
-                                                color: Colors.blue,
+                                                color: AppColors.accentColor,
                                                 fontWeight: FontWeight.bold)),
+
+                                        SizedBox(height: 10,),
+                                        Text("Applied"),
                                       ],
                                     ),
                                   ],
@@ -165,3 +163,4 @@ class _WalletBalacePageState extends State<WalletBalacePage> {
     );
   }
 }
+

@@ -7,6 +7,7 @@ import 'package:offersapp/utils/app_colors.dart';
 
 import '../api/model/BannersResponse.dart';
 import '../api/restclient.dart';
+import 'dashboard_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -27,148 +28,110 @@ class _HomePageState extends State<HomePage> {
     loadBannersData();
   }
 
+  Widget buildTopOptions(String image, Color color, String title) {
+    return Column(
+      children: [
+        CircleAvatar(
+          radius: 35,
+          backgroundColor: Colors.white,
+          child: CircleAvatar(
+            radius: 30,
+            backgroundColor: color,
+            child: Image.asset(
+              image,
+              fit: BoxFit.contain,
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 16,
+        ),
+        Text(title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12))
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // padding: EdgeInsets.all(10),
-      height: MediaQuery.of(context).size.height,
-      decoration: BoxDecoration(
-        gradient: AppColors.appGradientBg,
-      ),
-      child: Column(
-        children: [
-          //Segment Buttons
-          // buildSegmentButtons(),
-          // buildBanners(),
+    return SingleChildScrollView(
+      child: Container(
+        // decoration: BoxDecoration(
+        //   gradient: AppColors.appGradientBg,
+        // ),
+        child: Column(
+          children: [
+            //Segment Buttons
+            // buildSegmentButtons(),
+            // buildBanners(),
 
-          Padding(
-            padding: const EdgeInsets.all(14.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  children: [
-                    CircleAvatar(
-                      radius: 40,
-                      backgroundColor: Colors.yellow,
-                      child: Image.asset(
-                        "assets/images/img.png",
-                        fit: BoxFit.cover,
-                        width: 90,
-                        height: 90,
-                        //height: 10,
-                      ),
+            Container(
+              child: Column(
+                children: [
+                  // SizedBox(height: 50,),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        buildTopOptions(
+                            "assets/images/img.png", Colors.yellow, "Task"),
+                        buildTopOptions("assets/images/scratch_card_image.png",
+                            Colors.cyanAccent, "Scratch Card"),
+                        buildTopOptions("assets/images/survey_image.png",
+                            Colors.red, "Survey"),
+                        buildTopOptions("assets/images/earn_on_games_image.png",
+                            Colors.pinkAccent, "Earn on Games"),
+                      ],
                     ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Text("Task", style: TextStyle(fontWeight: FontWeight.bold))
-                  ],
-                ),
-                Column(
-                  children: [
-                    CircleAvatar(
-                      radius: 40,
-                      backgroundColor: Colors.cyanAccent,
-                      child: Image.asset(
-                        "assets/images/scratch_card_image.png",
-                        fit: BoxFit.cover,
-                        width: 70,
-                        height: 70,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Text("Scratch card",
-                        style: TextStyle(fontWeight: FontWeight.bold))
-                  ],
-                ),
-                Column(
-                  children: [
-                    CircleAvatar(
-                      radius: 40,
-                      backgroundColor: Colors.red.withOpacity(0.8),
-                      child: Image.asset(
-                        "assets/images/survey_image.png",
-                        fit: BoxFit.cover,
-                        width: 60,
-                        height: 60,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Text(
-                      "Survey",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    )
-                  ],
-                ),
-                Column(
-                  children: [
-                    CircleAvatar(
-                      radius: 40,
-                      backgroundColor: Colors.pinkAccent.withOpacity(0.7),
-                      child: Image.asset(
-                        "assets/images/earn_on_games_image.png",
-                        fit: BoxFit.cover,
-                        width: 60,
-                        height: 60,
-                        // height: 80,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Text("Earn on Games",
-                        style: TextStyle(fontWeight: FontWeight.bold)),
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
+            // height: 300,
+            //   color: Color(0xFF3D3FB5),
             ),
-          ),
-          SizedBox(
-            height: 24,
-          ),
-          Container(
-            width: MediaQuery.of(context).size.width * 0.9,
-            margin: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-                color: AppColors.whiteColor,
-                border: Border.fromBorderSide(
-                  BorderSide(width: 2, color: Colors.white.withOpacity(0.4)),
-                ),
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 4,
-                      offset: Offset(0, 0))
-                ]),
-            child: CupertinoSlidingSegmentedControl<int>(
-              backgroundColor: CupertinoColors.white,
-              thumbColor: Colors.red,
-              // padding: EdgeInsets.all(8),
-              groupValue: groupValue,
-              children: {
-                0: buildSegment(0, "All Offers"),
-                1: buildSegment(1, "My Offers"),
-                2: buildSegment(2, "Upcoming"),
-              },
-              onValueChanged: (value) {
-                setState(() {
-                  groupValue = value!;
-                  _selectedIndex = value;
-                  print(value);
-                });
-              },
+            SizedBox(
+              height: 24,
             ),
-          ),
-          if (_selectedIndex == 0) Expanded(child: buildAllOffers()),
-          if (_selectedIndex == 1) Expanded(child: buildAllOffers()),
-          if (_selectedIndex == 2) Expanded(child: buildAllOffers()),
-        ],
+            Container(
+              width: MediaQuery.of(context).size.width * 0.9,
+              margin: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                  color: AppColors.whiteColor,
+                  border: Border.fromBorderSide(
+                    BorderSide(width: 2, color: Colors.white.withOpacity(0.4)),
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 4,
+                        offset: Offset(0, 0))
+                  ]),
+              child: CupertinoSlidingSegmentedControl<int>(
+                backgroundColor: CupertinoColors.white,
+                thumbColor: Colors.red,
+                // padding: EdgeInsets.all(8),
+                groupValue: groupValue,
+                children: {
+                  0: buildSegment(0, "All Offers"),
+                  1: buildSegment(1, "My Offers"),
+                  2: buildSegment(2, "Upcoming"),
+                },
+                onValueChanged: (value) {
+                  setState(() {
+                    groupValue = value!;
+                    _selectedIndex = value;
+                    print(value);
+                  });
+                },
+              ),
+            ),
+            if (_selectedIndex == 0) buildAllOffers(),
+            if (_selectedIndex == 1) buildAllOffers(),
+            if (_selectedIndex == 2) buildAllOffers(),
+            buildBanners(),
+          ],
+        ),
       ),
     );
   }
@@ -280,7 +243,7 @@ class _HomePageState extends State<HomePage> {
   Widget buildBanners() {
     return Container(
       // padding: EdgeInsets.all(10),
-      height: 180,
+      height: 150,
       child: PageView.builder(
         controller: _pageController,
         itemCount: banners.length,
@@ -311,97 +274,93 @@ class _HomePageState extends State<HomePage> {
   HtmlEscape htmlEscape = HtmlEscape();
 
   Widget buildAllOffers() {
-    return Column(
-      children: [
-        buildBanners(),
-        Expanded(
-          child: ListView.builder(
-            scrollDirection: Axis.vertical,
-            // physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: false,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Card(
-                    elevation: 5,
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      child: Row(
+    return ListView.builder(
+      key: UniqueKey(),
+      scrollDirection: Axis.vertical,
+      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemBuilder: (context, index) {
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Card(
+              shadowColor: Colors.white,
+              elevation: 2,
+              child: Container(
+                padding: EdgeInsets.all(10),
+                child: Row(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.network(
+                        offersData[index].images![0].image.toString(),
+                        width: 120,
+                        height: 80,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(16),
-                            child: Image.network(
-                              offersData[index].images![0].image.toString(),
-                              width: 120,
-                              height: 80,
-                              fit: BoxFit.cover,
-                            ),
+                          Text(
+                            offersData[index].offerTitle ?? "",
+                            style: TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          SizedBox(
-                            width: 20,
+                          Text(
+                            offersData[index].offerDesc ?? "",
+                            maxLines: 2,
+                            style: TextStyle(color: Colors.grey, fontSize: 12),
                           ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  offersData[index].offerTitle ?? "",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  offersData[index].offerDesc ?? "",
-                                  maxLines: 2,
-                                ),
-                                Text(
-                                  "₹ ${offersData[index].offerAmount ?? ""}",
-                                  style: TextStyle(
-                                      color: Colors.purple,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18),
-                                ),
-                              ],
-                            ),
+                          Text(
+                            "₹ ${offersData[index].offerAmount ?? ""}",
+                            style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18),
                           ),
                         ],
                       ),
-                      // Row(
-                      //   children: [
-                      //     Image.asset(
-                      //       "assets/images/app_logo.jpeg",
-                      //       width: 80,
-                      //       height: 50,
-                      //     ),
-                      //     SizedBox(
-                      //       width: 20,
-                      //     ),
-                      //     Column(
-                      //       crossAxisAlignment: CrossAxisAlignment.start,
-                      //       children: [
-                      //         Text(
-                      //           "Carbury Play pad",
-                      //           style: TextStyle(fontWeight: FontWeight.bold),
-                      //         ),
-                      //         Text(
-                      //           "Learn play AR",
-                      //         ),
-                      //         Text(
-                      //           "50",
-                      //           style: TextStyle(
-                      //               color: Colors.purple,
-                      //               fontWeight: FontWeight.bold,
-                      //               fontSize: 20),
-                      //         ),
-                      //       ],
-                      //     ),
-                      //   ],
-                      // ),
-                    )),
-              );
-            },
-            itemCount: offersData.length,
-          ),
-        ),
-      ],
+                    ),
+                  ],
+                ),
+                // Row(
+                //   children: [
+                //     Image.asset(
+                //       "assets/images/app_logo.jpeg",
+                //       width: 80,
+                //       height: 50,
+                //     ),
+                //     SizedBox(
+                //       width: 20,
+                //     ),
+                //     Column(
+                //       crossAxisAlignment: CrossAxisAlignment.start,
+                //       children: [
+                //         Text(
+                //           "Carbury Play pad",
+                //           style: TextStyle(fontWeight: FontWeight.bold),
+                //         ),
+                //         Text(
+                //           "Learn play AR",
+                //         ),
+                //         Text(
+                //           "50",
+                //           style: TextStyle(
+                //               color: Colors.purple,
+                //               fontWeight: FontWeight.bold,
+                //               fontSize: 20),
+                //         ),
+                //       ],
+                //     ),
+                //   ],
+                // ),
+              )),
+        );
+      },
+      itemCount: offersData.length,
     );
   }
 

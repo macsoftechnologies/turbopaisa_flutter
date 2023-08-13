@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:offersapp/generated/assets.dart';
 import 'package:offersapp/pages/HomePage.dart';
 import 'package:offersapp/pages/profile_settings.dart';
 import 'package:offersapp/pages/refer_page.dart';
@@ -28,18 +29,27 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.whiteColor,
-      body: SafeArea(
-        child: Column(
-          children: [
-            if (selectTab != 3) TopProfileAppBarWidget(),
-            Expanded(
-              child: IndexedStack(
-                index: selectTab,
-                children: _widgetOptions,
-              ),
+      floatingActionButton: selectTab != 0
+          ? null
+          : Image.asset(
+              Assets.imagesFabWheel,
+              width: 80,
             ),
-          ],
+      // backgroundColor: AppColors.appGradientBg ,
+      body: SafeArea(
+        child: Container(
+          decoration: BoxDecoration(gradient: AppColors.appGradientBg),
+          child: Column(
+            children: [
+              // if (selectTab != 3) TopProfileAppBarWidget(),
+              Expanded(
+                child: IndexedStack(
+                  index: selectTab,
+                  children: _widgetOptions,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: BottomAppBar(
@@ -139,7 +149,7 @@ class TabNewButton extends StatelessWidget {
             Icon(
               icon,
               size: isActive ? 32 : 25,
-              color: isActive ? Colors.blue : Colors.grey,
+              color: isActive ? AppColors.accentColor : Colors.grey,
             ),
             SizedBox(height: isActive ? 8 : 12),
             Visibility(
@@ -149,8 +159,8 @@ class TabNewButton extends StatelessWidget {
                 height: 4,
                 decoration: BoxDecoration(
                     gradient: LinearGradient(colors: [
-                      Colors.blue,
-                      Colors.blueAccent,
+                      AppColors.accentColor,
+                      AppColors.accentColor,
                     ]),
                     borderRadius: BorderRadius.circular(2)),
               ),
@@ -206,5 +216,25 @@ class TabButton extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class GreenClipper extends CustomClipper<Path> {
+  @override
+  getClip(Size size) {
+    double height = size.height;
+    double width = size.width;
+
+    var path = Path();
+    path.lineTo(0, height - 50);
+    path.quadraticBezierTo(width / 2, height, width, height - 50);
+    path.lineTo(width, 0);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper oldClipper) {
+    return true;
   }
 }

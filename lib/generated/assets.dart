@@ -12,6 +12,7 @@ class Assets {
   static const String imagesCoin = 'assets/images/coin.png';
   static const String imagesCoinTwo = 'assets/images/coin_two.png';
   static const String imagesEarnOnGamesImage = 'assets/images/earn_on_games_image.png';
+  static const String imagesFabWheel = 'assets/images/fab_wheel.png';
   static const String imagesFacebookLogo = 'assets/images/facebook_logo.png';
   static const String imagesFacebookNewLogo = 'assets/images/facebook_new_logo.png';
   static const String imagesGmailLogo = 'assets/images/gmail_logo.png';
@@ -30,7 +31,9 @@ class Assets {
   static const String imagesProfileUsers = 'assets/images/profile_users.png';
   static const String imagesRateUsIcon = 'assets/images/rate_us_icon.png';
   static const String imagesRectangle  = 'assets/images/rectangle .png';
+  static const String imagesReferFriend = 'assets/images/refer_friend.png';
   static const String imagesScratchCardImage = 'assets/images/scratch_card_image.png';
+  static const String imagesSolarCopyLinear = 'assets/images/solar_copy_linear.png';
   static const String imagesSplashLogo = 'assets/images/splash_logo.jpeg';
   static const String imagesSplashScreenImage = 'assets/images/splash_screen_image.png';
   static const String imagesSupportIcon = 'assets/images/support_icon.png';

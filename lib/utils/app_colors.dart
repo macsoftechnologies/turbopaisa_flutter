@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
+  static const accentColor = Color(0xFFED3E55);
+
   static const primaryColor1 = Color(0xFF92A3FD);
   static const primaryColor2 = Color(0xFF9DCEFF);
 
@@ -17,13 +19,30 @@ class AppColors {
 
   static List<Color> get secondaryG => [secondaryColor1, secondaryColor2];
 
-  static const appGradientBg = LinearGradient(
-    begin: Alignment.topRight,
-    end: Alignment.bottomLeft,
+  static const splashAppGradientBg = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
     colors: [
-      Color.fromARGB(122, 224, 234, 255),
-      Color.fromARGB(166, 224, 234, 255),
-      Color.fromARGB(255, 224, 234, 255),
+      // Color.fromARGB(122, 224, 234, 255),
+      // Color.fromARGB(166, 224, 234, 255),
+      // Color.fromARGB(255, 224, 234, 255),
+
+      Color.fromRGBO(255, 255, 255, 1),
+      Color.fromRGBO(224, 234, 255, 0.52),
+      Color.fromRGBO(224, 234, 255, 0.68),
+      Color.fromRGBO(224, 234, 255, 1),
+    ],
+  );
+
+  static const appGradientBg = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [
+      Color.fromRGBO(243, 246, 255, 1),
+      Color.fromRGBO(243, 246, 255, 1),
+      // Color.fromRGBO(224, 234, 255, 0.48),
+      // Color.fromRGBO(224, 234, 255, 0.52),
+      // Color.fromRGBO(224, 234, 255, 1),
     ],
   );
 }

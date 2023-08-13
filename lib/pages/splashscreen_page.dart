@@ -24,57 +24,71 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
     return Scaffold(
       body: SafeArea(
           child: Container(
-        decoration: BoxDecoration(gradient: AppColors.appGradientBg),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 240,
-            ),
-            Center(
-              child: Image.asset(
-                "assets/images/turbopaisa_logo_two.png",
-                fit: BoxFit.cover,
-                //width: 300,
-              ),
-            ),
-            SizedBox(
-              height: 80,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 70),
-              child: Row(
-                children: [
-                  Image.asset(
-                    "assets/images/coin.png",
-                    // width: 80,
-                  ),
-                ],
-              ),
-            ),
-            // SizedBox(
-            //   height: 10,
-            // ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+            decoration: BoxDecoration(gradient: AppColors.splashAppGradientBg),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              // crossAxisAlignment: CrossAxisAlignment.stretch,
+              // mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(""),
-                SizedBox(
-                  width: 1,
+                // SizedBox(
+                //   height: 240,
+                // ),
+                Expanded(
+                  flex: 2,
+                  child: Center(
+                    child: Image.asset(
+                      "assets/images/turbopaisa_logo_two.png",
+                      fit: BoxFit.cover,
+                      //width: 300,
+                    ),
+                  ),
                 ),
-                Image.asset(
-                  "assets/images/coin_two.png",
-                  //width: 80,
+                // Spacer(),
+                Expanded(
+                  flex: 1,
+                  child: Column(children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 70),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            "assets/images/coin.png",
+                            // width: 80,
+                          ),
+                        ],
+                      ),
+                    ),
+                    // SizedBox(
+                    //   height: 10,
+                    // ),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(""),
+                        SizedBox(
+                          width: 1,
+                        ),
+                        Image.asset(
+                          "assets/images/coin_two.png",
+                          //width: 80,
+                        ),
+                      ],
+                    ),
+                    Expanded(
+                      child: Image.asset(
+                        "assets/images/splash_screen_image.png",
+                        fit: BoxFit.cover,
+                        // width: 240,
+                      ),
+                    ),
+                    SizedBox(height: 20,),
+                  ],),
                 ),
+                // SizedBox(height: 20,),
               ],
             ),
-            Image.asset(
-              "assets/images/splash_screen_image.png",
-              fit: BoxFit.cover,
-              width: 240,
-            ),
-          ],
-        ),
-      )),
+          )),
     );
   }
 
