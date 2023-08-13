@@ -225,6 +225,7 @@ class GreenClipper extends CustomClipper<Path> {
     double height = size.height;
     double width = size.width;
 
+
     var path = Path();
     path.lineTo(0, height - 50);
     path.quadraticBezierTo(width / 2, height, width, height - 50);

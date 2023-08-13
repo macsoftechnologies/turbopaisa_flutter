@@ -55,39 +55,60 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
-        // decoration: BoxDecoration(
-        //   gradient: AppColors.appGradientBg,
-        // ),
         child: Column(
           children: [
-            //Segment Buttons
-            // buildSegmentButtons(),
-            // buildBanners(),
-
             Container(
               child: Column(
                 children: [
                   // SizedBox(height: 50,),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        buildTopOptions(
-                            "assets/images/img.png", Colors.yellow, "Task"),
-                        buildTopOptions("assets/images/scratch_card_image.png",
-                            Colors.cyanAccent, "Scratch Card"),
-                        buildTopOptions("assets/images/survey_image.png",
-                            Colors.red, "Survey"),
-                        buildTopOptions("assets/images/earn_on_games_image.png",
-                            Colors.pinkAccent, "Earn on Games"),
-                      ],
-                    ),
+                  Stack(
+                    children: [
+                      ClipPath(
+                        clipper: GreenClipper(),
+                        child: Container(
+                          height: 200,
+                          color: Color(0xff3D3FB5),
+                        ),
+                      ),
+                      Column(
+                        children: [
+                          SizedBox(
+                            height: 120,
+                          ),
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  buildTopOptions("assets/images/img.png",
+                                      Colors.yellow, "Task"),
+                                  buildTopOptions(
+                                      "assets/images/scratch_card_image.png",
+                                      Colors.cyanAccent,
+                                      "Scratch Card"),
+                                  buildTopOptions(
+                                      "assets/images/survey_image.png",
+                                      Colors.red,
+                                      "Survey"),
+                                  buildTopOptions(
+                                      "assets/images/earn_on_games_image.png",
+                                      Colors.pinkAccent,
+                                      "Earn on Games"),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
                   ),
                 ],
               ),
-            // height: 300,
-            //   color: Color(0xFF3D3FB5),
+              // height: 300,
+              //   color: Color(0xFF3D3FB5),
             ),
             SizedBox(
               height: 24,

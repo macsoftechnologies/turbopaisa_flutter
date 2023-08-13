@@ -79,11 +79,14 @@ class _ReferPageState extends State<ReferPage> {
                     width: 24,
                   ),
                   DottedBorder(
+                    dashPattern: [5, 5],
+                    radius: Radius.circular(10),
+                    borderType: BorderType.RRect,
                     color: Colors.black,
                     strokeWidth: 0.3,
                     // radius: Radius.circular(50),
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(10),
                       child: Text(
                         "TURBOPAISA03",
                         style: TextStyle(fontWeight: FontWeight.bold),
