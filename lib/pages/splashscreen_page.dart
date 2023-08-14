@@ -32,6 +32,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
               children: [
                 // SizedBox(
                 //   height: 240,
+
                 // ),
                 Expanded(
                   flex: 2,

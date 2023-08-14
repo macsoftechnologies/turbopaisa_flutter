@@ -70,6 +70,75 @@ class _HomePageState extends State<HomePage> {
                           color: Color(0xff3D3FB5),
                         ),
                       ),
+                      Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ClipRRect(
+                              child: Image.asset(
+                                'assets/images/proflie_image.png',
+                                fit: BoxFit.cover,
+                                width: 45,
+                                // height: 200,
+                                //height: 100,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 50),
+                              child: RichText(
+                                text: TextSpan(
+                                  text: 'Turbo',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,fontSize: 20),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text: 'Paisa',
+                                        style: TextStyle(
+                                            color: Colors.orange,
+                                            fontWeight: FontWeight.bold,fontSize: 20)),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(7)),
+                                // margin: EdgeInsets.all(5),2
+                                color: Colors.blue.withOpacity(0.2),
+                              ),
+                              // padding: EdgeInsets.all(20),
+                              margin: EdgeInsets.all(10),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.yellow,
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(10),
+                                          bottomLeft: Radius.circular(10)),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(3),
+                                      child: Image.asset(
+                                        color:Colors.black,
+                                        'assets/images/wallet_icon.png',
+                                        fit: BoxFit.contain,
+                                        width: 18,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: 5,),
+                                  Text("₹ 5000",style: TextStyle(color: Colors.white),)
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                       Column(
                         children: [
                           SizedBox(
