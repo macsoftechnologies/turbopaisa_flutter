@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
+  static const primaryColor = Color(0xFF222467);
   static const accentColor = Color(0xFFED3E55);
 
   static const primaryColor1 = Color(0xFF92A3FD);
@@ -43,6 +44,16 @@ class AppColors {
       // Color.fromRGBO(224, 234, 255, 0.48),
       // Color.fromRGBO(224, 234, 255, 0.52),
       // Color.fromRGBO(224, 234, 255, 1),
+    ],
+  );
+
+  static const appLoginGradientBg = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [
+      Color.fromRGBO(224, 234, 255, 0.48),
+      Color.fromRGBO(224, 234, 255, 0.52),
+      Color.fromRGBO(224, 234, 255, 1),
     ],
   );
 }

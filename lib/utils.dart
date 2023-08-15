@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 const titleHeaderColor = Colors.teal;
-const primaryColor = Colors.teal;
+
 // const primaryColor = Color(0xFF072B4C);
 const orangeColor = Color(0xFFF2BA47);
 const Color lightGrey = Color.fromRGBO(242, 242, 242, 1);

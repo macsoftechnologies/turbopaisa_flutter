@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:offersapp/pages/splashscreen_page.dart';
+import 'package:offersapp/utils.dart';
 import 'package:offersapp/utils/app_colors.dart';
 
 void main() {
+  //#222467
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    // systemNavigationBarColor: primaryColor, // navigation bar color
+    statusBarColor: AppColors.primaryColor, // status bar color
+  ));
   runApp(const MyApp());
 }
 

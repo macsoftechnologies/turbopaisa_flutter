@@ -26,250 +26,273 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       //backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.all(10),
-          height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
-            gradient: AppColors.appGradientBg,
+      body: Stack(
+        children: [
+          Container(
+            height: double.infinity,
+            decoration: BoxDecoration(gradient: AppColors.appLoginGradientBg),
           ),
-          //color: Colors.lightBlueAccent.withOpacity(0.2),
-          child: Column(
-            children: [
-              SizedBox(
-                height: 80,
-              ),
-              Image.asset(
-                "assets/images/turbopaisa_logo_two.png",
-                width: 80,
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              Stack(children: [
-                Image.asset(
-                  "assets/images/login_rectangle.png",
-                  width: 250,
-                ),
-                Positioned.fill(
-                    child: Align(
-                        alignment: Alignment.center,
-                        child: Column(
-                          children: [
-                            Text(
-                              "Welcome Back",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 20),
-                            ),
-                            Text("Login to continue")
-                          ],
-                        ))),
-              ]),
-              SizedBox(
-                height: 30,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 40),
-                      child: Text(
-                        "Username",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      )),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 40, right: 40),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.person),
-                        hintText: "Type your user name",
-                      ),
-                      onChanged: (value) {
-                        _email = value;
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 40),
-                      child: Text(
-                        "Password",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      )),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 40, right: 40),
-                    child: TextField(
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.lock),
-                        hintText: "Type your Password",
-                      ),
-                      onChanged: (value) {
-                        _password = value;
-                      },
-                      //decoration: InputDecoration(hintText: "Enter Phone number"),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: Text(
-                  "Forgot Password?",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-
-              SizedBox(
-                height: 34,
-              ),
-              InkWell(
-                onTap: () {
-                  submitData();
-                },
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: RotatedBox(
+              quarterTurns: 90,
+              child: ClipPath(
+                clipper: GreenClipperReverse(),
                 child: Container(
-                  width: 300,
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.pinkAccent,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Text(
-                        "Login",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
+                  height: 80,
+                  color: Color(0xff222467),
                 ),
               ),
-
-              SizedBox(
-                height: 36,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30),
-                child: Row(
-                  children: [
-                    Image.asset(
-                      "assets/images/coin.png",
-                      // width: 80,
-                    ),
-                  ],
-                ),
-              ),
-              // SizedBox(
-              //   height: 10,
-              // ),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-              //   children: [
-              //     Text(""),
-              //     SizedBox(
-              //       width: 100,
-              //     ),
-              //     Image.asset(
-              //       "assets/images/coin_two.png",
-              //       //width: 80,
-              //     ),
-              //   ],
-              // ),
-
-              SizedBox(
-                height: 20,
-              ),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+            ),
+          ),
+          Container(
+            // margin: EdgeInsets.only(bottom: 70),
+            child: SingleChildScrollView(
+              child: Column(
+                // mainAxisSize: MainAxisSize.max,
                 children: [
-                  SizedBox(width: 110,),
-                  Text(
-                    "or",
-                    style: TextStyle(color: Colors.black.withOpacity(0.1)),
+                  SizedBox(
+                    height: 80,
+                  ),
+                  Image.asset(
+                    "assets/images/turbopaisa_logo_two.png",
+                    width: 80,
                   ),
                   SizedBox(
-                    width: 2,
+                    height: 30,
+                  ),
+                  Stack(children: [
+                    Image.asset(
+                      "assets/images/login_rectangle.png",
+                      width: 250,
+                    ),
+                    Positioned.fill(
+                        child: Align(
+                            alignment: Alignment.center,
+                            child: Column(
+                              children: [
+                                Text(
+                                  "Welcome Back",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
+                                ),
+                                Text("Login to continue")
+                              ],
+                            ))),
+                  ]),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 40),
+                          child: Text(
+                            "Username",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          )),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 40, right: 40),
+                        child: TextField(
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.person),
+                            hintText: "Type your user name",
+                          ),
+                          onChanged: (value) {
+                            _email = value;
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 40),
+                          child: Text(
+                            "Password",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          )),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 40, right: 40),
+                        child: TextField(
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.lock),
+                            hintText: "Type your Password",
+                          ),
+                          onChanged: (value) {
+                            _password = value;
+                          },
+                          //decoration: InputDecoration(hintText: "Enter Phone number"),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Text(
+                      "Forgot Password?",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+
+                  SizedBox(
+                    height: 34,
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.of(context).push(new MaterialPageRoute(
-                        builder: (context) => RegistrationPage(),
-                      ));
+                      submitData();
                     },
-                    child: Text(
-                      "Sign up with",
-                      //style: TextStyle(color: Colors.purple),
+                    child: Container(
+                      width: 250,
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: AppColors.accentColor,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Text(
+                            "Login",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                  SizedBox(width: 85,),
-                  Image.asset(
-                    "assets/images/coin_two.png",
-                    //width: 80,
+
+                  SizedBox(
+                    height: 20,
                   ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 30),
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          "assets/images/coin.png",
+                          // width: 80,
+                        ),
+                      ],
+                    ),
+                  ),
+                  // SizedBox(
+                  //   height: 10,
+                  // ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  //   children: [
+                  //     Text(""),
+                  //     SizedBox(
+                  //       width: 100,
+                  //     ),
+                  //     Image.asset(
+                  //       "assets/images/coin_two.png",
+                  //       //width: 80,
+                  //     ),
+                  //   ],
+                  // ),
+
+                  SizedBox(
+                    height: 20,
+                  ),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 110,
+                      ),
+                      Text(
+                        "or",
+                        style: TextStyle(color: Colors.black.withOpacity(0.1)),
+                      ),
+                      SizedBox(
+                        width: 2,
+                      ),
+                      Text(
+                        "Sign up with",
+                        //style: TextStyle(color: Colors.purple),
+                      ),
+                      SizedBox(
+                        width: 85,
+                      ),
+                      Image.asset(
+                        "assets/images/coin_two.png",
+                        //width: 80,
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 60),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(new MaterialPageRoute(
+                              builder: (context) => RegistrationPage(),
+                            ));
+                          },
+                          child: CircleAvatar(
+                            radius: 22,
+                            backgroundColor: Colors.white.withOpacity(0.8),
+                            child: Image.asset(
+                              'assets/images/gmail_logo.png',
+                              fit: BoxFit.cover,
+                              width: 40,
+                              //height: 40,
+                            ),
+                          ),
+                        ),
+                        CircleAvatar(
+                          radius: 22,
+                          backgroundColor: Colors.white.withOpacity(0.8),
+                          child: Image.asset(
+                            'assets/images/google_logo.png',
+                            fit: BoxFit.cover,
+                            width: 40,
+                          ),
+                        ),
+                        CircleAvatar(
+                          radius: 22,
+                          backgroundColor: Colors.white.withOpacity(0.8),
+                          child: Image.asset(
+                            'assets/images/facebook_logo.png',
+                            fit: BoxFit.cover,
+                            width: 30,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  // Image.asset(
+                  //   "assets/images/rectangle .png",
+                  //   //width: 80,
+                  // ),
                 ],
               ),
-              SizedBox(
-                height: 20,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 60),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    CircleAvatar(
-                      radius: 22,
-                      backgroundColor: Colors.white.withOpacity(0.8),
-                      child: Image.asset(
-                        'assets/images/gmail_logo.png',
-                        fit: BoxFit.cover,
-                        width: 40,
-                        //height: 40,
-                      ),
-                    ),
-                    CircleAvatar(
-                      radius: 22,
-                      backgroundColor: Colors.white.withOpacity(0.8),
-                      child: Image.asset(
-                        'assets/images/google_logo.png',
-                        fit: BoxFit.cover,
-                        width: 40,
-                      ),
-                    ),
-                    CircleAvatar(
-                      radius: 22,
-                      backgroundColor: Colors.white.withOpacity(0.8),
-                      child: Image.asset(
-                        'assets/images/facebook_logo.png',
-                        fit: BoxFit.cover,
-                        width: 30,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              // Image.asset(
-              //   "assets/images/rectangle .png",
-              //   //width: 80,
-              // ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
       // SizedBox(
       //   height: 20,

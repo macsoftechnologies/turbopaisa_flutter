@@ -225,11 +225,43 @@ class GreenClipper extends CustomClipper<Path> {
     double height = size.height;
     double width = size.width;
 
-
     var path = Path();
     path.lineTo(0, height - 50);
     path.quadraticBezierTo(width / 2, height, width, height - 50);
     path.lineTo(width, 0);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper oldClipper) {
+    return true;
+  }
+}
+
+//https://www.youtube.com/watch?v=xuatM4pZkNk
+class GreenClipperReverse extends CustomClipper<Path> {
+  @override
+  getClip(Size size) {
+    double height = size.height;
+    double width = size.width;
+
+    var path = Path();
+    //
+    path.lineTo(0, height - 50);
+    path.quadraticBezierTo(width / 2, height, width, height - 50);
+    path.lineTo(width, 0);
+
+
+
+    // path.lineTo(0, height);
+    // path.quadraticBezierTo(width / 2, height - 100, width, height);
+    // path.lineTo(width, 0);
+
+
+    // path.lineTo(width, 0);
+    // path.lineTo(width, height);
+    // path.lineTo(0, height);
     path.close();
     return path;
   }
