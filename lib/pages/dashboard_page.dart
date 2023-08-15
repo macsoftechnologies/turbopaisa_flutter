@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
+import 'package:circular_bottom_navigation/tab_item.dart';
 import 'package:flutter/material.dart';
 import 'package:offersapp/generated/assets.dart';
 import 'package:offersapp/pages/HomePage.dart';

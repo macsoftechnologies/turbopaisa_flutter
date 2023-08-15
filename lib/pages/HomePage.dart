@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:offersapp/api/model/OffersData.dart';
+import 'package:offersapp/pages/scratch_card_page.dart';
+import 'package:offersapp/utils.dart';
 import 'package:offersapp/utils/app_colors.dart';
 
 import '../api/model/BannersResponse.dart';
@@ -154,10 +156,15 @@ class _HomePageState extends State<HomePage> {
                                 children: [
                                   buildTopOptions("assets/images/img.png",
                                       Colors.yellow, "Task"),
-                                  buildTopOptions(
-                                      "assets/images/scratch_card_image.png",
-                                      Colors.cyanAccent,
-                                      "Scratch Card"),
+                                  InkWell(
+                                    onTap: (){
+                                      navigateToNext(context, ScratchCardPage());
+                                    },
+                                    child: buildTopOptions(
+                                        "assets/images/scratch_card_image.png",
+                                        Colors.cyanAccent,
+                                        "Scratch Card"),
+                                  ),
                                   buildTopOptions(
                                       "assets/images/survey_image.png",
                                       Colors.red,
