@@ -8,6 +8,7 @@ import 'package:offersapp/utils/app_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/model/UserData.dart';
+import '../generated/assets.dart';
 
 class ProfileSettingsPage extends StatefulWidget {
   const ProfileSettingsPage({Key? key}) : super(key: key);
@@ -64,6 +65,68 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                   color: Color(0xff3D3FB5),
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // ClipRRect(
+                    //   child: Image.asset(
+                    //     'assets/images/proflie_image.png',
+                    //     fit: BoxFit.cover,
+                    //     width: 45,
+                    //     // height: 200,
+                    //     //height: 100,
+                    //   ),
+                    // ),
+                    SizedBox(
+                      width: 80,
+                    ),
+                    Text(
+                      "My Profile",
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(7)),
+                        // margin: EdgeInsets.all(5),2
+                        color: AppColors.primaryDarkColor.withOpacity(0.5),
+                      ),
+                      // padding: EdgeInsets.all(20),
+                      padding: EdgeInsets.only(right: 10),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.yellow,
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  bottomLeft: Radius.circular(10)),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(3),
+                              child: Image.asset(
+                                color: Colors.black,
+                                'assets/images/wallet_icon.png',
+                                fit: BoxFit.contain,
+                                width: 18,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            "₹ 5000",
+                            style: TextStyle(color: Colors.white, fontSize: 14),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               Center(
                 child: Column(
                   children: [
@@ -84,8 +147,8 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                     ),
                     Text(
                       userData?.name?.toUpperCase() ?? "",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 18),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                     ),
                     Text(userData?.email ?? ""),
                     SizedBox(

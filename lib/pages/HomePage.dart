@@ -97,23 +97,6 @@ class _HomePageState extends State<HomePage> {
                               Assets.imagesHomeLogo,
                               width: 100,
                             ),
-                            // RichText(
-                            //   text: TextSpan(
-                            //     text: 'Turbo',
-                            //     style: TextStyle(
-                            //         color: Colors.white,
-                            //         fontWeight: FontWeight.bold,
-                            //         fontSize: 20),
-                            //     children: <TextSpan>[
-                            //       TextSpan(
-                            //           text: 'Paisa',
-                            //           style: TextStyle(
-                            //               color: Colors.orange,
-                            //               fontWeight: FontWeight.bold,
-                            //               fontSize: 20)),
-                            //     ],
-                            //   ),
-                            // ),
                             Container(
                               decoration: BoxDecoration(
                                 borderRadius:

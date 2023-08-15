@@ -26,11 +26,25 @@ class _WalletBalacePageState extends State<WalletBalacePage> {
                   color: Color(0xff3D3FB5),
                 ),
               ),
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 16.0),
+                  child: Text(
+                    "My Wallet",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16
+                        ),
+                  ),
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 50),
                 child: Column(
                   children: [
-                    SizedBox(height: 85,),
+                    SizedBox(
+                      height: 85,
+                    ),
                     Stack(
                       children: [
                         SizedBox(
@@ -139,6 +153,7 @@ class _WalletBalacePageState extends State<WalletBalacePage> {
                 ),
               ),
             ]),
+
             SizedBox(
               height: 20,
             ),
@@ -216,8 +231,7 @@ class _WalletBalacePageState extends State<WalletBalacePage> {
                     child: Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 22),
+                          padding: const EdgeInsets.symmetric(horizontal: 22),
                           child: Row(
                             children: [
                               CircleAvatar(
@@ -226,15 +240,13 @@ class _WalletBalacePageState extends State<WalletBalacePage> {
                                   color: Colors.orange,
                                 ),
                                 radius: 25,
-                                backgroundColor:
-                                    Colors.orange.withOpacity(0.2),
+                                backgroundColor: Colors.orange.withOpacity(0.2),
                               ),
                               SizedBox(
                                 width: 20,
                               ),
                               Column(
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     "Order Id :6519",
@@ -248,15 +260,13 @@ class _WalletBalacePageState extends State<WalletBalacePage> {
                                   ),
                                   Text(
                                     "25 Dec 2023",
-                                    style:
-                                        TextStyle(color: Colors.grey),
+                                    style: TextStyle(color: Colors.grey),
                                   ),
                                 ],
                               ),
                               Spacer(),
                               Column(
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Text("- ₹ 500.0",
                                       style: TextStyle(
