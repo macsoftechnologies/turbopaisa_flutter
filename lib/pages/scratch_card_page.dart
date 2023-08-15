@@ -46,9 +46,9 @@ class _ScratchCardPageState extends State<ScratchCardPage> {
             child: Scratcher(
               brushSize: 50,
               threshold: 75,
-              color: Colors.red,
+              color: Colors.grey,
               image: Image.asset(
-                "assets/images/outerimage.png",
+                "assets/images/scratch_green.png",
                 fit: BoxFit.fill,
               ),
               onChange: (value) => print("Scratch progress: $value%"),
@@ -85,14 +85,14 @@ class _ScratchCardPageState extends State<ScratchCardPage> {
                           ],
                         ),
                         Text(
-                          "You won",
+                          "Cashback Won",
                           style: TextStyle(
                             fontWeight: FontWeight.w400,
                             fontSize: 30,
                           ),
                         ),
                         Text(
-                          "1 Lakh!",
+                          "₹ 150",
                           style: TextStyle(
                             fontWeight: FontWeight.w400,
                             fontSize: 30,

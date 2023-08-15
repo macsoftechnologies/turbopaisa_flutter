@@ -220,6 +220,44 @@ class _EarOnGamesPageState extends State<EarOnGamesPage> {
                   ],
                 ),
               ),
+              SizedBox(
+                height: 150,
+                child: PageView(
+                  controller: PageController(viewportFraction: 0.9),
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Image.asset(
+                        'assets/images/scratch_banner.png',
+                        //width: 300,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Image.asset(
+                        'assets/images/eog_banner.png',
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Image.asset(
+                        'assets/images/scratch_banner.png',
+                        //width: 300,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Image.asset(
+                        'assets/images/eog_banner.png',
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),

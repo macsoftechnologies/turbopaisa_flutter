@@ -38,6 +38,20 @@ class _DashboardPageState extends State<DashboardPage> {
     const ProfileSettingsPage()
   ];
 
+  Widget getPage(int index) {
+    if (index == 0) {
+      return HomePage();
+    } else if (index == 1) {
+      return WalletBalacePage();
+    } else if (index == 2) {
+      return ReferPage();
+    } else if (index == 3) {
+      return ProfileSettingsPage();
+    } else {
+      return SizedBox();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var tabTextStyle = TextStyle(
@@ -68,17 +82,19 @@ class _DashboardPageState extends State<DashboardPage> {
       body: SafeArea(
         child: Container(
           decoration: BoxDecoration(gradient: AppColors.appGradientBg),
-          child: Column(
-            children: [
-              // if (selectTab != 3) TopProfileAppBarWidget(),
-              Expanded(
-                child: IndexedStack(
-                  index: selectTab,
-                  children: _widgetOptions,
-                ),
-              ),
-            ],
-          ),
+          child: getPage(selectTab),
+
+          // Column(
+          //   children: [
+          //
+          //     Expanded(
+          //       child: IndexedStack(
+          //         index: selectTab,
+          //         children: _widgetOptions,
+          //       ),
+          //     ),
+          //   ],
+          // ),
         ),
       ),
       bottomNavigationBar: SafeArea(
