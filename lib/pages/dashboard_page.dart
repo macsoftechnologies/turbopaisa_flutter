@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
+import 'package:circular_bottom_navigation/tab_item.dart';
 import 'package:flutter/material.dart';
 import 'package:offersapp/generated/assets.dart';
 import 'package:offersapp/pages/HomePage.dart';
@@ -224,7 +226,6 @@ class GreenClipper extends CustomClipper<Path> {
   getClip(Size size) {
     double height = size.height;
     double width = size.width;
-
 
     var path = Path();
     path.lineTo(0, height - 50);

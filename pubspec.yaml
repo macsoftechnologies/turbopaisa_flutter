@@ -38,6 +38,9 @@ dependencies:
   retrofit: ^3.3.1
   shared_preferences: ^2.0.13
   dotted_border: ^2.0.0+3
+  scratcher: ^2.3.0
+  confetti: ^0.7.0
+  circular_bottom_navigation: ^2.3.0
 
 dev_dependencies:
   flutter_test:
