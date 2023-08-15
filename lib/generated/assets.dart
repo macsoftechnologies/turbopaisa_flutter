@@ -18,21 +18,26 @@ class Assets {
   static const String imagesGmailLogo = 'assets/images/gmail_logo.png';
   static const String imagesGoogleLogo = 'assets/images/google_logo.png';
   static const String imagesHomeIcon = 'assets/images/home_icon.png';
+  static const String imagesHomeLogo = 'assets/images/home_logo.png';
   static const String imagesHomeSelectIcon = 'assets/images/home_select_icon.png';
   static const String imagesImg = 'assets/images/img.png';
   static const String imagesInstagramLogo = 'assets/images/instagram_logo.png';
   static const String imagesLanguageIcon = 'assets/images/language_icon.png';
   static const String imagesLogOutIcon = 'assets/images/log_out_icon.png';
   static const String imagesLoginRectangle = 'assets/images/login_rectangle.png';
+  static const String imagesNewimage = 'assets/images/newimage.png';
+  static const String imagesOuterimage = 'assets/images/outerimage.png';
   static const String imagesPasswordIcon = 'assets/images/password_icon.png';
   static const String imagesPhoneIcon = 'assets/images/phone_icon.png';
   static const String imagesPrivacyPolicy = 'assets/images/privacy_policy.png';
   static const String imagesProfileUser = 'assets/images/profile_user.png';
   static const String imagesProfileUsers = 'assets/images/profile_users.png';
+  static const String imagesProflieImage = 'assets/images/proflie_image.png';
   static const String imagesRateUsIcon = 'assets/images/rate_us_icon.png';
   static const String imagesRectangle  = 'assets/images/rectangle .png';
   static const String imagesReferFriend = 'assets/images/refer_friend.png';
   static const String imagesScratchCardImage = 'assets/images/scratch_card_image.png';
+  static const String imagesSemirectangle = 'assets/images/semirectangle.png';
   static const String imagesSolarCopyLinear = 'assets/images/solar_copy_linear.png';
   static const String imagesSplashLogo = 'assets/images/splash_logo.jpeg';
   static const String imagesSplashScreenImage = 'assets/images/splash_screen_image.png';
@@ -44,6 +49,8 @@ class Assets {
   static const String imagesUpArrow = 'assets/images/up_arrow.png';
   static const String imagesUserIcon = 'assets/images/user_icon.png';
   static const String imagesUserSelectIcon = 'assets/images/user_select_icon.png';
+  static const String imagesWalletIcon = 'assets/images/wallet_icon.png';
+  static const String imagesWhiteCircle = 'assets/images/white_circle.png';
   static const String imagesYoutubeLogo = 'assets/images/youtube_logo.png';
 
 }

@@ -3,7 +3,12 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:offersapp/api/model/OffersData.dart';
+import 'package:offersapp/generated/assets.dart';
+import 'package:offersapp/pages/earn_on_games.dart';
+import 'package:offersapp/pages/scratch_card_list_page.dart';
 import 'package:offersapp/pages/scratch_card_page.dart';
+import 'package:offersapp/pages/task_page.dart';
+import 'package:offersapp/pages/tutorial_page.dart';
 import 'package:offersapp/utils.dart';
 import 'package:offersapp/utils/app_colors.dart';
 
@@ -20,7 +25,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
-
+  bool isLoading = false;
   var groupValue = 0;
 
   @override
@@ -55,6 +60,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    double clipperHeight = 160.0;
     return SingleChildScrollView(
       child: Container(
         child: Column(
@@ -68,7 +74,7 @@ class _HomePageState extends State<HomePage> {
                       ClipPath(
                         clipper: GreenClipper(),
                         child: Container(
-                          height: 200,
+                          height: clipperHeight,
                           color: Color(0xff3D3FB5),
                         ),
                       ),
@@ -86,33 +92,36 @@ class _HomePageState extends State<HomePage> {
                                 //height: 100,
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 50),
-                              child: RichText(
-                                text: TextSpan(
-                                  text: 'Turbo',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,fontSize: 20),
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                        text: 'Paisa',
-                                        style: TextStyle(
-                                            color: Colors.orange,
-                                            fontWeight: FontWeight.bold,fontSize: 20)),
-                                  ],
-                                ),
-                              ),
+                            Image.asset(
+                              Assets.imagesHomeLogo,
+                              width: 100,
                             ),
+                            // RichText(
+                            //   text: TextSpan(
+                            //     text: 'Turbo',
+                            //     style: TextStyle(
+                            //         color: Colors.white,
+                            //         fontWeight: FontWeight.bold,
+                            //         fontSize: 20),
+                            //     children: <TextSpan>[
+                            //       TextSpan(
+                            //           text: 'Paisa',
+                            //           style: TextStyle(
+                            //               color: Colors.orange,
+                            //               fontWeight: FontWeight.bold,
+                            //               fontSize: 20)),
+                            //     ],
+                            //   ),
+                            // ),
                             Container(
                               decoration: BoxDecoration(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(7)),
                                 // margin: EdgeInsets.all(5),2
-                                color: Colors.blue.withOpacity(0.2),
+                                color: AppColors.primaryColor.withOpacity(0.5),
                               ),
                               // padding: EdgeInsets.all(20),
-                              margin: EdgeInsets.all(10),
+                              padding: EdgeInsets.only(right: 10),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
@@ -126,15 +135,21 @@ class _HomePageState extends State<HomePage> {
                                     child: Padding(
                                       padding: const EdgeInsets.all(3),
                                       child: Image.asset(
-                                        color:Colors.black,
+                                        color: Colors.black,
                                         'assets/images/wallet_icon.png',
                                         fit: BoxFit.contain,
                                         width: 18,
                                       ),
                                     ),
                                   ),
-                                  SizedBox(width: 5,),
-                                  Text("₹ 5000",style: TextStyle(color: Colors.white),)
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    "₹ 5000",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 14),
+                                  )
                                 ],
                               ),
                             ),
@@ -144,7 +159,7 @@ class _HomePageState extends State<HomePage> {
                       Column(
                         children: [
                           SizedBox(
-                            height: 120,
+                            height: clipperHeight * 0.50,
                           ),
                           Align(
                             alignment: Alignment.bottomCenter,
@@ -154,25 +169,43 @@ class _HomePageState extends State<HomePage> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  buildTopOptions("assets/images/img.png",
-                                      Colors.yellow, "Task"),
                                   InkWell(
-                                    onTap: (){
-                                      navigateToNext(context, ScratchCardPage());
+                                    onTap: () {
+                                      navigateToNext(context, TaskListPage());
+                                    },
+                                    child: buildTopOptions(
+                                        "assets/images/img.png",
+                                        Color(0xFFF0DB40),
+                                        "Task"),
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      navigateToNext(
+                                          context, ScratchCardListPage());
                                     },
                                     child: buildTopOptions(
                                         "assets/images/scratch_card_image.png",
-                                        Colors.cyanAccent,
+                                        Color(0xFF70E2FE),
                                         "Scratch Card"),
                                   ),
                                   buildTopOptions(
                                       "assets/images/survey_image.png",
-                                      Colors.red,
+                                      Color(0xFFF58967),
                                       "Survey"),
-                                  buildTopOptions(
-                                      "assets/images/earn_on_games_image.png",
-                                      Colors.pinkAccent,
-                                      "Earn on Games"),
+                                  InkWell(
+                                    onTap: () {
+                                      navigateToNext(context, EarOnGamesPage());
+                                      // Navigator.of(context).push(
+                                      //   TutorialOverlay(
+                                      //     child: ScratchCardPage(),
+                                      //   ),
+                                      // );
+                                    },
+                                    child: buildTopOptions(
+                                        "assets/images/earn_on_games_image.png",
+                                        Color(0xFFFF9EB7),
+                                        "Earn on Games"),
+                                  ),
                                 ],
                               ),
                             ),
@@ -189,46 +222,54 @@ class _HomePageState extends State<HomePage> {
             SizedBox(
               height: 24,
             ),
-            Container(
-              width: MediaQuery.of(context).size.width * 0.9,
-              margin: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                  color: AppColors.whiteColor,
-                  border: Border.fromBorderSide(
-                    BorderSide(width: 2, color: Colors.white.withOpacity(0.4)),
-                  ),
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 4,
-                        offset: Offset(0, 0))
-                  ]),
-              child: CupertinoSlidingSegmentedControl<int>(
-                backgroundColor: CupertinoColors.white,
-                thumbColor: Colors.red,
-                // padding: EdgeInsets.all(8),
-                groupValue: groupValue,
-                children: {
-                  0: buildSegment(0, "All Offers"),
-                  1: buildSegment(1, "My Offers"),
-                  2: buildSegment(2, "Upcoming"),
-                },
-                onValueChanged: (value) {
-                  setState(() {
-                    groupValue = value!;
-                    _selectedIndex = value;
-                    print(value);
-                  });
-                },
+            buildSegmentedControl(context),
+            if (isLoading)
+              Center(
+                child: CircularProgressIndicator(
+                  strokeWidth: 1,
+                ),
               ),
-            ),
             if (_selectedIndex == 0) buildAllOffers(),
             if (_selectedIndex == 1) buildAllOffers(),
             if (_selectedIndex == 2) buildAllOffers(),
             buildBanners(),
           ],
         ),
+      ),
+    );
+  }
+
+  Container buildSegmentedControl(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.9,
+      margin: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+          color: AppColors.whiteColor,
+          border: Border.fromBorderSide(
+            BorderSide(width: 2, color: Colors.white.withOpacity(0.4)),
+          ),
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+                color: Colors.black12, blurRadius: 4, offset: Offset(0, 0))
+          ]),
+      child: CupertinoSlidingSegmentedControl<int>(
+        backgroundColor: CupertinoColors.white,
+        thumbColor: Colors.red,
+        // padding: EdgeInsets.all(8),
+        groupValue: groupValue,
+        children: {
+          0: buildSegment(0, "All Offers"),
+          1: buildSegment(1, "My Offers"),
+          2: buildSegment(2, "Upcoming"),
+        },
+        onValueChanged: (value) {
+          setState(() {
+            groupValue = value!;
+            _selectedIndex = value;
+            print(value);
+          });
+        },
       ),
     );
   }
@@ -335,14 +376,15 @@ class _HomePageState extends State<HomePage> {
   //   );
   // }
 
-  PageController _pageController = new PageController();
+  // PageController _pageController =
+  //     PageController(initialPage: 0, viewportFraction: 0.9);
 
   Widget buildBanners() {
     return Container(
       // padding: EdgeInsets.all(10),
       height: 150,
       child: PageView.builder(
-        controller: _pageController,
+        controller: PageController(initialPage: 0, viewportFraction: 0.9),
         itemCount: banners.length,
         itemBuilder: (context, index) => Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -466,12 +508,18 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> loadData() async {
     try {
+      setState(() {
+        isLoading = true;
+      });
       final client = await RestClient.getRestClient();
       var list = await client.getOffers();
       setState(() {
         offersData = list;
       });
     } catch (e) {}
+    setState(() {
+      isLoading = false;
+    });
   }
 
   Future<void> loadBannersData() async {

@@ -19,7 +19,17 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
+  int selectedPos = 0;
+
   int selectTab = 0;
+
+  late CircularBottomNavigationController _navigationController;
+
+  @override
+  void initState() {
+    super.initState();
+    _navigationController = CircularBottomNavigationController(selectedPos);
+  }
 
   final List<Widget> _widgetOptions = <Widget>[
     const HomePage(),
@@ -30,6 +40,23 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
+    var tabTextStyle = TextStyle(
+      fontWeight: FontWeight.normal,
+      fontSize: 14,
+      color: AppColors.accentColor,
+    );
+    var circleStrokeColor = Color.fromRGBO(224, 234, 255, 0.8);
+    List<TabItem> tabItems = List.of([
+      TabItem(Icons.home, "Home", AppColors.accentColor,
+          labelStyle: tabTextStyle, circleStrokeColor: circleStrokeColor),
+      TabItem(Icons.wallet_rounded, "My Wallet", AppColors.accentColor,
+          labelStyle: tabTextStyle, circleStrokeColor: circleStrokeColor),
+      TabItem(Icons.share, "Refer & Earn", AppColors.accentColor,
+          labelStyle: tabTextStyle, circleStrokeColor: circleStrokeColor),
+      TabItem(Icons.person, "My Profile", AppColors.accentColor,
+          labelStyle: tabTextStyle, circleStrokeColor: circleStrokeColor),
+    ]);
+
     return Scaffold(
       floatingActionButton: selectTab != 0
           ? null
@@ -54,71 +81,83 @@ class _DashboardPageState extends State<DashboardPage> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
+      bottomNavigationBar: CircularBottomNavigation(
+        controller: _navigationController,
+        tabItems,
+        selectedCallback: (value) {
+          setState(() {
+            selectTab = value!;
+          });
+        },
+      ),
+
+      // buildBottomAppBar(),
+    );
+  }
+
+  BottomAppBar buildBottomAppBar() {
+    return BottomAppBar(
+      height: Platform.isIOS ? 70 : 65,
+      color: Colors.transparent,
+      padding: const EdgeInsets.all(0),
+      child: Container(
         height: Platform.isIOS ? 70 : 65,
-        color: Colors.transparent,
-        padding: const EdgeInsets.all(0),
-        child: Container(
-          height: Platform.isIOS ? 70 : 65,
-          decoration: const BoxDecoration(
-              color: AppColors.whiteColor,
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black12, blurRadius: 2, offset: Offset(0, -2))
-              ]),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              TabNewButton(
-                  icon: Icons.home,
-                  // icon: "assets/images/home_icon.png",
-                  // selectIcon: "assets/images/home_select_icon.png",
-                  isActive: selectTab == 0,
-                  onTap: () {
-                    if (mounted) {
-                      setState(() {
-                        selectTab = 0;
-                      });
-                    }
-                  }),
-              TabNewButton(
-                  icon: Icons.wallet,
-                  // icon: "assets/images/activity_icon.png",
-                  // selectIcon: "assets/images/activity_select_icon.png",
-                  isActive: selectTab == 1,
-                  onTap: () {
-                    if (mounted) {
-                      setState(() {
-                        selectTab = 1;
-                      });
-                    }
-                  }),
-              TabNewButton(
-                  icon: Icons.share_outlined,
-                  // icon: "assets/images/camera_icon.png",
-                  // selectIcon: "assets/images/camera_select_icon.png",
-                  isActive: selectTab == 2,
-                  onTap: () {
-                    if (mounted) {
-                      setState(() {
-                        selectTab = 2;
-                      });
-                    }
-                  }),
-              TabNewButton(
-                  icon: Icons.person,
-                  // icon: "assets/images/user_icon.png",
-                  // selectIcon: "assets/images/user_select_icon.png",
-                  isActive: selectTab == 3,
-                  onTap: () {
-                    if (mounted) {
-                      setState(() {
-                        selectTab = 3;
-                      });
-                    }
-                  }),
-            ],
-          ),
+        decoration:
+            const BoxDecoration(color: AppColors.whiteColor, boxShadow: [
+          BoxShadow(color: Colors.black12, blurRadius: 2, offset: Offset(0, -2))
+        ]),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            TabNewButton(
+                icon: Icons.home,
+                // icon: "assets/images/home_icon.png",
+                // selectIcon: "assets/images/home_select_icon.png",
+                isActive: selectTab == 0,
+                onTap: () {
+                  if (mounted) {
+                    setState(() {
+                      selectTab = 0;
+                    });
+                  }
+                }),
+            TabNewButton(
+                icon: Icons.wallet,
+                // icon: "assets/images/activity_icon.png",
+                // selectIcon: "assets/images/activity_select_icon.png",
+                isActive: selectTab == 1,
+                onTap: () {
+                  if (mounted) {
+                    setState(() {
+                      selectTab = 1;
+                    });
+                  }
+                }),
+            TabNewButton(
+                icon: Icons.share_outlined,
+                // icon: "assets/images/camera_icon.png",
+                // selectIcon: "assets/images/camera_select_icon.png",
+                isActive: selectTab == 2,
+                onTap: () {
+                  if (mounted) {
+                    setState(() {
+                      selectTab = 2;
+                    });
+                  }
+                }),
+            TabNewButton(
+                icon: Icons.person,
+                // icon: "assets/images/user_icon.png",
+                // selectIcon: "assets/images/user_select_icon.png",
+                isActive: selectTab == 3,
+                onTap: () {
+                  if (mounted) {
+                    setState(() {
+                      selectTab = 3;
+                    });
+                  }
+                }),
+          ],
         ),
       ),
     );
@@ -254,12 +293,9 @@ class GreenClipperReverse extends CustomClipper<Path> {
     path.quadraticBezierTo(width / 2, height, width, height - 50);
     path.lineTo(width, 0);
 
-
-
     // path.lineTo(0, height);
     // path.quadraticBezierTo(width / 2, height - 100, width, height);
     // path.lineTo(width, 0);
-
 
     // path.lineTo(width, 0);
     // path.lineTo(width, height);

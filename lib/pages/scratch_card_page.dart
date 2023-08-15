@@ -20,9 +20,8 @@ class _ScratchCardPageState extends State<ScratchCardPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.blueGrey,
-      body: Center(
+    return SafeArea(
+      child: Center(
         child: Scratcher(
           brushSize: 50,
           threshold: 75,
