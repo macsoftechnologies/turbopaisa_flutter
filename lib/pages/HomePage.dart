@@ -119,7 +119,8 @@ class _HomePageState extends State<HomePage> {
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(7)),
                                 // margin: EdgeInsets.all(5),2
-                                color: AppColors.primaryDarkColor.withOpacity(0.5),
+                                color:
+                                    AppColors.primaryDarkColor.withOpacity(0.5),
                               ),
                               // padding: EdgeInsets.all(20),
                               padding: EdgeInsets.only(right: 10),
@@ -429,7 +430,7 @@ class _HomePageState extends State<HomePage> {
       itemBuilder: (context, index) {
         return InkWell(
           onTap: () {
-            _launchUrl(offersData[index].url??"");
+            _launchUrl(offersData[index].url ?? "");
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
