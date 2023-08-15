@@ -81,14 +81,16 @@ class _DashboardPageState extends State<DashboardPage> {
           ),
         ),
       ),
-      bottomNavigationBar: CircularBottomNavigation(
-        controller: _navigationController,
-        tabItems,
-        selectedCallback: (value) {
-          setState(() {
-            selectTab = value!;
-          });
-        },
+      bottomNavigationBar: SafeArea(
+        child: CircularBottomNavigation(
+          controller: _navigationController,
+          tabItems,
+          selectedCallback: (value) {
+            setState(() {
+              selectTab = value!;
+            });
+          },
+        ),
       ),
 
       // buildBottomAppBar(),

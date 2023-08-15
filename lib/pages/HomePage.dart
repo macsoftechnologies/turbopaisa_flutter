@@ -11,6 +11,7 @@ import 'package:offersapp/pages/task_page.dart';
 import 'package:offersapp/pages/tutorial_page.dart';
 import 'package:offersapp/utils.dart';
 import 'package:offersapp/utils/app_colors.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../api/model/BannersResponse.dart';
 import '../api/restclient.dart';
@@ -118,7 +119,7 @@ class _HomePageState extends State<HomePage> {
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(7)),
                                 // margin: EdgeInsets.all(5),2
-                                color: AppColors.primaryColor.withOpacity(0.5),
+                                color: AppColors.primaryDarkColor.withOpacity(0.5),
                               ),
                               // padding: EdgeInsets.all(20),
                               padding: EdgeInsets.only(right: 10),
@@ -412,6 +413,13 @@ class _HomePageState extends State<HomePage> {
 
   HtmlEscape htmlEscape = HtmlEscape();
 
+  Future<void> _launchUrl(String _url) async {
+    if (!await launchUrl(Uri.parse(_url))) {
+      // throw Exception('Could not launch $_url');
+      showSnackBar(context, 'Could not launch $_url');
+    }
+  }
+
   Widget buildAllOffers() {
     return ListView.builder(
       key: UniqueKey(),
@@ -419,84 +427,90 @@ class _HomePageState extends State<HomePage> {
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Card(
-              shadowColor: Colors.white,
-              elevation: 2,
-              child: Container(
-                padding: EdgeInsets.all(10),
-                child: Row(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Image.network(
-                        offersData[index].images![0].image.toString(),
-                        width: 120,
-                        height: 80,
-                        fit: BoxFit.cover,
+        return InkWell(
+          onTap: () {
+            _launchUrl(offersData[index].url??"");
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Card(
+                shadowColor: Colors.white,
+                elevation: 2,
+                child: Container(
+                  padding: EdgeInsets.all(10),
+                  child: Row(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.network(
+                          offersData[index].images![0].image.toString(),
+                          width: 120,
+                          height: 80,
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            offersData[index].offerTitle ?? "",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            offersData[index].offerDesc ?? "",
-                            maxLines: 2,
-                            style: TextStyle(color: Colors.grey, fontSize: 12),
-                          ),
-                          Text(
-                            "₹ ${offersData[index].offerAmount ?? ""}",
-                            style: TextStyle(
-                                color: Colors.red,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18),
-                          ),
-                        ],
+                      SizedBox(
+                        width: 20,
                       ),
-                    ),
-                  ],
-                ),
-                // Row(
-                //   children: [
-                //     Image.asset(
-                //       "assets/images/app_logo.jpeg",
-                //       width: 80,
-                //       height: 50,
-                //     ),
-                //     SizedBox(
-                //       width: 20,
-                //     ),
-                //     Column(
-                //       crossAxisAlignment: CrossAxisAlignment.start,
-                //       children: [
-                //         Text(
-                //           "Carbury Play pad",
-                //           style: TextStyle(fontWeight: FontWeight.bold),
-                //         ),
-                //         Text(
-                //           "Learn play AR",
-                //         ),
-                //         Text(
-                //           "50",
-                //           style: TextStyle(
-                //               color: Colors.purple,
-                //               fontWeight: FontWeight.bold,
-                //               fontSize: 20),
-                //         ),
-                //       ],
-                //     ),
-                //   ],
-                // ),
-              )),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              offersData[index].offerTitle ?? "",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              offersData[index].offerDesc ?? "",
+                              maxLines: 2,
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 12),
+                            ),
+                            Text(
+                              "₹ ${offersData[index].offerAmount ?? ""}",
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  // Row(
+                  //   children: [
+                  //     Image.asset(
+                  //       "assets/images/app_logo.jpeg",
+                  //       width: 80,
+                  //       height: 50,
+                  //     ),
+                  //     SizedBox(
+                  //       width: 20,
+                  //     ),
+                  //     Column(
+                  //       crossAxisAlignment: CrossAxisAlignment.start,
+                  //       children: [
+                  //         Text(
+                  //           "Carbury Play pad",
+                  //           style: TextStyle(fontWeight: FontWeight.bold),
+                  //         ),
+                  //         Text(
+                  //           "Learn play AR",
+                  //         ),
+                  //         Text(
+                  //           "50",
+                  //           style: TextStyle(
+                  //               color: Colors.purple,
+                  //               fontWeight: FontWeight.bold,
+                  //               fontSize: 20),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ],
+                  // ),
+                )),
+          ),
         );
       },
       itemCount: offersData.length,
