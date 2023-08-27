@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kbspinningwheel/kbspinningwheel.dart';
+import 'package:offersapp/utils/app_colors.dart';
 
 class WheelWidget extends StatefulWidget {
   @override
@@ -84,26 +85,49 @@ class _WheelWidgetState extends State<WheelWidget> {
                       : Container();
                 }),
             SizedBox(height: 30),
-            new ElevatedButton(
-                // child: new Text(
-                //   "Click Here to Spin",
-                //   style: TextStyle(color: Color(0xFF858585)),
-                // ),
-                // style: ElevatedButton.styleFrom(
-                //   backgroundColor: Color(0xFF464646),
-                // ),
-                child: new Text(
-                  "Click Here to Spin",
-                  style: TextStyle(color: Colors.white),
+            InkWell(
+              onTap: (){
+                HapticFeedback.lightImpact();
+                _wheelNotifier.sink.add(_generateRandomVelocity());
+              },
+              child: Container(
+                width: 260,
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: AppColors.accentColor,
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF464646),
-                  minimumSize: Size(250, 40),
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Text(
+                      "Click Here to Spin",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
                 ),
-                onPressed: () {
-                  HapticFeedback.lightImpact();
-                  _wheelNotifier.sink.add(_generateRandomVelocity());
-                }),
+              ),
+            ),
+            // new ElevatedButton(
+            //     // child: new Text(
+            //     //   "Click Here to Spin",
+            //     //   style: TextStyle(color: Color(0xFF858585)),
+            //     // ),
+            //     // style: ElevatedButton.styleFrom(
+            //     //   backgroundColor: Color(0xFF464646),
+            //     // ),
+            //     child: new Text(
+            //       "Click Here to Spin",
+            //       style: TextStyle(color: Colors.white),
+            //     ),
+            //     style: ElevatedButton.styleFrom(
+            //       backgroundColor: Color(0xFF464646),
+            //       minimumSize: Size(250, 40),
+            //     ),
+            //     onPressed: () {
+            //       HapticFeedback.lightImpact();
+            //       _wheelNotifier.sink.add(_generateRandomVelocity());
+            //     }),
             SizedBox(
               height: 20,
             ),
