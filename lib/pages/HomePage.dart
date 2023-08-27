@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:offersapp/api/model/OffersData.dart';
 import 'package:offersapp/generated/assets.dart';
 import 'package:offersapp/pages/earn_on_games.dart';
+import 'package:offersapp/pages/offer_details_page.dart';
 import 'package:offersapp/pages/scratch_card_list_page.dart';
 import 'package:offersapp/pages/scratch_card_page.dart';
 import 'package:offersapp/pages/task_page.dart';
@@ -413,7 +414,8 @@ class _HomePageState extends State<HomePage> {
       itemBuilder: (context, index) {
         return InkWell(
           onTap: () {
-            _launchUrl(offersData[index].url ?? "");
+            navigateToNext(context, OfferDetailsPage(data:offersData[index]));
+            //_launchUrl(offersData[index].url ?? "");
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
