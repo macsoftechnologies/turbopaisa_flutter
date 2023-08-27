@@ -8,7 +8,9 @@ import 'package:offersapp/pages/HomePage.dart';
 import 'package:offersapp/pages/profile_settings.dart';
 import 'package:offersapp/pages/refer_page.dart';
 import 'package:offersapp/pages/top_profile.dart';
+import 'package:offersapp/pages/tutorial_page.dart';
 import 'package:offersapp/pages/wallet_page.dart';
+import 'package:offersapp/pages/wheel_widget.dart';
 import 'package:offersapp/utils/app_colors.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -74,9 +76,18 @@ class _DashboardPageState extends State<DashboardPage> {
     return Scaffold(
       floatingActionButton: selectTab != 0
           ? null
-          : Image.asset(
-              Assets.imagesFabWheel,
-              width: 80,
+          : InkWell(
+              onTap: () {
+                Navigator.of(context).push(
+                  TutorialOverlay(
+                    child: WheelWidget(),
+                  ),
+                );
+              },
+              child: Image.asset(
+                Assets.imagesFabWheel,
+                width: 80,
+              ),
             ),
       // backgroundColor: AppColors.appGradientBg ,
       body: SafeArea(

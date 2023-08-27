@@ -111,7 +111,7 @@ class _ScratchCardListPageState extends State<ScratchCardListPage> {
                                         ),
                                         Column(
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               "Wallet Balance",
@@ -180,7 +180,7 @@ class _ScratchCardListPageState extends State<ScratchCardListPage> {
                   children: [
                     Container(
                       padding:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                      EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                       decoration: BoxDecoration(
                           color: Color(0xFFE3EAFF),
                           borderRadius: BorderRadius.circular(10)),
@@ -200,7 +200,7 @@ class _ScratchCardListPageState extends State<ScratchCardListPage> {
                     ),
                     Container(
                       padding:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                      EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                       decoration: BoxDecoration(
                           color: Color(0xFFE3EAFF),
                           borderRadius: BorderRadius.circular(10)),

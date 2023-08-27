@@ -67,19 +67,20 @@ class _LoginPageState extends State<LoginPage> {
                       width: 250,
                     ),
                     Positioned.fill(
-                        child: Align(
-                            alignment: Alignment.center,
-                            child: Column(
-                              children: [
-                                Text(
-                                  "Welcome Back",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20),
-                                ),
-                                Text("Login to continue")
-                              ],
-                            ))),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Column(
+                          children: [
+                            Text(
+                              "Welcome Back",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                            ),
+                            Text("Login to continue")
+                          ],
+                        ),
+                      ),
+                    ),
                   ]),
                   SizedBox(
                     height: 30,
@@ -110,7 +111,6 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(
                     height: 10,
                   ),
-
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -149,7 +149,6 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(
                     height: 10,
                   ),
-
                   SizedBox(
                     height: 34,
                   ),
