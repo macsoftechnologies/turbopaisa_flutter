@@ -43,6 +43,9 @@ dependencies:
   circular_bottom_navigation: ^2.3.0
   url_launcher: ^6.1.12
   kbspinningwheel: ^1.0.3
+  advertising_id: ^2.5.0
+  flutter_udid: ^2.0.1
+  get_ip_address: ^0.0.6
 
 dev_dependencies:
   flutter_test:

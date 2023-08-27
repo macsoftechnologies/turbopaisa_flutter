@@ -1,7 +1,11 @@
 import 'dart:collection';
 import 'dart:convert';
 
+import 'package:advertising_id/advertising_id.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_udid/flutter_udid.dart';
+import 'package:get_ip_address/get_ip_address.dart';
 import 'package:offersapp/api/model/UserData.dart';
 import 'package:offersapp/api/restclient.dart';
 import 'package:offersapp/pages/dashboard_page.dart';
@@ -21,6 +25,75 @@ class _LoginPageState extends State<LoginPage> {
   String _email = "";
   String _password = "";
   String _name = "";
+
+  String? _advertisingId = '';
+  bool? _isLimitAdTrackingEnabled;
+  String _udid = 'Unknown';
+  String? _ipAddress;
+
+  @override
+  void initState() {
+    super.initState();
+    initPlatformState();
+    loadIpAddress();
+  }
+
+  // Platform messages are asynchronous, so we initialize in an async method.
+  initPlatformState() async {
+    String? advertisingId;
+    bool? isLimitAdTrackingEnabled;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      advertisingId = await AdvertisingId.id(true);
+    } on PlatformException {
+      advertisingId = 'Failed to get platform version.';
+    }
+
+    try {
+      isLimitAdTrackingEnabled = await AdvertisingId.isLimitAdTrackingEnabled;
+    } on PlatformException {
+      isLimitAdTrackingEnabled = false;
+    }
+
+    //===== To get device UDID
+    String udid;
+    try {
+      udid = await FlutterUdid.udid;
+    } on PlatformException {
+      udid = 'Failed to get UDID.';
+    }
+    //========
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    debugPrint(advertisingId);
+
+    setState(() {
+      _udid = udid;
+      _advertisingId = advertisingId;
+      _isLimitAdTrackingEnabled = isLimitAdTrackingEnabled;
+    });
+  }
+
+  loadIpAddress() async {
+    try {
+      /// Initialize Ip Address
+      var ipAddress = IpAddress(type: RequestType.json);
+
+      /// Get the IpAddress based on requestType.
+      dynamic data = await ipAddress.getIpAddress();
+      print(data.toString());
+      print(data['ip']);
+      setState(() {
+        _ipAddress=data['ip'];
+      });
+    } on IpAddressException catch (exception) {
+      /// Handle the exception.
+      print(exception.message);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -359,11 +432,19 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> submitData() async {
     try {
+      if (_advertisingId == null) {
+        showSnackBar(context, "Advertise Id is missing.");
+        return;
+      }
       showLoaderDialog(context);
       final client = await RestClient.getRestClient();
       Map<String, String> body = HashMap();
       body.putIfAbsent("email", () => _email);
       body.putIfAbsent("password", () => _password);
+      body.putIfAbsent("device_id", () => _udid);
+      body.putIfAbsent("login_token", () => "");
+      body.putIfAbsent("ipaddress", () => _ipAddress??"");
+      body.putIfAbsent("gaid", () => _advertisingId ?? "");
 
       UserData data = await client.doLogin(body);
       SharedPreferences prefs = await SharedPreferences.getInstance();

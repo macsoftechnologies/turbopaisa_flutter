@@ -1,7 +1,11 @@
 import 'dart:collection';
 import 'dart:convert';
 
+import 'package:advertising_id/advertising_id.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_udid/flutter_udid.dart';
+import 'package:get_ip_address/get_ip_address.dart';
 import 'package:offersapp/utils/app_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -25,6 +29,76 @@ class _RegistrationPageState extends State<RegistrationPage> {
   String _pincode = "";
   String _password = "";
   String _referralCode = "";
+
+  String? _advertisingId = '';
+  bool? _isLimitAdTrackingEnabled;
+  String _udid = 'Unknown';
+  String? _ipAddress;
+
+  @override
+  void initState() {
+    super.initState();
+    initPlatformState();
+    loadIpAddress();
+  }
+
+  // Platform messages are asynchronous, so we initialize in an async method.
+  initPlatformState() async {
+    String? advertisingId;
+    bool? isLimitAdTrackingEnabled;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      advertisingId = await AdvertisingId.id(true);
+    } on PlatformException {
+      advertisingId = 'Failed to get platform version.';
+    }
+
+    try {
+      isLimitAdTrackingEnabled = await AdvertisingId.isLimitAdTrackingEnabled;
+    } on PlatformException {
+      isLimitAdTrackingEnabled = false;
+    }
+
+    //===== To get device UDID
+    String udid;
+    try {
+      udid = await FlutterUdid.udid;
+    } on PlatformException {
+      udid = 'Failed to get UDID.';
+    }
+    //========
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    debugPrint(advertisingId);
+
+    setState(() {
+      _udid = udid;
+      _advertisingId = advertisingId;
+      _isLimitAdTrackingEnabled = isLimitAdTrackingEnabled;
+    });
+  }
+
+  loadIpAddress() async {
+    try {
+      /// Initialize Ip Address
+      var ipAddress = IpAddress(type: RequestType.json);
+
+      /// Get the IpAddress based on requestType.
+      dynamic data = await ipAddress.getIpAddress();
+      print(data.toString());
+      print(data['ip']);
+      setState(() {
+        _ipAddress=data['ip'];
+      });
+    } on IpAddressException catch (exception) {
+      /// Handle the exception.
+      print(exception.message);
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -55,12 +129,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
             child: Container(
               child: Container(
                 padding: EdgeInsets.all(10),
-                height: MediaQuery.of(context).size.height,
-                // decoration: BoxDecoration(
-                //   gradient: AppColors.appGradientBg,
-                // ),
-
-                // color: Colors.lightBlueAccent.withOpacity(0.2),
                 child: Column(
                   children: [
                     SizedBox(
@@ -133,13 +201,41 @@ class _RegistrationPageState extends State<RegistrationPage> {
                               hintText: "Type your Password",
                             ),
                             onChanged: (value) {
-                              _mobile = value;
+                              _password = value;
                             },
                             //decoration: InputDecoration(hintText: "Enter Phone number"),
                           ),
                         ),
                       ],
                     ),
+                    // SizedBox(
+                    //   height: 10,
+                    // ),
+                    // Column(
+                    //   crossAxisAlignment: CrossAxisAlignment.start,
+                    //   children: [
+                    //     Padding(
+                    //       padding: EdgeInsets.symmetric(horizontal: 40),
+                    //       child: Text(
+                    //         "Email",
+                    //         style: TextStyle(fontWeight: FontWeight.bold),
+                    //       ),
+                    //     ),
+                    //     Padding(
+                    //       padding: const EdgeInsets.only(left: 40, right: 40),
+                    //       child: TextField(
+                    //         decoration: InputDecoration(
+                    //           prefixIcon: Icon(Icons.mail),
+                    //           hintText: "Type your Email",
+                    //         ),
+                    //
+                    //         onChanged: (value) {
+                    //           _email = value;
+                    //         },
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                     SizedBox(
                       height: 10,
                     ),
@@ -162,9 +258,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             ),
 
                             onChanged: (value) {
-                              _email = value;
+                              _mobile = value;
                             },
-                            // decoration: InputDecoration(hintText: "Enter Email"),
                           ),
                         ),
                       ],
@@ -276,9 +371,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
       body.putIfAbsent("name", () => _name);
       body.putIfAbsent("email", () => _email);
       body.putIfAbsent("mobile", () => _mobile);
-      body.putIfAbsent("device_id", () => "");
-      body.putIfAbsent("gaid", () => "");
+      //
+      body.putIfAbsent("device_id", () => _udid);
       body.putIfAbsent("login_token", () => "");
+      body.putIfAbsent("ipaddress", () => _ipAddress??"");
+      body.putIfAbsent("gaid", () => _advertisingId ?? "");
+      //
       body.putIfAbsent("pincode", () => _pincode);
       body.putIfAbsent("password", () => _password);
       body.putIfAbsent("referral_id", () => _referralCode);
