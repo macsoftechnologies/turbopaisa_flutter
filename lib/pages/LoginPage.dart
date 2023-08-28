@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_udid/flutter_udid.dart';
 import 'package:get_ip_address/get_ip_address.dart';
+import 'package:offersapp/api/model/RegistrationResponse.dart';
 import 'package:offersapp/api/model/UserData.dart';
 import 'package:offersapp/api/restclient.dart';
 import 'package:offersapp/pages/dashboard_page.dart';
@@ -87,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
       print(data.toString());
       print(data['ip']);
       setState(() {
-        _ipAddress=data['ip'];
+        _ipAddress = data['ip'];
       });
     } on IpAddressException catch (exception) {
       /// Handle the exception.
@@ -214,9 +215,17 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   Align(
                     alignment: Alignment.bottomRight,
-                    child: Text(
-                      "Forgot Password?",
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                    child: InkWell(
+                      onTap: () {
+                        sendForgotPassword();
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 16.0),
+                        child: Text(
+                          "Forgot Password?",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -443,7 +452,7 @@ class _LoginPageState extends State<LoginPage> {
       body.putIfAbsent("password", () => _password);
       body.putIfAbsent("device_id", () => _udid);
       body.putIfAbsent("login_token", () => "");
-      body.putIfAbsent("ipaddress", () => _ipAddress??"");
+      body.putIfAbsent("ipaddress", () => _ipAddress ?? "");
       body.putIfAbsent("gaid", () => _advertisingId ?? "");
 
       UserData data = await client.doLogin(body);
@@ -458,6 +467,32 @@ class _LoginPageState extends State<LoginPage> {
       );
     } catch (e) {
       showSnackBar(context, "Invalid Login Details.");
+      Navigator.pop(context);
+    }
+  }
+
+  Future<void> sendForgotPassword() async {
+    try {
+      if (_email.trim().isEmpty) {
+        showSnackBar(context, "Username/Email cannot be blank.");
+        return;
+      }
+      showLoaderDialog(context);
+      final client = await RestClient.getRestClient();
+      Map<String, String> body = HashMap();
+      body.putIfAbsent("email", () => _email);
+
+      RegistrationResponse data = await client.forgotPassword(body);
+      if (data.status == 200) {
+        showSnackBar(
+            context, data.message ?? "Successfully sent to your registered ");
+      } else {
+        showSnackBar(context, data.message ?? "Failed");
+      }
+      Navigator.pop(context);
+    } catch (e) {
+      print(e);
+      showSnackBar(context, "Failed to reset password.");
       Navigator.pop(context);
     }
   }

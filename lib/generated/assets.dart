@@ -52,6 +52,7 @@ class Assets {
   static const String imagesRouletteCenter300 = 'assets/images/roulette-center-300.png';
   static const String imagesScratchBanner = 'assets/images/scratch_banner.png';
   static const String imagesScratchBlue = 'assets/images/scratch_blue.png';
+  static const String imagesScratchCardCup = 'assets/images/scratch_card_cup.png';
   static const String imagesScratchCardImage = 'assets/images/scratch_card_image.png';
   static const String imagesScratchGreen = 'assets/images/scratch_green.png';
   static const String imagesScratchOrange = 'assets/images/scratch_orange.png';

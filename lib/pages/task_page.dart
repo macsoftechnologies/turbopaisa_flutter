@@ -1,7 +1,12 @@
+import 'dart:collection';
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:offersapp/api/model/OffersData.dart';
+import 'package:offersapp/api/model/UserData.dart';
 import 'package:offersapp/utils/app_colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/model/BannersResponse.dart';
 import '../api/restclient.dart';
@@ -19,7 +24,7 @@ class _TaskListPageState extends State<TaskListPage> {
 
   var groupValue = 0;
 
-  List<OffersData> offersData = [];
+  // List<OffersData> offersData = [];
   List<BannerData> banners = [];
 
   @override
@@ -29,15 +34,23 @@ class _TaskListPageState extends State<TaskListPage> {
     loadBannersData();
   }
 
+  List<OffersData> allOffers = [];
+  List<OffersData> myOffers = [];
+  List<OffersData> upcomingOffers = [];
+
   Future<void> loadData() async {
     try {
       setState(() {
         isLoading = true;
       });
       final client = await RestClient.getRestClient();
-      var list = await client.getOffers();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var user = await prefs.getString("user");
+      UserData data = UserData.fromJson(jsonDecode(user!));
+
+      var list = await client.getOffers(data.userId ?? "");
       setState(() {
-        offersData = list;
+        allOffers = list;
       });
     } catch (e) {}
     setState(() {
@@ -48,7 +61,7 @@ class _TaskListPageState extends State<TaskListPage> {
   Future<void> loadBannersData() async {
     try {
       final client = await RestClient.getRestClient();
-      var list = await client.getBanners();
+      var list = await client.getBanners("home");
       setState(() {
         banners = list.banner?.cast<BannerData>() ?? [];
       });
@@ -65,17 +78,18 @@ class _TaskListPageState extends State<TaskListPage> {
       body: SafeArea(
         child: isLoading
             ? Center(
-              child: CircularProgressIndicator(
+                child: CircularProgressIndicator(
                   strokeWidth: 1,
                 ),
-            )
+              )
             : SingleChildScrollView(
                 child: Column(
                   children: [
                     buildSegmentedControl(context),
-                    if (_selectedIndex == 0) buildAllOffers(),
-                    if (_selectedIndex == 1) buildAllOffers(),
-                    if (_selectedIndex == 2) buildAllOffers(),
+                    if (_selectedIndex == 0) buildAllOffers(allOffers),
+                    if (_selectedIndex == 1) buildAllOffers(myOffers),
+                    if (_selectedIndex == 2) buildAllOffers(upcomingOffers),
+
                     buildBanners(),
                   ],
                 ),
@@ -112,6 +126,13 @@ class _TaskListPageState extends State<TaskListPage> {
           setState(() {
             groupValue = value!;
             _selectedIndex = value;
+            if (_selectedIndex == 0) {
+              loadData();
+            } else if (_selectedIndex == 1) {
+              loadMyOffersData();
+            } else if (_selectedIndex == 2) {
+              loadUpcomingOffers();
+            }
             print(value);
           });
         },
@@ -180,95 +201,101 @@ class _TaskListPageState extends State<TaskListPage> {
     );
   }
 
-  Widget buildAllOffers() {
-    return ListView.builder(
-      key: UniqueKey(),
-      scrollDirection: Axis.vertical,
-      physics: NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Card(
-              shadowColor: Colors.white,
-              elevation: 2,
-              child: Container(
-                padding: EdgeInsets.all(10),
-                child: Row(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Image.network(
-                        offersData[index].images![0].image.toString(),
-                        width: 120,
-                        height: 80,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+  Widget buildAllOffers(List<OffersData> offersData) {
+    return (offersData.length == 0 && !isLoading)
+        ? Container(
+            constraints: BoxConstraints(minHeight: 200),
+            child: Center(child: Text("No Offers Available.")),
+          )
+        : ListView.builder(
+            key: UniqueKey(),
+            scrollDirection: Axis.vertical,
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                    shadowColor: Colors.white,
+                    elevation: 2,
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      child: Row(
                         children: [
-                          Text(
-                            offersData[index].offerTitle ?? "",
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.network(
+                              offersData[index].images![0].image.toString(),
+                              width: 120,
+                              height: 80,
+                              fit: BoxFit.cover,
+                            ),
                           ),
-                          Text(
-                            offersData[index].offerDesc ?? "",
-                            maxLines: 2,
-                            style: TextStyle(color: Colors.grey, fontSize: 12),
+                          SizedBox(
+                            width: 20,
                           ),
-                          Text(
-                            "₹ ${offersData[index].offerAmount ?? ""}",
-                            style: TextStyle(
-                                color: Colors.red,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  offersData[index].offerTitle ?? "",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  offersData[index].offerDesc ?? "",
+                                  maxLines: 2,
+                                  style: TextStyle(
+                                      color: Colors.grey, fontSize: 12),
+                                ),
+                                Text(
+                                  "₹ ${offersData[index].offerAmount ?? ""}",
+                                  style: TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
-                    ),
-                  ],
-                ),
-                // Row(
-                //   children: [
-                //     Image.asset(
-                //       "assets/images/app_logo.jpeg",
-                //       width: 80,
-                //       height: 50,
-                //     ),
-                //     SizedBox(
-                //       width: 20,
-                //     ),
-                //     Column(
-                //       crossAxisAlignment: CrossAxisAlignment.start,
-                //       children: [
-                //         Text(
-                //           "Carbury Play pad",
-                //           style: TextStyle(fontWeight: FontWeight.bold),
-                //         ),
-                //         Text(
-                //           "Learn play AR",
-                //         ),
-                //         Text(
-                //           "50",
-                //           style: TextStyle(
-                //               color: Colors.purple,
-                //               fontWeight: FontWeight.bold,
-                //               fontSize: 20),
-                //         ),
-                //       ],
-                //     ),
-                //   ],
-                // ),
-              )),
-        );
-      },
-      itemCount: offersData.length,
-    );
+                      // Row(
+                      //   children: [
+                      //     Image.asset(
+                      //       "assets/images/app_logo.jpeg",
+                      //       width: 80,
+                      //       height: 50,
+                      //     ),
+                      //     SizedBox(
+                      //       width: 20,
+                      //     ),
+                      //     Column(
+                      //       crossAxisAlignment: CrossAxisAlignment.start,
+                      //       children: [
+                      //         Text(
+                      //           "Carbury Play pad",
+                      //           style: TextStyle(fontWeight: FontWeight.bold),
+                      //         ),
+                      //         Text(
+                      //           "Learn play AR",
+                      //         ),
+                      //         Text(
+                      //           "50",
+                      //           style: TextStyle(
+                      //               color: Colors.purple,
+                      //               fontWeight: FontWeight.bold,
+                      //               fontSize: 20),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ],
+                      // ),
+                    )),
+              );
+            },
+            itemCount: offersData.length,
+          );
   }
 
   PageController _pageController =
@@ -303,5 +330,46 @@ class _TaskListPageState extends State<TaskListPage> {
         ),
       ),
     );
+  }
+
+  Future<void> loadMyOffersData() async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var user = await prefs.getString("user");
+      UserData data = UserData.fromJson(jsonDecode(user!));
+
+      Map<String, String> body = HashMap();
+      body.putIfAbsent("user_id", () => data.userId.toString());
+
+      final client = await RestClient.getRestClient();
+      var list = await client.getMyOffer(body);
+      setState(() {
+        // offersData = list;
+        myOffers = list;
+      });
+    } catch (e) {}
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  Future<void> loadUpcomingOffers() async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      final client = await RestClient.getRestClient();
+      var list = await client.getUpComingOffers();
+      setState(() {
+        // offersData = list;
+        upcomingOffers = list;
+      });
+    } catch (e) {}
+    setState(() {
+      isLoading = false;
+    });
   }
 }

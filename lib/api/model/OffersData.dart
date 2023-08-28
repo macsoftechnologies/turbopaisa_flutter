@@ -1,6 +1,7 @@
 class OffersData {
   String? offerId;
   String? offerTitle;
+  String? offerTagline;
   String? offerCode;
   String? offerDesc;
   String? offerAmount;
@@ -18,11 +19,12 @@ class OffersData {
       this.startDate,
       this.endDate,
       this.url,
-      this.images});
+      this.images,this.offerTagline});
 
   OffersData.fromJson(Map<String, dynamic> json) {
     offerId = json['offer_id'];
     offerTitle = json['offer_title'];
+    offerTagline = json['offer_tagline'];
     offerCode = json['offer_code'];
     offerDesc = json['offer_desc'];
     offerAmount = json['offer_amount'];
@@ -41,6 +43,7 @@ class OffersData {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['offer_id'] = this.offerId;
     data['offer_title'] = this.offerTitle;
+    data['offer_tagline'] = this.offerTagline;
     data['offer_code'] = this.offerCode;
     data['offer_desc'] = this.offerDesc;
     data['offer_amount'] = this.offerAmount;

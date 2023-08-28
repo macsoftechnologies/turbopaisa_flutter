@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:offersapp/api/model/BannersResponse.dart';
 import 'package:offersapp/api/model/RegistrationResponse.dart';
+import 'package:offersapp/api/model/ScratchCardResponse.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -97,11 +98,29 @@ abstract class RestClient {
   Future<UserData> doLogin(@Body() Map<String, String> loginRequestBody);
 
   @POST("users/create")
-  Future<RegistrationResponse> doRegister(@Body() Map<String, String> loginRequestBody);
+  Future<RegistrationResponse> doRegister(
+      @Body() Map<String, String> loginRequestBody);
+
+  @POST("users/forgotPassword")
+  Future<RegistrationResponse> forgotPassword(
+      @Body() Map<String, String> loginRequestBody);
 
   @GET("offers/getOffers")
-  Future<List<OffersData>> getOffers();
+  Future<List<OffersData>> getOffers(@Query("user_id") String userId);
+
+  @GET("offers/getupcomingOffers")
+  Future<List<OffersData>> getUpComingOffers();
+
+  @POST("offers/getMyOffer")
+  Future<List<OffersData>> getMyOffer(@Body() Map<String, String> body);
 
   @GET("offers/getBanner")
-  Future<BannersResponse> getBanners();
+  Future<BannersResponse> getBanners(@Query("type") String type);
+
+  @GET("scratchcard/getScratchcards")
+  Future<ScratchCardResponse> getScratchcards(@Query("user_id") String userId);
+
+  @POST("scratchcard/scratchcardUserinsert")
+  Future<RegistrationResponse> scratchcardUserinsert(@Body() Map<String, String> body);
+
 }

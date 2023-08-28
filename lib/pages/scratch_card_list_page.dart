@@ -1,8 +1,15 @@
+import 'dart:convert';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:offersapp/api/model/ScratchCardResponse.dart';
+import 'package:offersapp/api/model/UserData.dart';
+import 'package:offersapp/api/restclient.dart';
 import 'package:offersapp/pages/dashboard_page.dart';
 import 'package:offersapp/pages/scratch_card_page.dart';
 import 'package:offersapp/pages/tutorial_page.dart';
+import 'package:offersapp/utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/app_colors.dart';
 
@@ -14,6 +21,12 @@ class ScratchCardListPage extends StatefulWidget {
 }
 
 class _ScratchCardListPageState extends State<ScratchCardListPage> {
+  @override
+  void initState() {
+    super.initState();
+    loadScratchCards();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -118,7 +131,7 @@ class _ScratchCardListPageState extends State<ScratchCardListPage> {
                                               style: TextStyle(fontSize: 16),
                                             ),
                                             Text(
-                                              "₹ 5,000.00",
+                                              "₹ ${scratchCardResponse?.wallet?.toStringAsFixed(2) ?? "0.00"}",
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 20),
@@ -188,11 +201,11 @@ class _ScratchCardListPageState extends State<ScratchCardListPage> {
                         //crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "₹ 174",
+                            "₹ ${scratchCardResponse?.moneywon?.toStringAsFixed(2) ?? "0.00"}",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            "Cashback Won",
+                            "Money Won",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ],
@@ -208,11 +221,11 @@ class _ScratchCardListPageState extends State<ScratchCardListPage> {
                         //crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "1",
+                            "${scratchCardResponse?.scratchcardwon ?? "0"}",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            "Vouchers Won",
+                            "Scratch Cards Won",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ],
@@ -223,116 +236,146 @@ class _ScratchCardListPageState extends State<ScratchCardListPage> {
                 SizedBox(
                   height: 20,
                 ),
-                InkWell(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      TutorialOverlay(
-                        child: ScratchCardPage(),
-                      ),
-                    );
-                  },
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 8),
-                        child: Row(
-                          children: [
-                            Flexible(
-                              flex: 1,
-                              child: Image.asset(
-                                'assets/images/scratch_green.png',
-                                // fit: BoxFit.fill,
-                                // width: 170,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Flexible(
-                              flex: 1,
-                              child: Image.asset(
-                                'assets/images/scratch_orange.png',
-                                // width: 170,
-                                //width: 44,
-                              ),
-                            ),
-                          ],
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GridView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: scratchCardResponse?.cards?.length ?? 0,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 20,
+                        mainAxisExtent: 200,
+                        mainAxisSpacing: 20),
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        onTap: () {
+                          Navigator.of(context)
+                              .push(
+                                TutorialOverlay(
+                                  child: ScratchCardPage(
+                                      data: scratchCardResponse!.cards![index]),
+                                ),
+                              )
+                              .whenComplete(() => loadScratchCards());
+                        },
+                        child: Container(
+                          child: buildCard(index),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 8),
-                        child: Row(
-                          children: [
-                            Flexible(
-                              flex: 1,
-                              child: Image.asset(
-                                'assets/images/scratch_yellow.png',
-                                //width: 44,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Flexible(
-                              flex: 1,
-                              child: Image.asset(
-                                'assets/images/scratch_blue.png',
-                                //fit: BoxFit.contain,
-                                // width: 170,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                      );
+                    },
                   ),
                 ),
-                SizedBox(
-                  height: 20,
-                ),
-                SizedBox(
-                  height: 150,
-                  child: PageView(
-                    controller: PageController(viewportFraction: 0.9),
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Image.asset(
-                          'assets/images/scratch_banner.png',
-                          //width: 300,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Image.asset(
-                          'assets/images/eog_banner.png',
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Image.asset(
-                          'assets/images/scratch_banner.png',
-                          //width: 300,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Image.asset(
-                          'assets/images/eog_banner.png',
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
+                // InkWell(
+                //   onTap: () {
+                //     Navigator.of(context).push(
+                //       TutorialOverlay(
+                //         child: ScratchCardPage(),
+                //       ),
+                //     );
+                //   },
+                //   child: Column(
+                //     children: [
+                //       Padding(
+                //         padding: const EdgeInsets.symmetric(
+                //             horizontal: 20, vertical: 8),
+                //         child: Row(
+                //           children: [
+                //             Flexible(
+                //               flex: 1,
+                //               child: Image.asset(
+                //                 'assets/images/scratch_green.png',
+                //                 // fit: BoxFit.fill,
+                //                 // width: 170,
+                //               ),
+                //             ),
+                //             SizedBox(
+                //               width: 10,
+                //             ),
+                //             Flexible(
+                //               flex: 1,
+                //               child: Image.asset(
+                //                 'assets/images/scratch_orange.png',
+                //                 // width: 170,
+                //                 //width: 44,
+                //               ),
+                //             ),
+                //           ],
+                //         ),
+                //       ),
+                //       Padding(
+                //         padding: const EdgeInsets.symmetric(
+                //             horizontal: 20, vertical: 8),
+                //         child: Row(
+                //           children: [
+                //             Flexible(
+                //               flex: 1,
+                //               child: Image.asset(
+                //                 'assets/images/scratch_yellow.png',
+                //                 //width: 44,
+                //               ),
+                //             ),
+                //             SizedBox(
+                //               width: 10,
+                //             ),
+                //             Flexible(
+                //               flex: 1,
+                //               child: Image.asset(
+                //                 'assets/images/scratch_blue.png',
+                //                 //fit: BoxFit.contain,
+                //                 // width: 170,
+                //               ),
+                //             ),
+                //           ],
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
+                // SizedBox(
+                //   height: 20,
+                // ),
+                // SizedBox(
+                //   height: 150,
+                //   child: PageView(
+                //     controller: PageController(viewportFraction: 0.9),
+                //     children: [
+                //       Padding(
+                //         padding: EdgeInsets.all(10),
+                //         child: Image.asset(
+                //           'assets/images/scratch_banner.png',
+                //           //width: 300,
+                //           fit: BoxFit.cover,
+                //         ),
+                //       ),
+                //       Padding(
+                //         padding: EdgeInsets.all(10),
+                //         child: Image.asset(
+                //           'assets/images/eog_banner.png',
+                //           fit: BoxFit.cover,
+                //         ),
+                //       ),
+                //       Padding(
+                //         padding: EdgeInsets.all(10),
+                //         child: Image.asset(
+                //           'assets/images/scratch_banner.png',
+                //           //width: 300,
+                //           fit: BoxFit.cover,
+                //         ),
+                //       ),
+                //       Padding(
+                //         padding: EdgeInsets.all(10),
+                //         child: Image.asset(
+                //           'assets/images/eog_banner.png',
+                //           fit: BoxFit.cover,
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
+                // SizedBox(
+                //   height: 20,
+                // ),
               ],
               // onPressed: () {
               //   Navigator.of(context).push(
@@ -347,5 +390,46 @@ class _ScratchCardListPageState extends State<ScratchCardListPage> {
         ),
       ),
     );
+  }
+
+  ScratchCardResponse? scratchCardResponse;
+
+  Future<void> loadScratchCards() async {
+    try {
+      final client = await RestClient.getRestClient();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var user = await prefs.getString("user");
+      UserData data = UserData.fromJson(jsonDecode(user!));
+
+      ScratchCardResponse scratchCardResponse =
+          await client.getScratchcards(data.userId ?? "");
+      // await client.getScratchcards("1");
+      setState(() {
+        this.scratchCardResponse = scratchCardResponse;
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Widget buildCard(int index) {
+    if (scratchCardResponse?.cards![index].scratchColor == "Green") {
+      return Image.asset(
+        'assets/images/scratch_green.png',
+      );
+    } else if (scratchCardResponse?.cards![index].scratchColor == "Yellow") {
+      return Image.asset(
+        'assets/images/scratch_yellow.png',
+      );
+    } else if (scratchCardResponse?.cards![index].scratchColor == "Orange") {
+      return Image.asset(
+        'assets/images/scratch_orange.png',
+      );
+    } else if (scratchCardResponse?.cards![index].scratchColor == "Blue") {
+      return Image.asset(
+        'assets/images/scratch_blue.png',
+      );
+    }
+    return SizedBox();
   }
 }
