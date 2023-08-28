@@ -1,8 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
 import 'package:circular_bottom_navigation/tab_item.dart';
 import 'package:flutter/material.dart';
+import 'package:offersapp/api/model/UserData.dart';
+import 'package:offersapp/api/restclient.dart';
 import 'package:offersapp/generated/assets.dart';
 import 'package:offersapp/pages/HomePage.dart';
 import 'package:offersapp/pages/profile_settings.dart';
@@ -11,7 +14,9 @@ import 'package:offersapp/pages/top_profile.dart';
 import 'package:offersapp/pages/tutorial_page.dart';
 import 'package:offersapp/pages/wallet_page.dart';
 import 'package:offersapp/pages/wheel_widget.dart';
+import 'package:offersapp/utils.dart';
 import 'package:offersapp/utils/app_colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({Key? key}) : super(key: key);
@@ -78,11 +83,12 @@ class _DashboardPageState extends State<DashboardPage> {
           ? null
           : InkWell(
               onTap: () {
-                Navigator.of(context).push(
-                  TutorialOverlay(
-                    child: WheelWidget(),
-                  ),
-                );
+                // Navigator.of(context).push(
+                //   TutorialOverlay(
+                //     child: WheelWidget(),
+                //   ),
+                // );
+                loadSpinWheel();
               },
               child: Image.asset(
                 Assets.imagesFabWheel,
@@ -190,6 +196,25 @@ class _DashboardPageState extends State<DashboardPage> {
         ),
       ),
     );
+  }
+
+  Future<void> loadSpinWheel() async {
+    try {
+      showLoaderDialog(context);
+      final client = await RestClient.getRestClient();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var user = await prefs.getString("user");
+      UserData data = UserData.fromJson(jsonDecode(user!));
+      var list = await client.getSpins(data.userId ?? "");
+      Navigator.pop(context);
+      Navigator.of(context).push(
+        TutorialOverlay(
+          child: WheelWidget(data: list[0]),
+        ),
+      );
+    } catch (e) {
+      Navigator.pop(context);
+    }
   }
 }
 

@@ -1,17 +1,48 @@
 import 'dart:async';
+import 'dart:collection';
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kbspinningwheel/kbspinningwheel.dart';
+import 'package:offersapp/api/model/RegistrationResponse.dart';
+import 'package:offersapp/api/model/SpinWheelResponse.dart';
+import 'package:offersapp/api/model/UserData.dart';
+import 'package:offersapp/api/restclient.dart';
 import 'package:offersapp/utils/app_colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class WheelWidget extends StatefulWidget {
+  SpinWheelResponse data;
+
+  WheelWidget({Key? key, required this.data});
+
   @override
   State<WheelWidget> createState() => _WheelWidgetState();
 }
 
 class _WheelWidgetState extends State<WheelWidget> {
+  final Map<int, String> labels = {
+    // 1: '1000\₹',
+    // 2: '400\₹',
+    // 3: '800\₹',
+    // 4: '7000\₹',
+    // 5: '5000\₹',
+    // 6: '300\₹',
+    // 7: '2000\₹',
+    // 8: '100\₹',
+  };
+
+  @override
+  void initState() {
+    super.initState();
+    int count = 1;
+    widget.data.spinlist?.forEach((element) {
+      labels.putIfAbsent(count++, () => "${element.amount}\₹");
+    });
+  }
+
   final StreamController _dividerController = StreamController<int>();
 
   final _wheelNotifier = StreamController<double>();
@@ -51,42 +82,47 @@ class _WheelWidgetState extends State<WheelWidget> {
             SizedBox(
               height: 60,
             ),
-            SpinningWheel(
-              image: Image.asset('assets/images/roulette-8-300.png'),
-              width: 310,
-              height: 310,
-              initialSpinAngle: _generateRandomAngle(),
-              spinResistance: 0.6,
-              canInteractWhileSpinning: false,
-              dividers: 8,
-              onUpdate: (event) {
-                // HapticFeedback.lightImpact();
-                return _dividerController.add(event);
-              },
-              onEnd: (event) {
-                HapticFeedback.lightImpact();
-                return _dividerController.add(event);
-              },
-              secondaryImage:
-                  Image.asset('assets/images/roulette-center-300.png'),
-              secondaryImageHeight: 110,
-              secondaryImageWidth: 110,
-              shouldStartOrStop: _wheelNotifier.stream,
+            AbsorbPointer(
+              child: SpinningWheel(
+                // image: Image.asset('assets/images/roulette-8-300.png'),
+                image: Image.network(widget.data.spinImage ?? ""),
+                width: 310,
+                height: 310,
+                initialSpinAngle: _generateRandomAngle(),
+                spinResistance: 0.6,
+                canInteractWhileSpinning: false,
+                dividers: widget.data.spinlist?.length ?? 0,
+                onUpdate: (event) {
+                  // print(labels[event+1]);
+                  // HapticFeedback.lightImpact();
+                  return _dividerController.add(event);
+                },
+                onEnd: (event) {
+                  HapticFeedback.lightImpact();
+                  // print(event+1);
+                  print(labels[event + 1]);
+                  updateToServer();
+                  return _dividerController.add(event);
+                },
+                secondaryImage:
+                    Image.asset('assets/images/roulette-center-300.png'),
+                secondaryImageHeight: 110,
+                secondaryImageWidth: 110,
+                shouldStartOrStop: _wheelNotifier.stream,
+              ),
             ),
             SizedBox(height: 30),
             StreamBuilder(
                 stream: _dividerController.stream,
                 builder: (context, snapshot) {
-                  // if (snapshot.hasData) {
-                  //   HapticFeedback.lightImpact();
-                  // }
-                  return snapshot.hasData
-                      ? RouletteScore(snapshot.data)
-                      : Container();
+                  // return snapshot.hasData
+                  //     ? RouletteScore(labels, snapshot.data)
+                  //     : Container();
+                  return Container();
                 }),
             SizedBox(height: 30),
             InkWell(
-              onTap: (){
+              onTap: () {
                 HapticFeedback.lightImpact();
                 _wheelNotifier.sink.add(_generateRandomVelocity());
               },
@@ -145,26 +181,37 @@ class _WheelWidgetState extends State<WheelWidget> {
     );
   }
 
+  // double _generateRandomVelocity() => (Random().nextDouble() * 6000) + 2000;
   double _generateRandomVelocity() => (Random().nextDouble() * 6000) + 2000;
 
   double _generateRandomAngle() => Random().nextDouble() * pi * 2;
+
+  Future<void> updateToServer() async {
+    //scratchcardUserinsert
+    try {
+      final client = await RestClient.getRestClient();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var user = await prefs.getString("user");
+      UserData data = UserData.fromJson(jsonDecode(user!));
+      Map<String, String> body = HashMap();
+      body.putIfAbsent("user_id", () => data.userId.toString());
+      body.putIfAbsent("spin_id", () => widget.data.spinId ?? "");
+      body.putIfAbsent("amount", () => widget.data.spinAmount ?? "");
+      RegistrationResponse response = await client.spinUserinsert(body);
+      if (response.status == 200) {
+        Navigator.pop(context, true);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 }
 
 class RouletteScore extends StatelessWidget {
   final int selected;
+  Map<int, String> labels;
 
-  final Map<int, String> labels = {
-    1: '1000\₹',
-    2: '400\₹',
-    3: '800\₹',
-    4: '7000\₹',
-    5: '5000\₹',
-    6: '300\₹',
-    7: '2000\₹',
-    8: '100\₹',
-  };
-
-  RouletteScore(this.selected);
+  RouletteScore(this.labels, this.selected);
 
   @override
   Widget build(BuildContext context) {

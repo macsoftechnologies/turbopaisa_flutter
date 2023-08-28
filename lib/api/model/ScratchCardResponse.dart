@@ -47,6 +47,7 @@ class ScratchCards {
   String? startDate;
   String? endDate;
   String? url;
+  int? scratch_status;
 
   ScratchCards(
       {this.scratchId,
@@ -63,7 +64,9 @@ class ScratchCards {
       this.scratchAmount,
       this.startDate,
       this.endDate,
-      this.url});
+      this.url,
+      this.scratch_status
+      });
 
   ScratchCards.fromJson(Map<String, dynamic> json) {
     scratchId = json['scratch_id'];
@@ -81,6 +84,7 @@ class ScratchCards {
     startDate = json['start_date'];
     endDate = json['end_date'];
     url = json['url'];
+    scratch_status = json['scratch_status'];
   }
 
   Map<String, dynamic> toJson() {
@@ -100,6 +104,7 @@ class ScratchCards {
     data['start_date'] = this.startDate;
     data['end_date'] = this.endDate;
     data['url'] = this.url;
+    data['scratch_status'] = this.scratch_status;
     return data;
   }
 }

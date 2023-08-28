@@ -130,6 +130,28 @@ class _ScratchCardListPageState extends State<ScratchCardListPage> {
                                               "Wallet Balance",
                                               style: TextStyle(fontSize: 16),
                                             ),
+
+                                            // AnimatedSwitcher(
+                                            //   duration: Duration(milliseconds: 1000),
+                                            //   transitionBuilder:
+                                            //       (Widget child, Animation<double> animation) {
+                                            //     return SlideTransition(
+                                            //       child: child,
+                                            //       position: Tween<Offset>(
+                                            //           begin: Offset(0.0, -0.5),
+                                            //           end: Offset(0.0, 0.0))
+                                            //           .animate(animation),
+                                            //     );
+                                            //   },
+                                            //   child: Text(
+                                            //     "₹ ${scratchCardResponse?.wallet?.toStringAsFixed(2) ?? "0.00"}",
+                                            //     key: ValueKey<String>("₹ ${scratchCardResponse?.wallet?.toStringAsFixed(2) ?? "0.00"}"),
+                                            //     style:  TextStyle(
+                                            //         fontWeight: FontWeight.bold,
+                                            //         fontSize: 20),
+                                            //   ),
+                                            // )
+
                                             Text(
                                               "₹ ${scratchCardResponse?.wallet?.toStringAsFixed(2) ?? "0.00"}",
                                               style: TextStyle(
@@ -236,6 +258,11 @@ class _ScratchCardListPageState extends State<ScratchCardListPage> {
                 SizedBox(
                   height: 20,
                 ),
+                if (scratchCardResponse?.cards?.length == 0)
+                  Container(
+                    constraints: BoxConstraints(minHeight: 200),
+                    child: Center(child: Text("No Scatchcards Available.")),
+                  ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: GridView.builder(
@@ -250,6 +277,11 @@ class _ScratchCardListPageState extends State<ScratchCardListPage> {
                     itemBuilder: (context, index) {
                       return InkWell(
                         onTap: () {
+                          if (scratchCardResponse!
+                                  .cards![index].scratch_status !=
+                              0) {
+                            return;
+                          }
                           Navigator.of(context)
                               .push(
                                 TutorialOverlay(
@@ -260,7 +292,13 @@ class _ScratchCardListPageState extends State<ScratchCardListPage> {
                               .whenComplete(() => loadScratchCards());
                         },
                         child: Container(
-                          child: buildCard(index),
+                          child: scratchCardResponse!
+                                      .cards![index].scratch_status ==
+                                  0
+                              ? buildCard(index)
+                              : Container(
+                                  child: Text("Rs"),
+                                ),
                         ),
                       );
                     },
