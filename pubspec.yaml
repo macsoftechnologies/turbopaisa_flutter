@@ -47,6 +47,7 @@ dependencies:
   flutter_udid: ^2.0.1
   get_ip_address: ^0.0.6
   flutter_share: ^2.0.0
+  google_fonts: ^5.0.0
 
 dev_dependencies:
   flutter_test:

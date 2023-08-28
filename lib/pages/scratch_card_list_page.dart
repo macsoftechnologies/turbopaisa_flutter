@@ -297,7 +297,26 @@ class _ScratchCardListPageState extends State<ScratchCardListPage> {
                                   0
                               ? buildCard(index)
                               : Container(
-                                  child: Text("Rs"),
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: Column(
+                                    children: [
+                                      Image.asset(
+                                        "assets/images/scratch_card_cup.png",
+                                        fit: BoxFit.contain,
+                                        width: 120,
+                                        height: 120,
+                                      ),
+                                      Text(
+                                        "Cash Back\n₹ ${scratchCardResponse!.cards![index].scratchAmount}",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                         ),
                       );
@@ -434,6 +453,9 @@ class _ScratchCardListPageState extends State<ScratchCardListPage> {
 
   Future<void> loadScratchCards() async {
     try {
+      setState(() {
+        this.scratchCardResponse = null;
+      });
       final client = await RestClient.getRestClient();
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var user = await prefs.getString("user");

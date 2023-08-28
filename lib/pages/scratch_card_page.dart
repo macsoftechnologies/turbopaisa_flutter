@@ -88,7 +88,7 @@ class _ScratchCardPageState extends State<ScratchCardPage> {
               //   "assets/images/scratch_green.png",
               //   fit: BoxFit.fill,
               // ),
-              onChange: (value) => print("Scratch progress: $value%"),
+              // onChange: (value) => print("Scratch progress: $value%"),
               onThreshold: () {
                 _controller?.play();
                 setState(() {

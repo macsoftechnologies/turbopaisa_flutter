@@ -207,6 +207,14 @@ class _DashboardPageState extends State<DashboardPage> {
       UserData data = UserData.fromJson(jsonDecode(user!));
       var list = await client.getSpins(data.userId ?? "");
       Navigator.pop(context);
+      //
+      if (list[0].spin_status != 0) {
+        // showSnackBar(context, "Offers are not available");
+        Navigator.pop(context);
+        showBottomSheetMessage();
+        return;
+      }
+      //
       Navigator.of(context).push(
         TutorialOverlay(
           child: WheelWidget(data: list[0]),
@@ -215,6 +223,19 @@ class _DashboardPageState extends State<DashboardPage> {
     } catch (e) {
       Navigator.pop(context);
     }
+  }
+
+  Future<void> showBottomSheetMessage() async {
+    await showBottomSheet(
+      context: context,
+      builder: (context) => Container(
+        constraints: BoxConstraints(minHeight: 150),
+        child: Text("Offers are not available"),
+      ),
+    );
+    Future.delayed(Duration(seconds: 3), () {
+      Navigator.of(context).pop();
+    });
   }
 }
 

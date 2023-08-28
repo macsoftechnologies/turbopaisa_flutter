@@ -12,6 +12,7 @@ class SpinWheelResponse {
   String? endDate;
   String? spinImage;
   String? url;
+  int? spin_status;
   List<Spinlist>? spinlist;
 
   SpinWheelResponse(
@@ -28,7 +29,8 @@ class SpinWheelResponse {
       this.endDate,
       this.spinImage,
       this.url,
-      this.spinlist});
+      this.spinlist,
+      this.spin_status});
 
   SpinWheelResponse.fromJson(Map<String, dynamic> json) {
     spinId = json['spin_id'];
@@ -44,6 +46,7 @@ class SpinWheelResponse {
     endDate = json['end_date'];
     spinImage = json['spin_image'];
     url = json['url'];
+    spin_status = json['spin_status'];
     if (json['spinlist'] != null) {
       spinlist = <Spinlist>[];
       json['spinlist'].forEach((v) {
@@ -67,6 +70,7 @@ class SpinWheelResponse {
     data['end_date'] = this.endDate;
     data['spin_image'] = this.spinImage;
     data['url'] = this.url;
+    data['spin_status'] = this.spin_status;
     if (this.spinlist != null) {
       data['spinlist'] = this.spinlist!.map((v) => v.toJson()).toList();
     }

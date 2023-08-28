@@ -67,6 +67,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    var textStyle = TextStyle(fontWeight: FontWeight.w500, color: Colors.black);
     return SingleChildScrollView(
       child: Container(
         // padding: EdgeInsets.all(10),
@@ -180,7 +181,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                       height: 2,
                     ),
                     SizedBox(
-                      height: 40,
+                      height: 20,
                     ),
                   ],
                 ),
@@ -245,7 +246,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                     ),
                     Text(
                       "Rate Us",
-                      style: TextStyle(fontWeight: FontWeight.w600),
+                      style: textStyle,
                     )
                   ],
                 ),
@@ -276,7 +277,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                     ),
                     Text(
                       "Support",
-                      style: TextStyle(fontWeight: FontWeight.w600),
+                      style: textStyle,
                     ),
                     Spacer(),
                     Padding(
@@ -315,7 +316,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                     ),
                     Text(
                       "Privacy Policy",
-                      style: TextStyle(fontWeight: FontWeight.w600),
+                      style: textStyle,
                     ),
                     Spacer(),
                     Padding(
@@ -351,7 +352,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                     ),
                     Text(
                       "Terms & Conditions",
-                      style: TextStyle(fontWeight: FontWeight.w600),
+                      style: textStyle,
                     ),
                     Spacer(),
                     Padding(
@@ -390,7 +391,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                     ),
                     Text(
                       "Log out",
-                      style: TextStyle(fontWeight: FontWeight.w600),
+                      style: textStyle,
                     )
                   ],
                 ),
@@ -533,7 +534,8 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
   }
 
   Future<void> _launchUrl(BuildContext context, String _url) async {
-    if (!await launchUrl(Uri.parse(_url),mode: LaunchMode.externalApplication)) {
+    if (!await launchUrl(Uri.parse(_url),
+        mode: LaunchMode.externalApplication)) {
       // throw Exception('Could not launch $_url');
       showSnackBar(context, 'Could not launch $_url');
     }

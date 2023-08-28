@@ -33,7 +33,7 @@ class _WheelWidgetState extends State<WheelWidget> {
     // 7: '2000\₹',
     // 8: '100\₹',
   };
-
+  bool isCongratulations = false;
   @override
   void initState() {
     super.initState();
@@ -46,6 +46,8 @@ class _WheelWidgetState extends State<WheelWidget> {
   final StreamController _dividerController = StreamController<int>();
 
   final _wheelNotifier = StreamController<double>();
+
+  bool isWheel = false;
 
   @override
   void dispose() {
@@ -85,7 +87,12 @@ class _WheelWidgetState extends State<WheelWidget> {
             AbsorbPointer(
               child: SpinningWheel(
                 // image: Image.asset('assets/images/roulette-8-300.png'),
-                image: Image.network(widget.data.spinImage ?? ""),
+                image: Image.network(widget.data.spinImage ?? "",
+                //   loadingBuilder:  (context, child, loadingProgress) {
+                //   print(loadingProgress);
+                //   return Text("");
+                // },
+                ),
                 width: 310,
                 height: 310,
                 initialSpinAngle: _generateRandomAngle(),
@@ -95,14 +102,18 @@ class _WheelWidgetState extends State<WheelWidget> {
                 onUpdate: (event) {
                   // print(labels[event+1]);
                   // HapticFeedback.lightImpact();
-                  return _dividerController.add(event);
+                  return _dividerController.add(event+1);
                 },
                 onEnd: (event) {
                   HapticFeedback.lightImpact();
                   // print(event+1);
                   print(labels[event + 1]);
+
+                  setState(() {
+                    isCongratulations = true;
+                  });
                   updateToServer();
-                  return _dividerController.add(event);
+                  return _dividerController.add(event+1);
                 },
                 secondaryImage:
                     Image.asset('assets/images/roulette-center-300.png'),
@@ -115,16 +126,28 @@ class _WheelWidgetState extends State<WheelWidget> {
             StreamBuilder(
                 stream: _dividerController.stream,
                 builder: (context, snapshot) {
-                  // return snapshot.hasData
-                  //     ? RouletteScore(labels, snapshot.data)
-                  //     : Container();
+                  return isWheel && snapshot.hasData
+                      ? RouletteScore(labels, snapshot.data)
+                      : Container();
                   return Container();
                 }),
-            SizedBox(height: 30),
+
+            if (isCongratulations)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: Text(
+                  "Congratulations 🎉",
+                  style: TextStyle(color: Colors.white, fontSize: 18),
+                ),
+              ),
+            SizedBox(height: 10),
             InkWell(
               onTap: () {
                 HapticFeedback.lightImpact();
                 _wheelNotifier.sink.add(_generateRandomVelocity());
+                setState(() {
+                  isWheel = true;
+                });
               },
               child: Container(
                 width: 260,

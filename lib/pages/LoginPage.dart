@@ -164,7 +164,7 @@ class _LoginPageState extends State<LoginPage> {
                       Padding(
                           padding: EdgeInsets.symmetric(horizontal: 40),
                           child: Text(
-                            "Username",
+                            "Mobile number",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           )),
                       Padding(
@@ -172,7 +172,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: TextField(
                           decoration: InputDecoration(
                             prefixIcon: Icon(Icons.person),
-                            hintText: "Type your user name",
+                            hintText: "Mobile number",
                           ),
                           onChanged: (value) {
                             _email = value;
@@ -182,7 +182,7 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   ),
                   SizedBox(
-                    height: 10,
+                    height: 16,
                   ),
 
                   Column(
@@ -200,7 +200,7 @@ class _LoginPageState extends State<LoginPage> {
                           obscureText: true,
                           decoration: InputDecoration(
                             prefixIcon: Icon(Icons.lock),
-                            hintText: "Type your Password",
+                            hintText: "Enter Password",
                           ),
                           onChanged: (value) {
                             _password = value;
@@ -306,9 +306,14 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(
                         width: 2,
                       ),
-                      Text(
-                        "Sign up with",
-                        //style: TextStyle(color: Colors.purple),
+                      InkWell(
+                        onTap: () {
+                          navigateToNext(context, RegistrationPage());
+                        },
+                        child: Text(
+                          "Sign up",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
                       ),
                       SizedBox(
                         width: 85,
@@ -322,49 +327,7 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(
                     height: 20,
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 60),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            Navigator.of(context).push(new MaterialPageRoute(
-                              builder: (context) => RegistrationPage(),
-                            ));
-                          },
-                          child: CircleAvatar(
-                            radius: 22,
-                            backgroundColor: Colors.white.withOpacity(0.8),
-                            child: Image.asset(
-                              'assets/images/gmail_logo.png',
-                              fit: BoxFit.cover,
-                              width: 40,
-                              //height: 40,
-                            ),
-                          ),
-                        ),
-                        CircleAvatar(
-                          radius: 22,
-                          backgroundColor: Colors.white.withOpacity(0.8),
-                          child: Image.asset(
-                            'assets/images/google_logo.png',
-                            fit: BoxFit.cover,
-                            width: 40,
-                          ),
-                        ),
-                        CircleAvatar(
-                          radius: 22,
-                          backgroundColor: Colors.white.withOpacity(0.8),
-                          child: Image.asset(
-                            'assets/images/facebook_logo.png',
-                            fit: BoxFit.cover,
-                            width: 30,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  // buildSocialButtons(context),
 
                   // Image.asset(
                   //   "assets/images/rectangle .png",
@@ -436,6 +399,50 @@ class _LoginPageState extends State<LoginPage> {
       //     ),
       //   ),
       // ),
+    );
+  }
+
+  Padding buildSocialButtons(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 60),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          InkWell(
+            onTap: () {
+              navigateToNext(context, RegistrationPage());
+            },
+            child: CircleAvatar(
+              radius: 22,
+              backgroundColor: Colors.white.withOpacity(0.8),
+              child: Image.asset(
+                'assets/images/gmail_logo.png',
+                fit: BoxFit.cover,
+                width: 40,
+                //height: 40,
+              ),
+            ),
+          ),
+          CircleAvatar(
+            radius: 22,
+            backgroundColor: Colors.white.withOpacity(0.8),
+            child: Image.asset(
+              'assets/images/google_logo.png',
+              fit: BoxFit.cover,
+              width: 40,
+            ),
+          ),
+          CircleAvatar(
+            radius: 22,
+            backgroundColor: Colors.white.withOpacity(0.8),
+            child: Image.asset(
+              'assets/images/facebook_logo.png',
+              fit: BoxFit.cover,
+              width: 30,
+            ),
+          ),
+        ],
+      ),
     );
   }
 

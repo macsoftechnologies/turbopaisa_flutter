@@ -91,7 +91,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
       print(data.toString());
       print(data['ip']);
       setState(() {
-        _ipAddress=data['ip'];
+        _ipAddress = data['ip'];
       });
     } on IpAddressException catch (exception) {
       /// Handle the exception.
@@ -99,13 +99,18 @@ class _RegistrationPageState extends State<RegistrationPage> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text("Registration"),
-      // ),
+      appBar: AppBar(
+        title: Text(
+          "",
+          style: TextStyle(color: Colors.black),
+        ),
+        backgroundColor: Color.fromRGBO(224, 234, 255, 0.48),
+        elevation: 0,
+        iconTheme: IconThemeData(color: Colors.black),
+      ),
       body: Stack(
         children: [
           Container(
@@ -256,7 +261,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
                               prefixIcon: Icon(Icons.phone),
                               hintText: "Type your Phone number",
                             ),
-
                             onChanged: (value) {
                               _mobile = value;
                             },
@@ -374,7 +378,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
       //
       body.putIfAbsent("device_id", () => _udid);
       body.putIfAbsent("login_token", () => "");
-      body.putIfAbsent("ipaddress", () => _ipAddress??"");
+      body.putIfAbsent("ipaddress", () => _ipAddress ?? "");
       body.putIfAbsent("gaid", () => _advertisingId ?? "");
       //
       body.putIfAbsent("pincode", () => _pincode);
