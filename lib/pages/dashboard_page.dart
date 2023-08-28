@@ -210,7 +210,6 @@ class _DashboardPageState extends State<DashboardPage> {
       //
       if (list[0].spin_status != 0) {
         // showSnackBar(context, "Offers are not available");
-        Navigator.pop(context);
         showBottomSheetMessage();
         return;
       }
@@ -226,16 +225,24 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Future<void> showBottomSheetMessage() async {
-    await showBottomSheet(
+    BuildContext mCtx;
+    await showModalBottomSheet(
       context: context,
+      backgroundColor: Colors.transparent,
       builder: (context) => Container(
-        constraints: BoxConstraints(minHeight: 150),
+        padding: EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+              topRight: Radius.circular(10), topLeft: Radius.circular(10)),
+        ),
+        constraints: BoxConstraints(minHeight: 100),
         child: Text("Offers are not available"),
       ),
     );
-    Future.delayed(Duration(seconds: 3), () {
-      Navigator.of(context).pop();
-    });
+    // Future.delayed(Duration(seconds: 1), (){
+    //
+    // });
   }
 }
 
