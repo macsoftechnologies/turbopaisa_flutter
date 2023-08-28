@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:offersapp/api/model/OffersData.dart';
 import 'package:offersapp/api/model/UserData.dart';
+import 'package:offersapp/api/model/WalletResponse.dart';
 import 'package:offersapp/generated/assets.dart';
 import 'package:offersapp/pages/earn_on_games.dart';
 import 'package:offersapp/pages/offer_details_page.dart';
@@ -38,6 +39,26 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     loadData();
     loadBannersData();
+    loadWallet();
+  }
+
+  WalletResponse? walletResponse;
+
+  Future<void> loadWallet() async {
+    try {
+      final client = await RestClient.getRestClient();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var user = await prefs.getString("user");
+      UserData data = UserData.fromJson(jsonDecode(user!));
+
+      WalletResponse scratchCardResponse =
+          await client.getTransactions(data.userId ?? "");
+      setState(() {
+        this.walletResponse = scratchCardResponse;
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   Widget buildTopOptions(String image, Color color, String title) {
@@ -135,7 +156,7 @@ class _HomePageState extends State<HomePage> {
                                     width: 10,
                                   ),
                                   Text(
-                                    "₹ 5000",
+                                    "₹ ${walletResponse?.wallet?.toStringAsFixed(2) ?? "0.00"}",
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 14),
                                   )

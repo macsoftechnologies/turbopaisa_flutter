@@ -1,11 +1,16 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:offersapp/api/model/WalletResponse.dart';
+import 'package:offersapp/api/restclient.dart';
 import 'package:offersapp/pages/LoginPage.dart';
 import 'package:offersapp/pages/dashboard_page.dart';
+import 'package:offersapp/pages/privacy_policy.dart';
+import 'package:offersapp/pages/terms_and_condtions.dart';
 import 'package:offersapp/utils.dart';
 import 'package:offersapp/utils/app_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../api/model/UserData.dart';
 import '../generated/assets.dart';
@@ -22,6 +27,26 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
   void initState() {
     super.initState();
     loadProfile();
+    loadWallet();
+  }
+
+  WalletResponse? walletResponse;
+
+  Future<void> loadWallet() async {
+    try {
+      final client = await RestClient.getRestClient();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var user = await prefs.getString("user");
+      UserData data = UserData.fromJson(jsonDecode(user!));
+
+      WalletResponse scratchCardResponse =
+          await client.getTransactions(data.userId ?? "");
+      setState(() {
+        this.walletResponse = scratchCardResponse;
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   UserData? userData;
@@ -118,7 +143,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                             width: 10,
                           ),
                           Text(
-                            "₹ 5000",
+                            "₹ ${walletResponse?.wallet?.toStringAsFixed(2) ?? "0.00"}",
                             style: TextStyle(color: Colors.white, fontSize: 14),
                           )
                         ],
@@ -166,33 +191,64 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(children: [
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 20,
+              // Row(
+              //   children: [
+              //     Padding(
+              //       padding: const EdgeInsets.only(
+              //         left: 20,
+              //       ),
+              //       child: Image.asset(
+              //         'assets/images/language_icon.png',
+              //         //width: 20,
+              //       ),
+              //     ),
+              //     SizedBox(
+              //       width: 20,
+              //     ),
+              //     Text(
+              //       "Language",
+              //       style: TextStyle(fontWeight: FontWeight.w600),
+              //     ),
+              //     Spacer(),
+              //     Padding(
+              //       padding: const EdgeInsets.only(right: 10),
+              //       child: Text(
+              //         "ENG",
+              //         style: TextStyle(fontSize: 16),
+              //       ),
+              //     )
+              //   ],
+              // ),
+              Divider(
+                //width: 5,
+                color: Colors.black12,
+                thickness: 1,
+                height: 30,
+                indent: 10.0,
+                endIndent: 10.0,
+              ),
+              InkWell(
+                onTap: () {
+                  showSnackBar(context, "App is not available in Store.");
+                },
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Image.asset(
+                        'assets/images/rate_us_icon.png',
+                        //width: 20,
+                      ),
                     ),
-                    child: Image.asset(
-                      'assets/images/language_icon.png',
-                      //width: 20,
+                    SizedBox(
+                      width: 20,
                     ),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Text(
-                    "Language",
-                    style: TextStyle(fontWeight: FontWeight.w600),
-                  ),
-                  Spacer(),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 10),
-                    child: Text(
-                      "ENG",
-                      style: TextStyle(fontSize: 16),
-                    ),
-                  )
-                ],
+                    Text(
+                      "Rate Us",
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    )
+                  ],
+                ),
               ),
               Divider(
                 //width: 5,
@@ -202,23 +258,36 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                 indent: 10.0,
                 endIndent: 10.0,
               ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: Image.asset(
-                      'assets/images/rate_us_icon.png',
-                      //width: 20,
+              InkWell(
+                onTap: () {
+                  showSnackBar(context, "Coming soon!");
+                },
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Image.asset(
+                        'assets/images/support_icon.png',
+                        //width: 20,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Text(
-                    "Rate Us",
-                    style: TextStyle(fontWeight: FontWeight.w600),
-                  )
-                ],
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Text(
+                      "Support",
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                    Spacer(),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: Image.asset(
+                        'assets/images/up_arrow.png',
+                        //width: 20,
+                      ),
+                    ),
+                  ],
+                ),
               ),
               Divider(
                 //width: 5,
@@ -228,31 +297,33 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                 indent: 10.0,
                 endIndent: 10.0,
               ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: Image.asset(
-                      'assets/images/support_icon.png',
-                      //width: 20,
+              InkWell(
+                onTap: () {
+                  navigateToNext(context, PrivacyPolicyPage());
+                },
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Image.asset(
+                        'assets/images/privacy_policy.png',
+                        // width: 20,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Text(
-                    "Support",
-                    style: TextStyle(fontWeight: FontWeight.w600),
-                  ),
-                  Spacer(),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 10),
-                    child: Image.asset(
-                      'assets/images/up_arrow.png',
-                      //width: 20,
+                    SizedBox(
+                      width: 20,
                     ),
-                  ),
-                ],
+                    Text(
+                      "Privacy Policy",
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                    Spacer(),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: Icon(Icons.arrow_forward_ios_outlined),
+                    ),
+                  ],
+                ),
               ),
               Divider(
                 //width: 5,
@@ -262,59 +333,33 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                 indent: 10.0,
                 endIndent: 10.0,
               ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: Image.asset(
-                      'assets/images/privacy_policy.png',
-                      // width: 20,
+              InkWell(
+                onTap: () {
+                  navigateToNext(context, TermsAndConditionsPage());
+                },
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Image.asset(
+                        'assets/images/terms_conditions.png',
+                        //width: 20,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Text(
-                    "Privacy Policy",
-                    style: TextStyle(fontWeight: FontWeight.w600),
-                  ),
-                  Spacer(),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 10),
-                    child: Icon(Icons.arrow_forward_ios_outlined),
-                  ),
-                ],
-              ),
-              Divider(
-                //width: 5,
-                color: Colors.black12,
-                thickness: 1,
-                height: 30,
-                indent: 10.0,
-                endIndent: 10.0,
-              ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: Image.asset(
-                      'assets/images/terms_conditions.png',
-                      //width: 20,
+                    SizedBox(
+                      width: 18,
                     ),
-                  ),
-                  SizedBox(
-                    width: 18,
-                  ),
-                  Text(
-                    "Terms & Conditions",
-                    style: TextStyle(fontWeight: FontWeight.w600),
-                  ),
-                  Spacer(),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 10),
-                    child: Icon(Icons.arrow_forward_ios_outlined),
-                  ),
-                ],
+                    Text(
+                      "Terms & Conditions",
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                    Spacer(),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: Icon(Icons.arrow_forward_ios_outlined),
+                    ),
+                  ],
+                ),
               ),
 
               Divider(
@@ -373,32 +418,47 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    CircleAvatar(
-                      radius: 22,
-                      backgroundColor: Colors.white.withOpacity(0.8),
-                      child: Image.asset(
-                        'assets/images/facebook_logo.png',
-                        fit: BoxFit.cover,
-                        width: 30,
-                        //height: 40,
+                    InkWell(
+                      onTap: () {
+                        _launchUrl(context, "http://www.facebook.com");
+                      },
+                      child: CircleAvatar(
+                        radius: 22,
+                        backgroundColor: Colors.white.withOpacity(0.8),
+                        child: Image.asset(
+                          'assets/images/facebook_logo.png',
+                          fit: BoxFit.cover,
+                          width: 30,
+                          //height: 40,
+                        ),
                       ),
                     ),
-                    CircleAvatar(
-                      radius: 22,
-                      backgroundColor: Colors.white.withOpacity(0.8),
-                      child: Image.asset(
-                        'assets/images/instagram_logo.png',
-                        fit: BoxFit.cover,
-                        width: 26,
+                    InkWell(
+                      onTap: () {
+                        _launchUrl(context, "http://www.instagram.com");
+                      },
+                      child: CircleAvatar(
+                        radius: 22,
+                        backgroundColor: Colors.white.withOpacity(0.8),
+                        child: Image.asset(
+                          'assets/images/instagram_logo.png',
+                          fit: BoxFit.cover,
+                          width: 26,
+                        ),
                       ),
                     ),
-                    CircleAvatar(
-                      radius: 22,
-                      backgroundColor: Colors.white.withOpacity(0.8),
-                      child: Image.asset(
-                        'assets/images/youtube_logo.png',
-                        fit: BoxFit.cover,
-                        width: 30,
+                    InkWell(
+                      onTap: () {
+                        _launchUrl(context, "http://www.youtube.com");
+                      },
+                      child: CircleAvatar(
+                        radius: 22,
+                        backgroundColor: Colors.white.withOpacity(0.8),
+                        child: Image.asset(
+                          'assets/images/youtube_logo.png',
+                          fit: BoxFit.cover,
+                          width: 30,
+                        ),
                       ),
                     ),
                   ],
@@ -470,5 +530,12 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
         builder: (context) => LoginPage(),
       ),
     );
+  }
+
+  Future<void> _launchUrl(BuildContext context, String _url) async {
+    if (!await launchUrl(Uri.parse(_url),mode: LaunchMode.externalApplication)) {
+      // throw Exception('Could not launch $_url');
+      showSnackBar(context, 'Could not launch $_url');
+    }
   }
 }

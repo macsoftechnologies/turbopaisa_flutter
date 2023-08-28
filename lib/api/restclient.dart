@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:offersapp/api/model/BannersResponse.dart';
 import 'package:offersapp/api/model/RegistrationResponse.dart';
 import 'package:offersapp/api/model/ScratchCardResponse.dart';
+import 'package:offersapp/api/model/WalletResponse.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -119,6 +120,9 @@ abstract class RestClient {
 
   @GET("scratchcard/getScratchcards")
   Future<ScratchCardResponse> getScratchcards(@Query("user_id") String userId);
+
+  @GET("cashfreepayout/getTransactions")
+  Future<WalletResponse> getTransactions(@Query("user_id") String userId);
 
   @POST("scratchcard/scratchcardUserinsert")
   Future<RegistrationResponse> scratchcardUserinsert(@Body() Map<String, String> body);

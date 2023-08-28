@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 const titleHeaderColor = Colors.teal;
 
@@ -79,3 +80,10 @@ showLoaderDialog(BuildContext context) {
     },
   );
 }
+//
+// Future<void> _launchUrl(BuildContext context, String _url) async {
+//   if (!await launchUrl(Uri.parse(_url))) {
+//     // throw Exception('Could not launch $_url');
+//     showSnackBar(context, 'Could not launch $_url');
+//   }
+// }

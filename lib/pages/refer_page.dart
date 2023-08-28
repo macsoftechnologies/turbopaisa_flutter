@@ -1,6 +1,13 @@
+import 'dart:convert';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_share/flutter_share.dart';
+import 'package:offersapp/api/model/UserData.dart';
+import 'package:offersapp/utils.dart';
 import 'package:offersapp/utils/app_colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ReferPage extends StatefulWidget {
   const ReferPage({Key? key}) : super(key: key);
@@ -10,6 +17,23 @@ class ReferPage extends StatefulWidget {
 }
 
 class _ReferPageState extends State<ReferPage> {
+  @override
+  void initState() {
+    super.initState();
+    loadReferalCode();
+  }
+
+  UserData? data;
+
+  Future<void> loadReferalCode() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var user = await prefs.getString("user");
+    UserData data = UserData.fromJson(jsonDecode(user!));
+    setState(() {
+      this.data = data;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -40,8 +64,7 @@ class _ReferPageState extends State<ReferPage> {
                   ),
                   Text(
                     "Refer Now & Earn Up to",
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
                   ),
                   Text(
                     " ₹ 350",
@@ -88,7 +111,7 @@ class _ReferPageState extends State<ReferPage> {
                     child: Padding(
                       padding: const EdgeInsets.all(10),
                       child: Text(
-                        "TURBOPAISA03",
+                        "${data?.userUniqueId ?? "User id is missing"}",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -96,10 +119,22 @@ class _ReferPageState extends State<ReferPage> {
                   SizedBox(
                     width: 14,
                   ),
-                  Image.asset(
-                    "assets/images/solar_copy_linear.png",
-                    // fit: BoxFit.cover,
-                    width: 20,
+                  InkWell(
+                    onTap: () async {
+
+                      await Clipboard.setData(
+                        ClipboardData(
+                          text: "${data?.userUniqueId ?? "User id is missing"}",
+                        ),
+                      );
+                      HapticFeedback.mediumImpact();
+                      showSnackBar(context, "Copied.");
+                    },
+                    child: Image.asset(
+                      "assets/images/solar_copy_linear.png",
+                      // fit: BoxFit.cover,
+                      width: 20,
+                    ),
                   ),
                 ],
               )
@@ -142,19 +177,29 @@ class _ReferPageState extends State<ReferPage> {
           SizedBox(
             height: 50,
           ),
-          Container(
-            width: 260,
-            padding: EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: AppColors.accentColor,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.all(6.0),
-                child: Text(
-                  "Share",
-                  style: TextStyle(color: Colors.white),
+          InkWell(
+            onTap: () async {
+              await FlutterShare.share(
+                  title: 'Share',
+                  text: 'Try the best application to earn cash.',
+                  linkUrl:
+                      "http://turbopaisa.com/referal?code=${data?.userUniqueId ?? "User id is missing"}",
+                  chooserTitle: 'Share');
+            },
+            child: Container(
+              width: 260,
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: AppColors.accentColor,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(6.0),
+                  child: Text(
+                    "Share",
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
             ),
