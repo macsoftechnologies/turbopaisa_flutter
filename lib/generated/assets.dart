@@ -72,5 +72,6 @@ class Assets {
   static const String imagesWalletIcon = 'assets/images/wallet_icon.png';
   static const String imagesWhiteCircle = 'assets/images/white_circle.png';
   static const String imagesYoutubeLogo = 'assets/images/youtube_logo.png';
+  static const String svgRegisterRectangle = 'assets/svg/register_rectangle.svg';
 
 }
