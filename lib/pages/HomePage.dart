@@ -105,7 +105,7 @@ class _HomePageState extends State<HomePage> {
             style: TextStyle(
               color: Colors.black,
               fontSize: 9.sp,
-              fontFamily: 'Poppins',
+              // fontFamily: 'Poppins',
               fontWeight: FontWeight.w500,
               height: 1.84,
             ),
@@ -137,7 +137,8 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(20),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 20.w, vertical: 15.w),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -145,14 +146,15 @@ class _HomePageState extends State<HomePage> {
                               child: Image.asset(
                                 'assets/images/proflie_image.png',
                                 fit: BoxFit.cover,
-                                width: 45,
+                                width: 32.w,
                                 // height: 200,
                                 //height: 100,
                               ),
                             ),
                             Image.asset(
                               Assets.imagesHomeLogo,
-                              width: 100,
+                              width: 111.w,
+                              height: 20.h,
                             ),
                             Container(
                               decoration: BoxDecoration(
@@ -192,7 +194,7 @@ class _HomePageState extends State<HomePage> {
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 9.sp,
-                                      fontFamily: 'Poppins',
+                                      // fontFamily: 'Poppins',
                                       fontWeight: FontWeight.w600,
                                       height: 1.84,
                                     ),
@@ -211,7 +213,8 @@ class _HomePageState extends State<HomePage> {
                           Align(
                             alignment: Alignment.bottomCenter,
                             child: Padding(
-                              padding: const EdgeInsets.all(10.0),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 20.w, vertical: 10.h),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -342,14 +345,14 @@ class _HomePageState extends State<HomePage> {
               ? TextStyle(
                   color: Colors.white,
                   fontSize: 9.sp,
-                  fontFamily: 'Poppins',
+                  // fontFamily: 'Poppins',
                   fontWeight: FontWeight.w600,
                   height: 1.84,
                 )
               : TextStyle(
                   color: Colors.black,
                   fontSize: 9.sp,
-                  fontFamily: 'Poppins',
+                  // fontFamily: 'Poppins',
                   fontWeight: FontWeight.w500,
                   height: 1.84,
                 ),
@@ -498,7 +501,17 @@ class _HomePageState extends State<HomePage> {
     return (offersData.length == 0 && !isLoading)
         ? Container(
             constraints: BoxConstraints(minHeight: 200),
-            child: Center(child: Text("No Offers Available.")),
+            child: Center(
+              child: Text(
+                "No Offers Available.",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 12,
+                  // fontFamily: 'Poppins',
+                  height: 1.38,
+                ),
+              ),
+            ),
           )
         : ListView.builder(
             key: UniqueKey(),
@@ -560,7 +573,7 @@ class _HomePageState extends State<HomePage> {
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 12,
-                                    fontFamily: 'Poppins',
+                                    // fontFamily: 'Poppins',
                                     fontWeight: FontWeight.w600,
                                     height: 1.38,
                                   ),
@@ -574,7 +587,7 @@ class _HomePageState extends State<HomePage> {
                                   style: TextStyle(
                                     color: Color(0xFF8C8C8C),
                                     fontSize: 8,
-                                    fontFamily: 'Poppins',
+                                    // fontFamily: 'Poppins',
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),

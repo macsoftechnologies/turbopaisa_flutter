@@ -36,22 +36,6 @@ class _LoginPageState extends State<LoginPage> {
   String _udid = 'Unknown';
   String? _ipAddress;
 
-  var commonSpace = 16.h;
-  var textStyle = TextStyle(
-    color: Colors.black,
-    fontSize: 10.sp,
-    fontFamily: 'Poppins',
-    fontWeight: FontWeight.w500,
-    height: 1.66,
-  );
-
-  var h1textStyle = TextStyle(
-    color: Colors.black,
-    fontSize: 10.sp,
-    fontFamily: 'Poppins',
-    fontWeight: FontWeight.w600,
-    height: 1.66,
-  );
 
   @override
   void initState() {
@@ -119,6 +103,24 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    var commonSpace = 16.h;
+    var textStyle = TextStyle(
+      color: Colors.black,
+      fontSize: 10.sp,
+      // fontFamily: 'Poppins',
+      fontWeight: FontWeight.w500,
+      height: 1.66,
+    );
+
+    var h1textStyle = TextStyle(
+      color: Colors.black,
+      fontSize: 10.sp,
+      // fontFamily: 'Poppins',
+      fontWeight: FontWeight.w600,
+      height: 1.66,
+    );
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       //backgroundColor: Colors.white,
@@ -158,7 +160,7 @@ class _LoginPageState extends State<LoginPage> {
                         alignment: Alignment.topCenter,
                         child: Image.asset(
                           "assets/images/turbopaisa_logo_two.png",
-                          width: 102.h,
+                          width: 108.w,
                         ),
                       ),
 
@@ -171,6 +173,7 @@ class _LoginPageState extends State<LoginPage> {
                             alignment: Alignment.topCenter,
                             child: SvgPicture.asset(
                               Assets.svgRegisterRectangle,
+                              width: 217.w,
                             ),
                           ),
                           Align(
@@ -181,8 +184,8 @@ class _LoginPageState extends State<LoginPage> {
                                   'Welcome Back ',
                                   style: TextStyle(
                                     color: Colors.black,
-                                    fontSize: 18,
-                                    fontFamily: 'Poppins',
+                                    fontSize: 18.sp,
+                                    // fontFamily: 'Poppins',
                                     fontWeight: FontWeight.w600,
                                     height: 1.06,
                                   ),
@@ -191,8 +194,8 @@ class _LoginPageState extends State<LoginPage> {
                                   'Login to continue ',
                                   style: TextStyle(
                                     color: Colors.black,
-                                    fontSize: 12,
-                                    fontFamily: 'Poppins',
+                                    fontSize: 12.sp,
+                                    // fontFamily: 'Poppins',
                                     fontWeight: FontWeight.w400,
                                     height: 1.59,
                                   ),
@@ -284,7 +287,7 @@ class _LoginPageState extends State<LoginPage> {
                                 'Register Now',
                                 style: TextStyle(
                                   color: Colors.black,
-                                  fontSize: 10,
+                                  fontSize: 10.sp,
                                   fontFamily: 'Poppins',
                                   fontWeight: FontWeight.w600,
                                   height: 1.66,
@@ -302,8 +305,8 @@ class _LoginPageState extends State<LoginPage> {
                                 'Forgot Password?',
                                 style: TextStyle(
                                   color: Colors.black,
-                                  fontSize: 10,
-                                  fontFamily: 'Poppins',
+                                  fontSize: 10.sp,
+                                  // fontFamily: 'Poppins',
                                   fontWeight: FontWeight.w600,
                                   height: 1.66,
                                 ),
@@ -338,7 +341,13 @@ class _LoginPageState extends State<LoginPage> {
                               padding: const EdgeInsets.all(4.0),
                               child: Text(
                                 "Login",
-                                style: TextStyle(color: Colors.white),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  // fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.w600,
+                                  height: 1.19,
+                                ),
                               ),
                             ),
                           ),

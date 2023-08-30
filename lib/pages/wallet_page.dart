@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:offersapp/api/model/WalletResponse.dart';
 import 'package:offersapp/api/restclient.dart';
 import 'package:offersapp/pages/dashboard_page.dart';
@@ -61,133 +62,256 @@ class _WalletBalacePageState extends State<WalletBalacePage> {
               ClipPath(
                 clipper: GreenClipper(),
                 child: Container(
-                  height: 180,
+                  height: 170.h,
                   color: Color(0xff3D3FB5),
                 ),
+              ),
+              Positioned(
+                top: 70.h,
+                left: 77.w,
+                right: 77.w,
+                child: Container(
+                  width: 218.83.w,
+                  height: 95.14.h,
+                  decoration: ShapeDecoration(
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.w),
+                    ),
+                    shadows: [
+                      BoxShadow(
+                        color: Color(0x2D000000),
+                        blurRadius: 26.16,
+                        offset: Offset(6.34, 3.17),
+                        spreadRadius: 0,
+                      )
+                    ],
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(7.5.w),
+                    child: DottedBorder(
+                      // dashPattern: [5, 5],
+                      radius: Radius.circular(20),
+                      borderType: BorderType.RRect,
+                      dashPattern: [1, 2],
+                      color: Colors.grey,
+                      strokeWidth: 1,
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 13.w,
+                          ),
+                          Image.asset(
+                            'assets/images/wallet_icon.png',
+                            // fit: BoxFit.contain,
+                            width: 35.w,
+                          ),
+                          SizedBox(
+                            width: 10.w,
+                          ),
+                          Container(
+                            // margin: EdgeInsets.all(10),
+                            height: 46,
+                            width: 1,
+                            color: Colors.grey.withOpacity(0.5),
+                          ),
+                          SizedBox(
+                            width: 10.w,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: 23.h,
+                              ),
+                              Text(
+                                "Wallet Balance",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 12.69,
+                                  // fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.w500,
+                                  height: 1.04,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 6.h,
+                              ),
+                              Text(
+                                "₹ ${walletResponse?.wallet?.toStringAsFixed(2) ?? "0.0"}",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15.86,
+                                  // fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.w700,
+                                  height: 0.83,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                top: 96.h,
+                right: 74.w,
+                child: Stack(children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(10),
+                          bottomRight: Radius.circular(10)),
+                    ),
+                    child: Image.asset(
+                      'assets/images/semirectangle.png',
+                      width: 44,
+                    ),
+                  ),
+                  Positioned.fill(
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Image.asset(
+                        'assets/images/white_circle.png',
+                        width: 3,
+                      ),
+                    ),
+                  ),
+                ]),
               ),
               Center(
                 child: Padding(
                   padding: const EdgeInsets.only(top: 16.0),
                   child: Text(
                     "My Wallet",
-                    style: TextStyle(color: Colors.white, fontSize: 16),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14.sp,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w600,
+                      height: 1.19,
+                    ),
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 50),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 85,
-                    ),
-                    Stack(
-                      children: [
-                        SizedBox(
-                          height: 70,
-                        ),
-                        Card(
-                          shadowColor: Colors.white,
-                          elevation: 8,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                          child: Align(
-                            alignment: Alignment.bottomCenter,
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: DottedBorder(
-                                dashPattern: [5, 5],
-                                radius: Radius.circular(20),
-                                borderType: BorderType.RRect,
-
-                                // dashPattern: [
-                                //   0.5,
-                                //   1
-                                // ],
-                                color: Colors.grey,
-                                strokeWidth: 1,
-                                child: Row(
-                                  children: [
-                                    Image.asset(
-                                      'assets/images/wallet_icon.png',
-                                      fit: BoxFit.contain,
-                                      width: 44,
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.all(10),
-                                      height: 46,
-                                      width: 1,
-                                      color: Colors.grey.withOpacity(0.5),
-                                    ),
-                                    SizedBox(
-                                      width: 6,
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Wallet Balance",
-                                          style: TextStyle(fontSize: 16),
-                                        ),
-                                        Text(
-                                          "₹ ${walletResponse?.wallet?.toStringAsFixed(2) ?? "0.0"}",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 20),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      width: 20,
-                                    ),
-
-                                    // BorderRadius.only(
-                                    //   topLeft: Radius.circular(50),
-                                    //   topRight: Radius.circular(50),
-                                    // ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Positioned.fill(
-                          child: Align(
-                            alignment: Alignment.centerRight,
-                            child: Stack(children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(10),
-                                      bottomRight: Radius.circular(10)),
-                                ),
-                                child: Image.asset(
-                                  'assets/images/semirectangle.png',
-                                  width: 44,
-                                ),
-                              ),
-                              Positioned.fill(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10),
-                                  child: Image.asset(
-                                    'assets/images/white_circle.png',
-                                    width: 3,
-                                  ),
-                                ),
-                              ),
-                            ]),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 50),
+              //   child: Column(
+              //     children: [
+              //       SizedBox(
+              //         height: 70.h,
+              //       ),
+              //       Stack(
+              //         children: [
+              // SizedBox(
+              //   height: 70,
+              // ),
+              // Card(
+              //   shadowColor: Colors.white,
+              //   elevation: 8,
+              //   shape: RoundedRectangleBorder(
+              //     borderRadius: BorderRadius.circular(20.0),
+              //   ),
+              //   child: Align(
+              //     alignment: Alignment.bottomCenter,
+              //     child: Padding(
+              //       padding: const EdgeInsets.all(16.0),
+              //       child: DottedBorder(
+              //         dashPattern: [5, 5],
+              //         radius: Radius.circular(20),
+              //         borderType: BorderType.RRect,
+              //
+              //         // dashPattern: [
+              //         //   0.5,
+              //         //   1
+              //         // ],
+              //         color: Colors.grey,
+              //         strokeWidth: 1,
+              //         child: Row(
+              //           children: [
+              //             Image.asset(
+              //               'assets/images/wallet_icon.png',
+              //               fit: BoxFit.contain,
+              //               width: 44,
+              //             ),
+              //             SizedBox(
+              //               width: 10,
+              //             ),
+              //             Container(
+              //               margin: EdgeInsets.all(10),
+              //               height: 46,
+              //               width: 1,
+              //               color: Colors.grey.withOpacity(0.5),
+              //             ),
+              //             SizedBox(
+              //               width: 6,
+              //             ),
+              //             Column(
+              //               crossAxisAlignment:
+              //                   CrossAxisAlignment.start,
+              //               children: [
+              //                 Text(
+              //                   "Wallet Balance",
+              //                   style: TextStyle(fontSize: 16),
+              //                 ),
+              //                 Text(
+              //                   "₹ ${walletResponse?.wallet?.toStringAsFixed(2) ?? "0.0"}",
+              //                   style: TextStyle(
+              //                       fontWeight: FontWeight.bold,
+              //                       fontSize: 20),
+              //                 ),
+              //               ],
+              //             ),
+              //             SizedBox(
+              //               width: 20,
+              //             ),
+              //
+              //             // BorderRadius.only(
+              //             //   topLeft: Radius.circular(50),
+              //             //   topRight: Radius.circular(50),
+              //             // ),
+              //           ],
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              // Positioned.fill(
+              //   child: Align(
+              //     alignment: Alignment.centerRight,
+              //     child: Stack(children: [
+              //       Container(
+              //         decoration: BoxDecoration(
+              //           borderRadius: BorderRadius.only(
+              //               topRight: Radius.circular(10),
+              //               bottomRight: Radius.circular(10)),
+              //         ),
+              //         child: Image.asset(
+              //           'assets/images/semirectangle.png',
+              //           width: 44,
+              //         ),
+              //       ),
+              //       Positioned.fill(
+              //         child: Padding(
+              //           padding: const EdgeInsets.all(10),
+              //           child: Image.asset(
+              //             'assets/images/white_circle.png',
+              //             width: 3,
+              //           ),
+              //         ),
+              //       ),
+              //     ]),
+              //   ),
+              // ),
+              //           ],
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ]),
             ]),
             Expanded(
               child: (isLoading)
@@ -197,168 +321,230 @@ class _WalletBalacePageState extends State<WalletBalacePage> {
                       ),
                     )
                   : SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 20,
-                          ),
-
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 10, horizontal: 15),
-                                decoration: BoxDecoration(
-                                    color: Color(0xFFE3EAFF),
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Task earnings",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Text(
-                                      "₹ ${walletResponse?.taskearnings?.toStringAsFixed(2) ?? "0.0"}",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20.w),
+                        child: Column(
+                          children: [
+                            // SizedBox(
+                            //   height: 20,
+                            // ),
+                            Container(
+                              margin: EdgeInsets.only(top: 11.h, bottom: 30.h),
+                              width: 250.w,
+                              height: 40.h,
+                              decoration: ShapeDecoration(
+                                color: Color(0xFFED3E55),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(6.67),
                                 ),
                               ),
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 10, horizontal: 15),
-                                decoration: BoxDecoration(
-                                    color: Color(0xFFE3EAFF),
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Total withdraw",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Text(
-                                      "₹ ${walletResponse?.withdraw?.toStringAsFixed(2) ?? "0.0"}",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
+                              child: Center(
+                                child: Text(
+                                  'Withdraw Amount',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 13.33,
+                                    // fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w600,
+                                    height: 1.24,
+                                  ),
                                 ),
                               ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 30,
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 30),
-                            child: Row(
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 10.h, horizontal: 15.w),
+                                  decoration: BoxDecoration(
+                                      color: Color(0xFFE3EAFF),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Task Earning",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 10.sp,
+                                          // fontFamily: 'Poppins',
+                                          fontWeight: FontWeight.w600,
+                                          height: 1.66,
+                                        ),
+                                      ),
+                                      Text(
+                                        "₹ ${walletResponse?.taskearnings?.toStringAsFixed(2) ?? "0.0"}",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                  height: 61.h,
+                                  width: 149.w,
+                                ),
+                                Container(
+                                  height: 61.h,
+                                  width: 159.w,
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 15),
+                                  decoration: BoxDecoration(
+                                      color: Color(0xFFE3EAFF),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Total withdraw",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 10.sp,
+                                          // fontFamily: 'Poppins',
+                                          fontWeight: FontWeight.w600,
+                                          height: 1.66,
+                                        ),
+                                      ),
+                                      Text(
+                                        "₹ ${walletResponse?.withdraw?.toStringAsFixed(2) ?? "0.0"}",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 14.sp,
+                                          // fontFamily: 'Poppins',
+                                          fontWeight: FontWeight.w600,
+                                          height: 1.19,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 40.h,
+                            ),
+                            Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
                                   "Recent Transactions",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 12.sp,
+                                    // fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w600,
+                                    height: 1.45,
+                                  ),
                                 ),
                                 // Text("Value"),
                               ],
                             ),
-                          ),
-                          SizedBox(
-                            height: 16,
-                          ),
-                          //Divider(),
-                          ListView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
+                            SizedBox(
+                              height: 26.h,
+                            ),
+                            //Divider(),
+                            ListView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                return Column(
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 22),
-                                      child: Row(
-                                        children: [
-                                          CircleAvatar(
-                                            child: Icon(
-                                              Icons.account_balance_wallet,
-                                              color: Colors.orange,
+                                    Row(
+                                      children: [
+                                        Container(
+                                          width: 42,
+                                          height: 42,
+                                          decoration: ShapeDecoration(
+                                            color: Color(0xFFFEC7A4),
+                                            shape: OvalBorder(),
+                                          ),
+                                          child: Icon(
+                                            Icons.account_balance_wallet,
+                                            color: Colors.orange,
+                                            size: 22.w,
+                                          ),
+                                        ),
+
+                                        // CircleAvatar(
+                                        //   child: Icon(
+                                        //     Icons.account_balance_wallet,
+                                        //     color: Colors.orange,
+                                        //   ),
+                                        //   radius: 25.w,
+                                        //   backgroundColor: Colors.orange
+                                        //       .withOpacity(0.2),
+                                        // ),
+                                        SizedBox(
+                                          width: 12.w,
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Ref No: ${walletResponse?.transactions![index].orderId ?? ""}",
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 12.sp,
+                                                fontWeight: FontWeight.w600,
+                                                height: 1.38,
+                                              ),
                                             ),
-                                            radius: 25,
-                                            backgroundColor:
-                                                Colors.orange.withOpacity(0.2),
-                                          ),
-                                          SizedBox(
-                                            width: 20,
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "Ref No:${walletResponse?.transactions![index].orderId ?? ""}",
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Text(
+                                              "${walletResponse?.transactions![index].transactionAt ?? ""}",
+                                              style: TextStyle(
+                                                color: Color(0xFF8C8C8C),
+                                                fontSize: 10.sp,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Spacer(),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            Text(
+                                                "₹ ${walletResponse?.transactions![index].transactionAmount ?? ""}",
                                                 style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.black,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                                  color: Color(0xFFED3E55),
+                                                  fontSize: 12.sp,
+                                                  // fontFamily: 'Poppins',
+                                                  fontWeight: FontWeight.w600,
+                                                  height: 1.38,
+                                                )),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Text(
+                                              "${walletResponse?.transactions![index].transactionType ?? ""}",
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.w500,
                                               ),
-                                              SizedBox(
-                                                height: 10,
-                                              ),
-                                              Text(
-                                                "${walletResponse?.transactions![index].transactionAt ?? ""}",
-                                                style: TextStyle(
-                                                    color: Colors.grey),
-                                              ),
-                                            ],
-                                          ),
-                                          Spacer(),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.end,
-                                            children: [
-                                              Text(
-                                                  "₹ ${walletResponse?.transactions![index].transactionAmount ?? ""}",
-                                                  style: TextStyle(
-                                                      fontSize: 16,
-                                                      color:
-                                                          AppColors.accentColor,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                              SizedBox(
-                                                height: 10,
-                                              ),
-                                              Text(
-                                                "${walletResponse?.transactions![index].transactionType ?? ""}",
-                                                style: TextStyle(fontSize: 14),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
                                     SizedBox(
                                       height: 10,
                                     ),
                                     Divider()
                                   ],
-                                ),
-                              );
-                            },
-                            itemCount:
-                                walletResponse?.transactions?.length ?? 0,
-                          ),
-                        ],
+                                );
+                              },
+                              itemCount:
+                                  walletResponse?.transactions?.length ?? 0,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
             ),
