@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
 import 'package:circular_bottom_navigation/tab_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:offersapp/api/model/UserData.dart';
 import 'package:offersapp/api/restclient.dart';
 import 'package:offersapp/generated/assets.dart';
@@ -62,8 +63,9 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     var tabTextStyle = TextStyle(
-      fontWeight: FontWeight.normal,
-      fontSize: 14,
+      fontSize: 9.sp,
+      fontWeight: FontWeight.w600,
+      height: 1.84,
       color: AppColors.accentColor,
     );
     var circleStrokeColor = Color.fromRGBO(224, 234, 255, 0.8);

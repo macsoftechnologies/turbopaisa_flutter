@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:offersapp/api/model/OffersData.dart';
 import 'package:offersapp/api/model/UserData.dart';
 import 'package:offersapp/api/model/WalletResponse.dart';
@@ -64,22 +65,53 @@ class _HomePageState extends State<HomePage> {
   Widget buildTopOptions(String image, Color color, String title) {
     return Column(
       children: [
-        CircleAvatar(
-          radius: 35,
-          backgroundColor: Colors.white,
-          child: CircleAvatar(
-            radius: 30,
-            backgroundColor: color,
-            child: Image.asset(
-              image,
-              fit: BoxFit.contain,
+        // CircleAvatar(
+        //   radius: 35,
+        //   backgroundColor: Colors.white,
+        //   child: CircleAvatar(
+        //     radius: 30,
+        //     backgroundColor: color,
+        //     child: Image.asset(
+        //       image,
+        //       fit: BoxFit.contain,
+        //     ),
+        //   ),
+        // ),
+        Container(
+          width: 64.w,
+          height: 64.h,
+          decoration: ShapeDecoration(
+            color: color, //Color(0xFFF0DA40),
+            shape: RoundedRectangleBorder(
+              side: BorderSide(width: 1, color: Color(0xFFF3F6FF)),
+              borderRadius: BorderRadius.circular(464),
             ),
+          ),
+          child: Image.asset(
+            image,
+            // fit: BoxFit.fill,
+            width: 42.w,
+            height: 42.h,
           ),
         ),
         SizedBox(
-          height: 16,
+          height: 8.h,
         ),
-        Text(title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12))
+        Opacity(
+          opacity: 0.90,
+          child: Text(
+            title,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 9.sp,
+              fontFamily: 'Poppins',
+              fontWeight: FontWeight.w500,
+              height: 1.84,
+            ),
+          ),
+        ),
+        // Text(title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12))
       ],
     );
   }
@@ -158,7 +190,12 @@ class _HomePageState extends State<HomePage> {
                                   Text(
                                     "₹ ${walletResponse?.wallet?.toStringAsFixed(2) ?? "0.00"}",
                                     style: TextStyle(
-                                        color: Colors.white, fontSize: 14),
+                                      color: Colors.white,
+                                      fontSize: 9.sp,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w600,
+                                      height: 1.84,
+                                    ),
                                   )
                                 ],
                               ),
@@ -230,9 +267,12 @@ class _HomePageState extends State<HomePage> {
               //   color: Color(0xFF3D3FB5),
             ),
             SizedBox(
-              height: 24,
+              height: 37.h,
             ),
             buildSegmentedControl(context),
+            SizedBox(
+              height: 25.h,
+            ),
             if (isLoading)
               Center(
                 child: CircularProgressIndicator(
@@ -252,7 +292,7 @@ class _HomePageState extends State<HomePage> {
   Container buildSegmentedControl(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width * 0.9,
-      margin: EdgeInsets.all(10),
+      // margin: EdgeInsets.all(10),
       decoration: BoxDecoration(
           color: AppColors.whiteColor,
           border: Border.fromBorderSide(
@@ -293,12 +333,30 @@ class _HomePageState extends State<HomePage> {
 
   Widget buildSegment(int index, String text) {
     return Container(
-      padding: EdgeInsets.all(8),
-      child: Text(
-        text,
-        style: TextStyle(
-          color: _selectedIndex == index ? Colors.white : Colors.black,
-          fontSize: _selectedIndex == index ? 14 : 12,
+      // padding: EdgeInsets.all(8),
+      height: 35.h,
+      child: Center(
+        child: Text(
+          text,
+          style: _selectedIndex == index
+              ? TextStyle(
+                  color: Colors.white,
+                  fontSize: 9.sp,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w600,
+                  height: 1.84,
+                )
+              : TextStyle(
+                  color: Colors.black,
+                  fontSize: 9.sp,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w500,
+                  height: 1.84,
+                ),
+          // TextStyle(
+          //   color: _selectedIndex == index ? Colors.white : Colors.black,
+          //   fontSize: _selectedIndex == index ? 14 : 12,
+          // ),
         ),
       ),
     );
@@ -448,94 +506,206 @@ class _HomePageState extends State<HomePage> {
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemBuilder: (context, index) {
-              return InkWell(
-                onTap: () {
-                  navigateToNext(
-                      context, OfferDetailsPage(data: offersData[index]));
-                  //_launchUrl(offersData[index].url ?? "");
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Card(
-                      shadowColor: Colors.white,
-                      elevation: 2,
-                      child: Container(
-                        padding: EdgeInsets.all(10),
-                        child: Row(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: Image.network(
-                                offersData[index].images![0].image.toString(),
-                                width: 120,
-                                height: 80,
+              return true
+                  ? Container(
+                      margin: EdgeInsets.symmetric(
+                          horizontal: 20.w, vertical: 10.h),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 6.w, vertical: 6.w),
+                      width: 335,
+                      height: 87,
+                      decoration: ShapeDecoration(
+                        color: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6.67),
+                        ),
+                        shadows: [
+                          BoxShadow(
+                            color: Color(0x11000000),
+                            blurRadius: 38.33,
+                            offset: Offset(2.32, 8),
+                            spreadRadius: 0,
+                          )
+                        ],
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 100.w,
+                            height: 75.h,
+                            decoration: ShapeDecoration(
+                              image: DecorationImage(
+                                image: NetworkImage(offersData[index]
+                                    .images![0]
+                                    .image
+                                    .toString()),
                                 fit: BoxFit.cover,
                               ),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(6)),
                             ),
-                            SizedBox(
-                              width: 20,
+                          ),
+                          SizedBox(
+                            width: 23.w,
+                          ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: 4.h,
+                                ),
+                                Text(
+                                  offersData[index].offerTitle ?? "",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 12,
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w600,
+                                    height: 1.38,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 2.h,
+                                ),
+                                Text(
+                                  offersData[index].offerDesc ?? "",
+                                  maxLines: 2,
+                                  style: TextStyle(
+                                    color: Color(0xFF8C8C8C),
+                                    fontSize: 8,
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 7.h,
+                                ),
+                                Text(
+                                  "₹ ${offersData[index].offerAmount ?? ""}",
+                                  style: TextStyle(
+                                    color: Color(0xFFED3E55),
+                                    fontSize: 10,
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
                             ),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                          ),
+                        ],
+                      ),
+                    )
+                  : InkWell(
+                      onTap: () {
+                        navigateToNext(
+                            context, OfferDetailsPage(data: offersData[index]));
+                        //_launchUrl(offersData[index].url ?? "");
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Card(
+                            shadowColor: Colors.white,
+                            elevation: 2,
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              child: Row(
                                 children: [
-                                  Text(
-                                    offersData[index].offerTitle ?? "",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Image.network(
+                                      offersData[index]
+                                          .images![0]
+                                          .image
+                                          .toString(),
+                                      width: 120,
+                                      height: 75.h,
+                                      fit: BoxFit.cover,
+                                      errorBuilder:
+                                          (context, error, stackTrace) =>
+                                              Image.asset(
+                                        placeHolder,
+                                        width: 120,
+                                        height: 80,
+                                      ),
+                                    ),
                                   ),
-                                  Text(
-                                    offersData[index].offerDesc ?? "",
-                                    maxLines: 2,
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 12),
+                                  SizedBox(
+                                    width: 20,
                                   ),
-                                  Text(
-                                    "₹ ${offersData[index].offerAmount ?? ""}",
-                                    style: TextStyle(
-                                        color: Colors.red,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          offersData[index].offerTitle ?? "",
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 12,
+                                            fontFamily: 'Poppins',
+                                            fontWeight: FontWeight.w600,
+                                            height: 1.38,
+                                          ),
+                                        ),
+                                        Text(
+                                          offersData[index].offerDesc ?? "",
+                                          maxLines: 2,
+                                          style: TextStyle(
+                                            color: Color(0xFF8C8C8C),
+                                            fontSize: 8,
+                                            fontFamily: 'Poppins',
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                        Text(
+                                          "₹ ${offersData[index].offerAmount ?? ""}",
+                                          style: TextStyle(
+                                            color: Color(0xFFED3E55),
+                                            fontSize: 10,
+                                            fontFamily: 'Poppins',
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
-                            ),
-                          ],
-                        ),
-                        // Row(
-                        //   children: [
-                        //     Image.asset(
-                        //       "assets/images/app_logo.jpeg",
-                        //       width: 80,
-                        //       height: 50,
-                        //     ),
-                        //     SizedBox(
-                        //       width: 20,
-                        //     ),
-                        //     Column(
-                        //       crossAxisAlignment: CrossAxisAlignment.start,
-                        //       children: [
-                        //         Text(
-                        //           "Carbury Play pad",
-                        //           style: TextStyle(fontWeight: FontWeight.bold),
-                        //         ),
-                        //         Text(
-                        //           "Learn play AR",
-                        //         ),
-                        //         Text(
-                        //           "50",
-                        //           style: TextStyle(
-                        //               color: Colors.purple,
-                        //               fontWeight: FontWeight.bold,
-                        //               fontSize: 20),
-                        //         ),
-                        //       ],
-                        //     ),
-                        //   ],
-                        // ),
-                      )),
-                ),
-              );
+                              // Row(
+                              //   children: [
+                              //     Image.asset(
+                              //       "assets/images/app_logo.jpeg",
+                              //       width: 80,
+                              //       height: 50,
+                              //     ),
+                              //     SizedBox(
+                              //       width: 20,
+                              //     ),
+                              //     Column(
+                              //       crossAxisAlignment: CrossAxisAlignment.start,
+                              //       children: [
+                              //         Text(
+                              //           "Carbury Play pad",
+                              //           style: TextStyle(fontWeight: FontWeight.bold),
+                              //         ),
+                              //         Text(
+                              //           "Learn play AR",
+                              //         ),
+                              //         Text(
+                              //           "50",
+                              //           style: TextStyle(
+                              //               color: Colors.purple,
+                              //               fontWeight: FontWeight.bold,
+                              //               fontSize: 20),
+                              //         ),
+                              //       ],
+                              //     ),
+                              //   ],
+                              // ),
+                            )),
+                      ),
+                    );
             },
             itemCount: offersData.length,
           );

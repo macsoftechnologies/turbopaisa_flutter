@@ -4,12 +4,16 @@ import 'dart:convert';
 import 'package:advertising_id/advertising_id.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:flutter_udid/flutter_udid.dart';
 import 'package:get_ip_address/get_ip_address.dart';
 import 'package:offersapp/api/model/RegistrationResponse.dart';
 import 'package:offersapp/api/model/UserData.dart';
 import 'package:offersapp/api/restclient.dart';
+import 'package:offersapp/generated/assets.dart';
 import 'package:offersapp/pages/dashboard_page.dart';
+import 'package:offersapp/pages/registration_new.dart';
 import 'package:offersapp/pages/registration_page.dart';
 import 'package:offersapp/utils.dart';
 import 'package:offersapp/utils/app_colors.dart';
@@ -31,6 +35,23 @@ class _LoginPageState extends State<LoginPage> {
   bool? _isLimitAdTrackingEnabled;
   String _udid = 'Unknown';
   String? _ipAddress;
+
+  var commonSpace = 16.h;
+  var textStyle = TextStyle(
+    color: Colors.black,
+    fontSize: 10.sp,
+    fontFamily: 'Poppins',
+    fontWeight: FontWeight.w500,
+    height: 1.66,
+  );
+
+  var h1textStyle = TextStyle(
+    color: Colors.black,
+    fontSize: 10.sp,
+    fontFamily: 'Poppins',
+    fontWeight: FontWeight.w600,
+    height: 1.66,
+  );
 
   @override
   void initState() {
@@ -99,245 +120,335 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       //backgroundColor: Colors.white,
-      body: Stack(
-        children: [
-          Container(
-            height: double.infinity,
-            decoration: BoxDecoration(gradient: AppColors.appLoginGradientBg),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: RotatedBox(
-              quarterTurns: 90,
-              child: ClipPath(
-                clipper: GreenClipperReverse(),
-                child: Container(
-                  height: 80,
-                  color: Color(0xff222467),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Container(
+              height: double.infinity,
+              decoration: BoxDecoration(gradient: AppColors.appLoginGradientBg),
+            ),
+            Positioned(
+              bottom: -20.w,
+              left: 0,
+              right: 0,
+              child: RotatedBox(
+                quarterTurns: 90,
+                child: ClipPath(
+                  clipper: GreenClipperReverse(),
+                  child: Container(
+                    // height: 70.h,
+                    height: 115.h,
+                    color: Color(0xff222467),
+                  ),
                 ),
               ),
             ),
-          ),
-          Container(
-            // margin: EdgeInsets.only(bottom: 70),
-            child: SingleChildScrollView(
-              child: Column(
-                // mainAxisSize: MainAxisSize.max,
-                children: [
-                  SizedBox(
-                    height: 80,
-                  ),
-                  Image.asset(
-                    "assets/images/turbopaisa_logo_two.png",
-                    width: 80,
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Stack(children: [
-                    Image.asset(
-                      "assets/images/login_rectangle.png",
-                      width: 250,
-                    ),
-                    Positioned.fill(
-                        child: Align(
-                            alignment: Alignment.center,
+            Container(
+              margin: EdgeInsets.only(top: 31.h),
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 62.sp),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    // mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Align(
+                        alignment: Alignment.topCenter,
+                        child: Image.asset(
+                          "assets/images/turbopaisa_logo_two.png",
+                          width: 102.h,
+                        ),
+                      ),
+
+                      SizedBox(
+                        height: 51.h,
+                      ),
+                      Stack(
+                        children: [
+                          Align(
+                            alignment: Alignment.topCenter,
+                            child: SvgPicture.asset(
+                              Assets.svgRegisterRectangle,
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.bottomCenter,
                             child: Column(
                               children: [
                                 Text(
-                                  "Welcome Back",
+                                  'Welcome Back ',
                                   style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20),
+                                    color: Colors.black,
+                                    fontSize: 18,
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w600,
+                                    height: 1.06,
+                                  ),
                                 ),
-                                Text("Login to continue")
+                                Text(
+                                  'Login to continue ',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 12,
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w400,
+                                    height: 1.59,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 8.w,
+                                ),
                               ],
-                            ))),
-                  ]),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 40),
-                          child: Text(
-                            "Mobile number",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          )),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 40, right: 40),
-                        child: TextField(
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.person),
-                            hintText: "Mobile number",
-                          ),
-                          onChanged: (value) {
-                            _email = value;
-                          },
-                        ),
+                            ),
+                          )
+                        ],
                       ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 16,
-                  ),
+                      SizedBox(
+                        height: 51.sp,
+                      ),
 
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 40),
-                          child: Text(
-                            "Password",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          )),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 40, right: 40),
-                        child: TextField(
+                      Text(
+                        'Mobile Number',
+                        style: h1textStyle,
+                      ),
+                      TextField(
+                        decoration: InputDecoration(
+                          hintText: "Type your Mobile number",
+                          hintStyle: textStyle.copyWith(
+                            color: Color(0xFF8C8C8C),
+                          ),
+                          prefixIcon: Padding(
+                            padding: EdgeInsets.only(right: 20.w),
+                            child: Icon(
+                              Icons.person,
+                              size: 20.w,
+                            ),
+                          ),
+                          prefixIconConstraints: BoxConstraints(minWidth: 30.w),
+                        ),
+                        style: textStyle.copyWith(
+                          color: Colors.black,
+                        ),
+                        onChanged: (value) {
+                          _email = value;
+                        },
+                      ),
+
+                      SizedBox(
+                        height: 16.h,
+                      ),
+
+                      Text(
+                        'Password',
+                        style: h1textStyle,
+                      ),
+                      TextField(
                           obscureText: true,
                           decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.lock),
-                            hintText: "Enter Password",
+                            hintText: "Type your Password",
+                            hintStyle: textStyle.copyWith(
+                              color: Color(0xFF8C8C8C),
+                            ),
+                            prefixIcon: Padding(
+                              padding: EdgeInsets.only(right: 20.w),
+                              child: Icon(
+                                Icons.lock,
+                                size: 20.w,
+                              ),
+                            ),
+                            prefixIconConstraints:
+                                BoxConstraints(minWidth: 30.w),
+                          ),
+                          style: textStyle.copyWith(
+                            color: Colors.black,
                           ),
                           onChanged: (value) {
                             _password = value;
-                          },
-                          //decoration: InputDecoration(hintText: "Enter Phone number"),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: InkWell(
-                      onTap: () {
-                        sendForgotPassword();
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 16.0),
-                        child: Text(
-                          "Forgot Password?",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
+                          }),
 
-                  SizedBox(
-                    height: 34,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      submitData();
-                    },
-                    child: Container(
-                      width: 250,
-                      padding: EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: AppColors.accentColor,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Text(
-                            "Login",
-                            style: TextStyle(color: Colors.white),
+                      // SizedBox(
+                      //   height: 15.h,
+                      // ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              navigateToNext(context, RegistrationPageNew());
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(vertical: 16.h),
+                              child: Text(
+                                'Register Now',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 10,
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.w600,
+                                  height: 1.66,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 30),
-                    child: Row(
-                      children: [
-                        Image.asset(
-                          "assets/images/coin.png",
-                          // width: 80,
-                        ),
-                      ],
-                    ),
-                  ),
-                  // SizedBox(
-                  //   height: 10,
-                  // ),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  //   children: [
-                  //     Text(""),
-                  //     SizedBox(
-                  //       width: 100,
-                  //     ),
-                  //     Image.asset(
-                  //       "assets/images/coin_two.png",
-                  //       //width: 80,
-                  //     ),
-                  //   ],
-                  // ),
-
-                  SizedBox(
-                    height: 20,
-                  ),
-
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        width: 110,
-                      ),
-                      Text(
-                        "or",
-                        style: TextStyle(color: Colors.black.withOpacity(0.1)),
+                          InkWell(
+                            onTap: () {
+                              sendForgotPassword();
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(vertical: 16.h),
+                              child: Text(
+                                'Forgot Password?',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 10,
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.w600,
+                                  height: 1.66,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       SizedBox(
-                        width: 2,
+                        height: 10,
+                      ),
+
+                      SizedBox(
+                        height: 34,
                       ),
                       InkWell(
                         onTap: () {
-                          navigateToNext(context, RegistrationPage());
+                          submitData();
                         },
-                        child: Text(
-                          "Sign up",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                        child: Container(
+                          width: 250.w,
+                          height: 40.h,
+                          // padding: EdgeInsets.all(8),
+                          decoration: ShapeDecoration(
+                            color: Color(0xFFED3E55),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6.67),
+                            ),
+                          ),
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Text(
+                                "Login",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                      SizedBox(
-                        width: 85,
+                      Padding(
+                        padding: EdgeInsets.only(left: 7.w, top: 40.w),
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              "assets/images/coin.png",
+                              // width: 80,
+                            ),
+                          ],
+                        ),
                       ),
-                      Image.asset(
-                        "assets/images/coin_two.png",
-                        //width: 80,
-                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 16.h),
+                        child: Align(
+                          alignment: Alignment.bottomRight,
+                          child: Image.asset(
+                            "assets/images/coin_two.png",
+                            //width: 80,
+                          ),
+                        ),
+                      )
+                      // SizedBox(
+                      //   height: 20,
+                      // ),
+                      // Padding(
+                      //   padding: EdgeInsets.symmetric(horizontal: 30),
+                      //   child: Row(
+                      //     children: [
+                      //       Image.asset(
+                      //         "assets/images/coin.png",
+                      //         // width: 80,
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
+                      // SizedBox(
+                      //   height: 10,
+                      // ),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      //   children: [
+                      //     Text(""),
+                      //     SizedBox(
+                      //       width: 100,
+                      //     ),
+                      //     Image.asset(
+                      //       "assets/images/coin_two.png",
+                      //       //width: 80,
+                      //     ),
+                      //   ],
+                      // ),
+
+                      // SizedBox(
+                      //   height: 20,
+                      // ),
+
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.center,
+                      //   children: [
+                      //     SizedBox(
+                      //       width: 110,
+                      //     ),
+                      //     Text(
+                      //       "or",
+                      //       style:
+                      //           TextStyle(color: Colors.black.withOpacity(0.1)),
+                      //     ),
+                      //     SizedBox(
+                      //       width: 2,
+                      //     ),
+                      //     InkWell(
+                      //       onTap: () {
+                      //         // navigateToNext(context, RegistrationPage());
+                      //         navigateToNext(context, RegistrationPageNew());
+                      //       },
+                      //       child: Text(
+                      //         "Sign up",
+                      //         style: TextStyle(fontWeight: FontWeight.bold),
+                      //       ),
+                      //     ),
+                      //     SizedBox(
+                      //       width: 85,
+                      //     ),
+                      //     Image.asset(
+                      //       "assets/images/coin_two.png",
+                      //       //width: 80,
+                      //     ),
+                      //   ],
+                      // ),
+                      // SizedBox(
+                      //   height: 20,
+                      // ),
+                      // buildSocialButtons(context),
+
+                      // Image.asset(
+                      //   "assets/images/rectangle .png",
+                      //   //width: 80,
+                      // ),
                     ],
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  // buildSocialButtons(context),
-
-                  // Image.asset(
-                  //   "assets/images/rectangle .png",
-                  //   //width: 80,
-                  // ),
-                ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       // SizedBox(
       //   height: 20,
@@ -410,7 +521,7 @@ class _LoginPageState extends State<LoginPage> {
         children: [
           InkWell(
             onTap: () {
-              navigateToNext(context, RegistrationPage());
+              navigateToNext(context, RegistrationPageNew());
             },
             child: CircleAvatar(
               radius: 22,

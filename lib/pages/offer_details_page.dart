@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:offersapp/api/model/OffersData.dart';
 import 'package:offersapp/utils.dart';
 import 'package:offersapp/utils/app_colors.dart';
@@ -35,12 +36,14 @@ class _OfferDetailsPageState extends State<OfferDetailsPage> {
                     const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                  child: Image.network(
-                    widget.data.images![0].image.toString(),
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    height: 160,
-                  ),
+                  child: Image.network(widget.data.images![0].image.toString(),
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: 160,
+                      errorBuilder: (context, error, stackTrace) => Image.asset(
+                            placeHolder,
+                            height: 160.h,
+                          )),
                 ),
               ),
               // SizedBox(
@@ -136,7 +139,6 @@ class _OfferDetailsPageState extends State<OfferDetailsPage> {
                     SizedBox(
                       height: 20,
                     ),
-
                     Text(
                       "Install Now ",
                       style: TextStyle(fontWeight: FontWeight.bold),
