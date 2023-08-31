@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:offersapp/api/model/UserData.dart';
 import 'package:offersapp/api/model/WalletResponse.dart';
@@ -62,9 +63,16 @@ class _ReferPageState extends State<ReferPage> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: AppColors.primaryColor,
+        elevation: 0,
         title: Text(
           "Refer & Earn",
-          style: TextStyle(fontSize: 16),
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 14.sp,
+            fontWeight: FontWeight.w600,
+            height: 1.19,
+          ),
         ),
         actions: [
           Container(
@@ -118,48 +126,62 @@ class _ReferPageState extends State<ReferPage> {
           child: Column(
             children: [
               SizedBox(
-                height: 50,
+                height: 67.h,
               ),
               Image.asset(
                 "assets/images/refer_friend.png",
-                fit: BoxFit.cover,
-                width: MediaQuery.of(context).size.width * 0.6,
+                width: 231.w,
+                height: 169.h,
               ),
               SizedBox(
-                height: 30,
+                height: 35.h,
               ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
+              Text.rich(
+                TextSpan(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Refer Now & Earn Up to",
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w700),
-                        ),
-                        Text(
-                          " ₹ 350",
-                          style: TextStyle(
-                              color: AppColors.accentColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 22),
-                        ),
-                      ],
+                    TextSpan(
+                      text: 'Refer Now & Earn Up to',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        height: 1.04,
+                      ),
                     ),
-                    Text(
-                      "Send a referral link to your friends via",
-                      style: TextStyle(color: Color(0xFF727272)),
+                    TextSpan(
+                      text: ' ',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        height: 1.04,
+                      ),
                     ),
-                    Text("WhatsApp / Facebook / Instagram",
-                        style: TextStyle(color: Color(0xFF727272))),
+                    TextSpan(
+                      text: '₹ 350',
+                      style: TextStyle(
+                        color: Color(0xFFED3E55),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        height: 1.04,
+                      ),
+                    ),
                   ],
+                ),
+                textAlign: TextAlign.center,
+              ),
+              Text(
+                'Send a referral link to your friends via \nWhatsApp / Facebook / Instagram',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Color(0xFF717171),
+                  fontSize: 10,
+                  fontWeight: FontWeight.w500,
+                  height: 1.66,
                 ),
               ),
               SizedBox(
-                height: 40,
+                height: 50.h,
               ),
               Column(
                 children: [
@@ -168,7 +190,7 @@ class _ReferPageState extends State<ReferPage> {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   SizedBox(
-                    height: 10,
+                    height: 10.h,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -177,22 +199,30 @@ class _ReferPageState extends State<ReferPage> {
                         width: 24,
                       ),
                       DottedBorder(
-                        dashPattern: [5, 5],
+                        dashPattern: [2, 3],
                         radius: Radius.circular(10),
                         borderType: BorderType.RRect,
                         color: Colors.black,
-                        strokeWidth: 0.3,
+                        strokeWidth: 0.5,
                         // radius: Radius.circular(50),
                         child: Padding(
-                          padding: const EdgeInsets.all(10),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 12.w, vertical: 17.h),
                           child: Text(
                             "${data?.userUniqueId ?? "User id is missing"}",
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Color(0xFF2E2E2E),
+                              fontSize: 16,
+                              // fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w600,
+                              height: 1.04,
+                            ),
                           ),
                         ),
                       ),
                       SizedBox(
-                        width: 14,
+                        width: 15.w,
                       ),
                       InkWell(
                         onTap: () async {
@@ -208,7 +238,7 @@ class _ReferPageState extends State<ReferPage> {
                         child: Image.asset(
                           "assets/images/solar_copy_linear.png",
                           // fit: BoxFit.cover,
-                          width: 20,
+                          width: 20.w,
                         ),
                       ),
                     ],
@@ -261,23 +291,46 @@ class _ReferPageState extends State<ReferPage> {
                           "http://turbopaisa.com/referal?code=${data?.userUniqueId ?? "User id is missing"}",
                       chooserTitle: 'Share');
                 },
-                child: Container(
-                  width: 260,
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: AppColors.accentColor,
-                    borderRadius: BorderRadius.circular(10),
+                child:
+                Container(
+                  width: 250,
+                  height: 40,
+                  decoration: ShapeDecoration(
+                    color: Color(0xFFED3E55),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6.67),
+                    ),
                   ),
                   child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(6.0),
-                      child: Text(
-                        "Share",
-                        style: TextStyle(color: Colors.white),
+                    child: Text(
+                      'Share',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12.sp,
+                        // fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w600,
+                        height: 1.38,
                       ),
                     ),
                   ),
                 ),
+                // Container(
+                //   width: 260,
+                //   padding: EdgeInsets.all(8),
+                //   decoration: BoxDecoration(
+                //     color: AppColors.accentColor,
+                //     borderRadius: BorderRadius.circular(10),
+                //   ),
+                //   child: Center(
+                //     child: Padding(
+                //       padding: const EdgeInsets.all(6.0),
+                //       child: Text(
+                //         "Share",
+                //         style: TextStyle(color: Colors.white),
+                //       ),
+                //     ),
+                //   ),
+                // ),
               ),
             ],
           ),

@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:ui';
 
+import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
 import 'package:circular_bottom_navigation/tab_item.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +18,10 @@ import 'package:offersapp/pages/tutorial_page.dart';
 import 'package:offersapp/pages/wallet_page.dart';
 import 'package:offersapp/pages/wheel_widget.dart';
 import 'package:offersapp/utils.dart';
+import 'package:offersapp/utils/BottomBarPainter.dart';
 import 'package:offersapp/utils/app_colors.dart';
+import 'package:offersapp/utils/constannts.dart';
+import 'package:offersapp/widgets/WaveClipper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -127,77 +132,8 @@ class _DashboardPageState extends State<DashboardPage> {
           },
         ),
       ),
-
-      // buildBottomAppBar(),
     );
-  }
-
-  BottomAppBar buildBottomAppBar() {
-    return BottomAppBar(
-      height: Platform.isIOS ? 70 : 65,
-      color: Colors.transparent,
-      padding: const EdgeInsets.all(0),
-      child: Container(
-        height: Platform.isIOS ? 70 : 65,
-        decoration:
-            const BoxDecoration(color: AppColors.whiteColor, boxShadow: [
-          BoxShadow(color: Colors.black12, blurRadius: 2, offset: Offset(0, -2))
-        ]),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            TabNewButton(
-                icon: Icons.home,
-                // icon: "assets/images/home_icon.png",
-                // selectIcon: "assets/images/home_select_icon.png",
-                isActive: selectTab == 0,
-                onTap: () {
-                  if (mounted) {
-                    setState(() {
-                      selectTab = 0;
-                    });
-                  }
-                }),
-            TabNewButton(
-                icon: Icons.wallet,
-                // icon: "assets/images/activity_icon.png",
-                // selectIcon: "assets/images/activity_select_icon.png",
-                isActive: selectTab == 1,
-                onTap: () {
-                  if (mounted) {
-                    setState(() {
-                      selectTab = 1;
-                    });
-                  }
-                }),
-            TabNewButton(
-                icon: Icons.share_outlined,
-                // icon: "assets/images/camera_icon.png",
-                // selectIcon: "assets/images/camera_select_icon.png",
-                isActive: selectTab == 2,
-                onTap: () {
-                  if (mounted) {
-                    setState(() {
-                      selectTab = 2;
-                    });
-                  }
-                }),
-            TabNewButton(
-                icon: Icons.person,
-                // icon: "assets/images/user_icon.png",
-                // selectIcon: "assets/images/user_select_icon.png",
-                isActive: selectTab == 3,
-                onTap: () {
-                  if (mounted) {
-                    setState(() {
-                      selectTab = 3;
-                    });
-                  }
-                }),
-          ],
-        ),
-      ),
-    );
+    // bottomNavigationBar: buildCustomBottomAppBar(),
   }
 
   Future<void> loadSpinWheel() async {
@@ -246,101 +182,26 @@ class _DashboardPageState extends State<DashboardPage> {
     //
     // });
   }
-}
 
-class TabNewButton extends StatelessWidget {
-  final IconData icon;
-  final bool isActive;
-  final VoidCallback onTap;
-
-  const TabNewButton(
-      {Key? key,
-      required this.icon,
-      required this.isActive,
-      required this.onTap})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: AnimatedContainer(
-        width: 80,
-        curve: Curves.easeInOut,
-        duration: Duration(seconds: 1),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              icon,
-              size: isActive ? 32 : 25,
-              color: isActive ? AppColors.accentColor : Colors.grey,
-            ),
-            SizedBox(height: isActive ? 8 : 12),
-            Visibility(
-              visible: isActive,
-              child: Container(
-                width: 4,
-                height: 4,
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(colors: [
-                      AppColors.accentColor,
-                      AppColors.accentColor,
-                    ]),
-                    borderRadius: BorderRadius.circular(2)),
-              ),
-            )
-          ],
+  Widget buildCustomBottomAppBar() {
+    return Stack(clipBehavior: Clip.none, children: <Widget>[
+      CustomPaint(
+        size: Size(MediaQuery.of(context).size.width, 60.h),
+        painter: BottomBarPainter(
+            position: MediaQuery.of(context).size.width * selectTab,
+            color: Colors.white,
+            showShadow: false,
+            notchColor: Colors.green.shade300),
+      ),
+      Positioned(
+        left: kCircleRadius,
+        top: kMargin,
+        child: Icon(
+          Icons.home,
+          size: 20,
         ),
       ),
-    );
-  }
-}
-
-class TabButton extends StatelessWidget {
-  final String icon;
-  final String selectIcon;
-  final bool isActive;
-  final VoidCallback onTap;
-
-  const TabButton(
-      {Key? key,
-      required this.icon,
-      required this.selectIcon,
-      required this.isActive,
-      required this.onTap})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        width: 80,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Image.asset(
-              isActive ? selectIcon : icon,
-              width: 25,
-              height: 25,
-              fit: BoxFit.fitWidth,
-            ),
-            SizedBox(height: isActive ? 8 : 12),
-            Visibility(
-              visible: isActive,
-              child: Container(
-                width: 4,
-                height: 4,
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(colors: AppColors.secondaryG),
-                    borderRadius: BorderRadius.circular(2)),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
+    ]);
   }
 }
 

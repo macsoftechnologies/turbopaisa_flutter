@@ -510,9 +510,12 @@ class _WalletBalacePageState extends State<WalletBalacePage> {
                                               CrossAxisAlignment.end,
                                           children: [
                                             Text(
-                                                "₹ ${walletResponse?.transactions![index].transactionAmount ?? ""}",
+                                                "${getStatusType(index) == 1 ? "+" : "-"} ₹ ${walletResponse?.transactions![index].transactionAmount ?? ""}",
                                                 style: TextStyle(
-                                                  color: Color(0xFFED3E55),
+                                                  color:
+                                                      getStatusType(index) == 1
+                                                          ? Colors.green
+                                                          : Color(0xFFED3E55),
                                                   fontSize: 12.sp,
                                                   // fontFamily: 'Poppins',
                                                   fontWeight: FontWeight.w600,
@@ -525,7 +528,7 @@ class _WalletBalacePageState extends State<WalletBalacePage> {
                                               "${walletResponse?.transactions![index].transactionType ?? ""}",
                                               style: TextStyle(
                                                 color: Colors.black,
-                                                fontSize: 10,
+                                                fontSize: 10.sp,
                                                 fontWeight: FontWeight.w500,
                                               ),
                                             ),
@@ -552,5 +555,13 @@ class _WalletBalacePageState extends State<WalletBalacePage> {
         ),
       ),
     );
+  }
+
+  int getStatusType(int index) {
+    var status = walletResponse?.transactions![index].transactionType;
+    if (status == "Credited") {
+      return 1;
+    }
+    return 2;
   }
 }

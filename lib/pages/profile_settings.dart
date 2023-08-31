@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:offersapp/api/model/WalletResponse.dart';
 import 'package:offersapp/api/restclient.dart';
 import 'package:offersapp/pages/LoginPage.dart';
@@ -67,11 +68,18 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    var textStyle = TextStyle(fontWeight: FontWeight.w500, color: Colors.black);
+    var textStyle = TextStyle(
+      color: Colors.black,
+      fontSize: 12,
+      // fontFamily: 'Poppins',
+      fontWeight: FontWeight.w500,
+      height: 1.38,
+    );
+
     return SingleChildScrollView(
       child: Container(
         // padding: EdgeInsets.all(10),
-        height: MediaQuery.of(context).size.height,
+        // height: MediaQuery.of(context).size.height,
         decoration: BoxDecoration(
           gradient: AppColors.appGradientBg,
         ),
@@ -87,7 +95,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
               ClipPath(
                 clipper: GreenClipper(),
                 child: Container(
-                  height: 150,
+                  height: 150.h,
                   color: Color(0xff3D3FB5),
                 ),
               ),
@@ -110,7 +118,13 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                     ),
                     Text(
                       "My Profile",
-                      style: TextStyle(color: Colors.white, fontSize: 16),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14.sp,
+                        // fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w600,
+                        height: 1.19,
+                      ),
                     ),
                     Container(
                       decoration: BoxDecoration(
@@ -162,26 +176,34 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                     ClipRRect(
                       child: Image.asset(
                         'assets/images/proflie_image.png',
-                        fit: BoxFit.cover,
-                        width: 110,
+                        width: 88.w,
                         // height: 200,
                         //height: 100,
                       ),
                     ),
                     SizedBox(
-                      height: 14,
+                      height: 20.h,
                     ),
                     Text(
                       userData?.name?.toUpperCase() ?? "",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16.sp,
+                        // fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w600,
+                        height: 1.04,
+                      ),
                     ),
-                    Text(userData?.email ?? ""),
+                    Text(userData?.email ?? "",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 10,
+                          // fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w500,
+                          height: 1.66,
+                        )),
                     SizedBox(
-                      height: 2,
-                    ),
-                    SizedBox(
-                      height: 20,
+                      height: 50.h,
                     ),
                   ],
                 ),
@@ -220,14 +242,14 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
               //     )
               //   ],
               // ),
-              Divider(
-                //width: 5,
-                color: Colors.black12,
-                thickness: 1,
-                height: 30,
-                indent: 10.0,
-                endIndent: 10.0,
-              ),
+              // Divider(
+              //   //width: 5,
+              //   color: Colors.black12,
+              //   thickness: 1,
+              //   height: 30,
+              //   indent: 10.0,
+              //   endIndent: 10.0,
+              // ),
               InkWell(
                 onTap: () {
                   showSnackBar(context, "App is not available in Store.");
@@ -235,14 +257,14 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                 child: Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(left: 20),
+                      padding: EdgeInsets.only(left: 27.w),
                       child: Image.asset(
                         'assets/images/rate_us_icon.png',
                         //width: 20,
                       ),
                     ),
                     SizedBox(
-                      width: 20,
+                      width: 20.sp,
                     ),
                     Text(
                       "Rate Us",
@@ -255,7 +277,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                 //width: 5,
                 color: Colors.black12,
                 thickness: 1,
-                height: 30,
+                height: 30.h,
                 indent: 10.0,
                 endIndent: 10.0,
               ),
@@ -266,14 +288,14 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                 child: Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(left: 20),
+                      padding: EdgeInsets.only(left: 27.w),
                       child: Image.asset(
                         'assets/images/support_icon.png',
                         //width: 20,
                       ),
                     ),
                     SizedBox(
-                      width: 20,
+                      width: 20.w,
                     ),
                     Text(
                       "Support",
@@ -281,7 +303,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                     ),
                     Spacer(),
                     Padding(
-                      padding: const EdgeInsets.only(right: 10),
+                      padding:   EdgeInsets.only(right: 10.w),
                       child: Image.asset(
                         'assets/images/up_arrow.png',
                         //width: 20,
@@ -294,7 +316,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                 //width: 5,
                 color: Colors.black12,
                 thickness: 1,
-                height: 30,
+                height: 30.h,
                 indent: 10.0,
                 endIndent: 10.0,
               ),
@@ -305,14 +327,14 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                 child: Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(left: 20),
+                      padding:   EdgeInsets.only(left: 20.w),
                       child: Image.asset(
                         'assets/images/privacy_policy.png',
                         // width: 20,
                       ),
                     ),
                     SizedBox(
-                      width: 20,
+                      width: 20.w,
                     ),
                     Text(
                       "Privacy Policy",
@@ -320,7 +342,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                     ),
                     Spacer(),
                     Padding(
-                      padding: const EdgeInsets.only(right: 10),
+                      padding:  EdgeInsets.only(right: 10.w),
                       child: Icon(Icons.arrow_forward_ios_outlined),
                     ),
                   ],
@@ -330,7 +352,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                 //width: 5,
                 color: Colors.black12,
                 thickness: 1,
-                height: 30,
+                height: 30.h,
                 indent: 10.0,
                 endIndent: 10.0,
               ),
@@ -405,17 +427,17 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                 endIndent: 10.0,
               ),
               SizedBox(
-                height: 30,
+                height: 35.h,
               ),
               Text(
                 "Follow Us",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               SizedBox(
-                height: 20,
+                height: 10.h,
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 60),
+                padding: EdgeInsets.symmetric(horizontal: 60.w),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [

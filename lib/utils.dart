@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:offersapp/generated/assets.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -70,7 +71,12 @@ showLoaderDialog(BuildContext context) {
       children: [
         CircularProgressIndicator(),
         Container(
-            margin: EdgeInsets.only(left: 7), child: Text("Pleas wait...")),
+          margin: EdgeInsets.only(left: 7),
+          child: Text(
+            "Pleas wait...",
+            style: TextStyle(fontSize: 12.sp),
+          ),
+        ),
       ],
     ),
   );

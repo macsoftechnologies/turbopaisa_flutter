@@ -80,12 +80,21 @@ class _HomePageState extends State<HomePage> {
         Container(
           width: 64.w,
           height: 64.h,
-          decoration: ShapeDecoration(
-            color: color, //Color(0xFFF0DA40),
-            shape: RoundedRectangleBorder(
-              side: BorderSide(width: 1, color: Color(0xFFF3F6FF)),
-              borderRadius: BorderRadius.circular(464),
+          // decoration: ShapeDecoration(
+          //   color: color, //Color(0xFFF0DA40),
+          //   shape: RoundedRectangleBorder(
+          //     side: BorderSide(width: 1, color: Color(0xFFF3F6FF)),
+          //     borderRadius: BorderRadius.circular(464),
+          //   ),
+          // ),
+          decoration: BoxDecoration(
+            border: Border.fromBorderSide(
+              BorderSide(
+                width: 2.w,
+                color: Color(0xFFF3F6FF),
+              ),
             ),
+            shape: BoxShape.circle, color: color, //Color(0xFFF0DA40),
           ),
           child: Image.asset(
             image,
