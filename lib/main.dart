@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:offersapp/pages/otp_verification_page.dart';
 import 'package:offersapp/pages/registration_new.dart';
 import 'package:offersapp/pages/splashscreen_page.dart';
 import 'package:offersapp/utils.dart';
@@ -25,7 +26,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(375, 812), //figma reference
+      designSize: const Size(375, 812),
+      //figma reference
       minTextAdapt: true,
       splitScreenMode: true,
       // Use builder only if you need to use library outside ScreenUtilInit context
@@ -35,28 +37,29 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             primaryColor: AppColors.primaryColor1,
-            colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primaryColor),
+            colorScheme:
+                ColorScheme.fromSeed(seedColor: AppColors.primaryColor),
             // fontFamily: "Poppins"
             textTheme:
-                GoogleFonts.poppinsTextTheme(),//.apply(fontSizeFactor: 1.sp),
+                GoogleFonts.poppinsTextTheme(), //.apply(fontSizeFactor: 1.sp),
             // useMaterial3: true,
           ),
           home: SplashScreenPage(),
-          // home: RegistrationPageNew(),
+          // home: VerificationPage(),
         );
       },
     );
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primaryColor: AppColors.primaryColor1,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        // fontFamily: "Poppins"
-        textTheme: GoogleFonts.poppinsTextTheme(),
-        // useMaterial3: true,
-      ),
-      // home: SplashScreenPage(),
-      home: RegistrationPageNew(),
-    );
+    // return MaterialApp(
+    //   title: 'Flutter Demo',
+    //   theme: ThemeData(
+    //     primaryColor: AppColors.primaryColor1,
+    //     colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+    //     // fontFamily: "Poppins"
+    //     textTheme: GoogleFonts.poppinsTextTheme(),
+    //     // useMaterial3: true,
+    //   ),
+    //   // home: SplashScreenPage(),
+    //   home: RegistrationPageNew(),
+    // );
   }
 }

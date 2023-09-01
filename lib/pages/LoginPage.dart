@@ -181,7 +181,7 @@ class _LoginPageState extends State<LoginPage> {
                             child: Column(
                               children: [
                                 Text(
-                                  'Welcome Back ',
+                                  'Welcome',
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 18.sp,

@@ -31,17 +31,31 @@ class DashboardPage extends StatefulWidget {
   State<DashboardPage> createState() => _DashboardPageState();
 }
 
-class _DashboardPageState extends State<DashboardPage> {
+class _DashboardPageState extends State<DashboardPage>
+    with SingleTickerProviderStateMixin {
   int selectedPos = 0;
 
   int selectTab = 0;
 
   late CircularBottomNavigationController _navigationController;
 
+  late double _screenWidth;
+  late final AnimationController _animationController;
+  late NotchBottomBarController notchBottomBarController;
+
   @override
   void initState() {
     super.initState();
+    notchBottomBarController = NotchBottomBarController(index: 0);
     _navigationController = CircularBottomNavigationController(selectedPos);
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+    // kHeight = 62.0;
+    // kMargin = 14.0;
+    notchBottomBarController.addListener(() {
+      _animationController.reset();
+      _animationController.forward();
+    });
   }
 
   final List<Widget> _widgetOptions = <Widget>[
@@ -67,6 +81,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
+    _screenWidth = MediaQuery.of(context).size.width;
     var tabTextStyle = TextStyle(
       fontSize: 9.sp,
       fontWeight: FontWeight.w600,
@@ -133,7 +148,7 @@ class _DashboardPageState extends State<DashboardPage> {
         ),
       ),
     );
-    // bottomNavigationBar: buildCustomBottomAppBar(),
+    // bottomNavigationBar: buildCustomBottomAppBar());
   }
 
   Future<void> loadSpinWheel() async {
@@ -146,11 +161,11 @@ class _DashboardPageState extends State<DashboardPage> {
       var list = await client.getSpins(data.userId ?? "");
       Navigator.pop(context);
       //
-      if (list[0].spin_status != 0) {
-        // showSnackBar(context, "Offers are not available");
-        showBottomSheetMessage();
-        return;
-      }
+      // if (list[0].spin_status != 0) {
+      //   // showSnackBar(context, "Offers are not available");
+      //   showBottomSheetMessage();
+      //   return;
+      // }
       //
       Navigator.of(context).push(
         TutorialOverlay(
@@ -183,25 +198,150 @@ class _DashboardPageState extends State<DashboardPage> {
     // });
   }
 
+  // int oldIndex = -1;
+  // int index = 0;
+  bool _isInitial = true;
+
+  var tabs = [
+    {
+      "title": "Home",
+      "icon": Assets.imagesHomeIcon,
+    },
+    {
+      "title": "Wallet",
+      "icon": Assets.imagesWalletIcon,
+    },
+    {
+      "title": "Refer&Earn",
+      "icon": Assets.imagesReferFriend,
+    },
+    {
+      "title": "Settings",
+      "icon": Assets.imagesProflieImage,
+    },
+  ];
+
   Widget buildCustomBottomAppBar() {
-    return Stack(clipBehavior: Clip.none, children: <Widget>[
-      CustomPaint(
-        size: Size(MediaQuery.of(context).size.width, 60.h),
-        painter: BottomBarPainter(
-            position: MediaQuery.of(context).size.width * selectTab,
-            color: Colors.white,
-            showShadow: false,
-            notchColor: Colors.green.shade300),
-      ),
-      Positioned(
-        left: kCircleRadius,
-        top: kMargin,
-        child: Icon(
-          Icons.home,
-          size: 20,
-        ),
-      ),
-    ]);
+    return AnimatedBuilder(
+      builder: (BuildContext _, Widget? __) {
+        ///to set any initial page
+        double scrollPosition = notchBottomBarController.index.toDouble();
+        int? currentIndex = notchBottomBarController.index;
+        if (notchBottomBarController.oldIndex != null) {
+          _isInitial = false;
+          scrollPosition = Tween<double>(
+                  begin: notchBottomBarController.oldIndex!.toDouble(),
+                  end: notchBottomBarController.index.toDouble())
+              // ignore: invalid_use_of_protected_member
+              .lerp(_animationController.value);
+          currentIndex = notchBottomBarController.index;
+        } else {
+          scrollPosition = notchBottomBarController.index.toDouble();
+          currentIndex = notchBottomBarController.index;
+        }
+        var height = kHeight + kMargin * 2;
+        return Stack(clipBehavior: Clip.none, children: <Widget>[
+          CustomPaint(
+            size: Size(_screenWidth, height.h),
+            painter: BottomBarPainter(
+                position: _itemPosByScrollPosition(scrollPosition),
+                color: Colors.white,
+                showShadow: false,
+                notchColor: Colors.green.shade300),
+          ),
+          // Positioned(
+          //   left: kCircleRadius,
+          //   top: kMargin,
+          //   child: Icon(
+          //     Icons.home,
+          //     size: 20,
+          //   ),
+          // ),
+
+          for (var i = 0; i < 4; i++) ...[
+            if (i == currentIndex &&
+                (_animationController.value == 1.0 || _isInitial))
+              Positioned(
+                top: -kCircleMargin / 2, //kTopMargin,
+                left: kCircleRadius -
+                    kCircleMargin / 2 +
+                    _itemPosByScrollPosition(scrollPosition),
+                child: InkWell(
+                  onTap: () {
+                    notchBottomBarController.jumpTo(i);
+                  },
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        tabs[i]['icon'] ?? "",
+                        height: 30,
+                      ),
+                      SizedBox(
+                        height: kCircleMargin,
+                      ),
+                      Text(
+                        tabs[i]['title'] ?? "",
+                        style: TextStyle(
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            if (i != currentIndex)
+              Positioned(
+                top: kMargin + (kHeight - kCircleRadius * 2) / 2,
+                left: kCircleMargin + _itemPosByIndex(i),
+                child: InkWell(
+                  onTap: () {
+                    print(i);
+                    notchBottomBarController.jumpTo(i);
+                  },
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        tabs[i]['icon'] ?? "",
+                        height: 30,
+                      ),
+                      Text(
+                        tabs[i]['title'] ?? "",
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+          ],
+        ]);
+      },
+      animation: _animationController,
+    );
+  }
+
+  int bottomBarItems = 4;
+
+  double _firstItemPosition(double spaceParameter) {
+    return (_screenWidth - kMargin * 2) * spaceParameter;
+  }
+
+  double _lastItemPosition(double spaceParameter) {
+    return _screenWidth -
+        (_screenWidth - kMargin * 2) * spaceParameter -
+        (kCircleRadius + kCircleMargin) * 2;
+  }
+
+  double _itemDistance() {
+    return (_lastItemPosition(0.05) - _firstItemPosition(0.05)) /
+        (bottomBarItems - 1);
+  }
+
+  double _itemPosByScrollPosition(double scrollPosition) {
+    return _firstItemPosition(0.05) + _itemDistance() * scrollPosition;
+  }
+
+  double _itemPosByIndex(int index) {
+    return _firstItemPosition(0.05) + _itemDistance() * index;
   }
 }
 
@@ -252,5 +392,18 @@ class GreenClipperReverse extends CustomClipper<Path> {
   @override
   bool shouldReclip(CustomClipper oldClipper) {
     return true;
+  }
+}
+
+class NotchBottomBarController extends ChangeNotifier {
+  int index;
+  int? oldIndex;
+
+  NotchBottomBarController({this.index = 0});
+
+  jumpTo(int index) {
+    oldIndex = this.index;
+    this.index = index;
+    notifyListeners();
   }
 }

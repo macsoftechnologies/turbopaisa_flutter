@@ -529,93 +529,99 @@ class _HomePageState extends State<HomePage> {
             shrinkWrap: true,
             itemBuilder: (context, index) {
               return true
-                  ? Container(
-                      margin: EdgeInsets.symmetric(
-                          horizontal: 20.w, vertical: 10.h),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 6.w, vertical: 6.w),
-                      width: 335,
-                      height: 87,
-                      decoration: ShapeDecoration(
-                        color: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6.67),
+                  ? InkWell(
+                      onTap: () {
+                        navigateToNext(
+                            context, OfferDetailsPage(data: offersData[index]));
+                      },
+                      child: Container(
+                        margin: EdgeInsets.symmetric(
+                            horizontal: 20.w, vertical: 10.h),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 6.w, vertical: 6.w),
+                        width: 335,
+                        height: 87,
+                        decoration: ShapeDecoration(
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6.67),
+                          ),
+                          shadows: [
+                            BoxShadow(
+                              color: Color(0x11000000),
+                              blurRadius: 38.33,
+                              offset: Offset(2.32, 8),
+                              spreadRadius: 0,
+                            )
+                          ],
                         ),
-                        shadows: [
-                          BoxShadow(
-                            color: Color(0x11000000),
-                            blurRadius: 38.33,
-                            offset: Offset(2.32, 8),
-                            spreadRadius: 0,
-                          )
-                        ],
-                      ),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 100.w,
-                            height: 75.h,
-                            decoration: ShapeDecoration(
-                              image: DecorationImage(
-                                image: NetworkImage(offersData[index]
-                                    .images![0]
-                                    .image
-                                    .toString()),
-                                fit: BoxFit.cover,
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 100.w,
+                              height: 75.h,
+                              decoration: ShapeDecoration(
+                                image: DecorationImage(
+                                  image: NetworkImage(offersData[index]
+                                      .images![0]
+                                      .image
+                                      .toString()),
+                                  fit: BoxFit.cover,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(6)),
                               ),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(6)),
                             ),
-                          ),
-                          SizedBox(
-                            width: 23.w,
-                          ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  height: 4.h,
-                                ),
-                                Text(
-                                  offersData[index].offerTitle ?? "",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 12,
-                                    // fontFamily: 'Poppins',
-                                    fontWeight: FontWeight.w600,
-                                    height: 1.38,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 2.h,
-                                ),
-                                Text(
-                                  offersData[index].offerDesc ?? "",
-                                  maxLines: 2,
-                                  style: TextStyle(
-                                    color: Color(0xFF8C8C8C),
-                                    fontSize: 8,
-                                    // fontFamily: 'Poppins',
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 7.h,
-                                ),
-                                Text(
-                                  "₹ ${offersData[index].offerAmount ?? ""}",
-                                  style: TextStyle(
-                                    color: Color(0xFFED3E55),
-                                    fontSize: 10,
-                                    fontFamily: 'Poppins',
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
+                            SizedBox(
+                              width: 23.w,
                             ),
-                          ),
-                        ],
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    height: 4.h,
+                                  ),
+                                  Text(
+                                    offersData[index].offerTitle ?? "",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 12,
+                                      // fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w600,
+                                      height: 1.38,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 2.h,
+                                  ),
+                                  Text(
+                                    offersData[index].offerDesc ?? "",
+                                    maxLines: 2,
+                                    style: TextStyle(
+                                      color: Color(0xFF8C8C8C),
+                                      fontSize: 8,
+                                      // fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 7.h,
+                                  ),
+                                  Text(
+                                    "₹ ${offersData[index].offerAmount ?? ""}",
+                                    style: TextStyle(
+                                      color: Color(0xFFED3E55),
+                                      fontSize: 10,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     )
                   : InkWell(
