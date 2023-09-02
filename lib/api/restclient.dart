@@ -16,6 +16,7 @@ import 'PrettyDioLogger.dart';
 import 'StringResponseConverter.dart';
 import 'model/OffersData.dart';
 import 'model/UserData.dart';
+import 'model/verify_otp_response.dart';
 
 part 'restclient.g.dart';
 
@@ -107,6 +108,9 @@ abstract class RestClient {
   Future<RegistrationResponse> forgotPassword(
       @Body() Map<String, String> loginRequestBody);
 
+  @POST("users/verifyOtp")
+  Future<VerifyOTPResponse> verifyOtp(@Body() Map<String, String> body);
+
   @GET("offers/getOffers")
   Future<List<OffersData>> getOffers(@Query("user_id") String userId);
 
@@ -133,7 +137,5 @@ abstract class RestClient {
   Future<List<SpinWheelResponse>> getSpins(@Query("user_id") String userId);
 
   @POST("spin/spinUserinsert")
-  Future<RegistrationResponse> spinUserinsert(
-      @Body() Map<String, String> body);
-
+  Future<RegistrationResponse> spinUserinsert(@Body() Map<String, String> body);
 }

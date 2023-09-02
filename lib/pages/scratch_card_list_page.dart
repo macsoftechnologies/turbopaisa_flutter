@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:offersapp/api/model/ScratchCardResponse.dart';
 import 'package:offersapp/api/model/UserData.dart';
 import 'package:offersapp/api/restclient.dart';
@@ -211,44 +212,76 @@ class _ScratchCardListPageState extends State<ScratchCardListPage> {
                   height: 20,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                      width: 140.w,
+                      height: 53.h,
+                      // padding:
+                      //     EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                       decoration: BoxDecoration(
-                          color: Color(0xFFE3EAFF),
+                          color: Colors.white,
+                          border: Border.fromBorderSide(
+                            BorderSide(color: Color(0xFFD6E0FF), width: 1),
+                          ),
                           borderRadius: BorderRadius.circular(10)),
                       child: Column(
-                        //crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
                             "₹ ${scratchCardResponse?.moneywon?.toStringAsFixed(2) ?? "0.00"}",
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w600,
+                              height: 1.19,
+                            ),
                           ),
                           Text(
                             "Money Won",
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 9.sp,
+                              fontWeight: FontWeight.w600,
+                              height: 1.84,
+                            ),
                           ),
                         ],
                       ),
                     ),
+                    SizedBox(
+                      width: 20.w,
+                    ),
                     Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                      width: 140.w,
+                      height: 53.h,
+                      // padding:
+                      //     EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                       decoration: BoxDecoration(
-                          color: Color(0xFFE3EAFF),
+                          color: Color(0xFFED3E55),
                           borderRadius: BorderRadius.circular(10)),
                       child: Column(
-                        //crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
                             "${scratchCardResponse?.scratchcardwon ?? "0"}",
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              height: 1.19,
+                            ),
                           ),
                           Text(
-                            "Scratch Cards Won",
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            'Scratch Cards Won',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 9,
+                              fontWeight: FontWeight.w600,
+                              height: 1.84,
+                            ),
                           ),
                         ],
                       ),
@@ -264,7 +297,8 @@ class _ScratchCardListPageState extends State<ScratchCardListPage> {
                     child: Center(child: Text("No Scatchcards Available.")),
                   ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 10.w, vertical: 14.h),
                   child: GridView.builder(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),

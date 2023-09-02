@@ -1,19 +1,33 @@
+import 'dart:collection';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:offersapp/api/model/UserData.dart';
+import 'package:offersapp/api/model/verify_otp_response.dart';
+import 'package:offersapp/api/restclient.dart';
 import 'package:offersapp/generated/assets.dart';
 import 'package:offersapp/pages/dashboard_page.dart';
+import 'package:offersapp/utils.dart';
 import 'package:offersapp/utils/app_colors.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class VerificationPage extends StatefulWidget {
-  const VerificationPage({Key? key}) : super(key: key);
+  final int userId;
+  final String mobile;
+
+  VerificationPage({Key? key, required this.userId, required this.mobile})
+      : super(key: key);
 
   @override
   State<VerificationPage> createState() => _VerificationPageState();
 }
 
 class _VerificationPageState extends State<VerificationPage> {
+  String otp = "";
+
   @override
   Widget build(BuildContext context) {
     var commonSpace = 16.h;
@@ -107,7 +121,6 @@ class _VerificationPageState extends State<VerificationPage> {
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 18.sp,
-                                fontFamily: 'Poppins',
                                 fontWeight: FontWeight.w600,
                                 // height: 0.97,
                               ),
@@ -131,7 +144,7 @@ class _VerificationPageState extends State<VerificationPage> {
                         height: 5.h,
                       ),
                       Text(
-                        '+91 98765 43210',
+                        '${widget.mobile}',
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 16,
@@ -194,22 +207,17 @@ class _VerificationPageState extends State<VerificationPage> {
                               blurRadius: 10,
                             )
                           ],
-                          onCompleted: (v) {},
-                          // onTap: () {
-                          //   print("Pressed");
-                          // },
-                          // onChanged: (value) {
-                          // debugPrint(value);
-                          // setState(() {
-                          // currentText = value;
-                          // });
-                          // },
+                          onCompleted: (v) {
+                            otp = v;
+                          },
                           beforeTextPaste: (text) {
                             //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
                             //but you can show anything you want here, like your pop up saying wrong paste format or etc
                             return true;
                           },
-                          onChanged: (String value) {},
+                          onChanged: (String value) {
+                            otp = value;
+                          },
                         ),
                       ),
 
@@ -240,23 +248,28 @@ class _VerificationPageState extends State<VerificationPage> {
                         height: 64.h,
                         child: Container(),
                       ),
-                      Container(
-                        width: 250.w,
-                        height: 40.h,
-                        decoration: ShapeDecoration(
-                          color: Color(0xFFED3E55),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6.67),
+                      InkWell(
+                        onTap: () {
+                          submitOTP();
+                        },
+                        child: Container(
+                          width: 250.w,
+                          height: 40.h,
+                          decoration: ShapeDecoration(
+                            color: Color(0xFFED3E55),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6.67),
+                            ),
                           ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Verify',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 13.33,
-                              fontWeight: FontWeight.w600,
-                              height: 1.24,
+                          child: Center(
+                            child: Text(
+                              'Verify',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 13.33,
+                                fontWeight: FontWeight.w600,
+                                height: 1.24,
+                              ),
                             ),
                           ),
                         ),
@@ -291,5 +304,34 @@ class _VerificationPageState extends State<VerificationPage> {
         ),
       ),
     );
+  }
+
+  Future<void> submitOTP() async {
+    try {
+      showLoaderDialog(context);
+      final client = await RestClient.getRestClient();
+      Map<String, String> body = HashMap();
+      body.putIfAbsent("user_id", () => widget.userId.toString());
+      body.putIfAbsent("otp", () => otp);
+
+      VerifyOTPResponse data = await client.verifyOtp(body);
+      if (data.status != 200) {
+        showSnackBar(context, data.message ?? "");
+        Navigator.pop(context);
+      } else {
+        Navigator.pop(context);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString("user", jsonEncode(data.result!));
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
+          builder: (context) {
+            return DashboardPage();
+          },
+        ), (route) => false);
+      }
+    } catch (e) {
+      print(e);
+      showSnackBar(context, "Invalid OTP.");
+      Navigator.pop(context);
+    }
   }
 }

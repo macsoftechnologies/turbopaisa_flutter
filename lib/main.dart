@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:offersapp/pages/otp_verification_page.dart';
-import 'package:offersapp/pages/registration_new.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:offersapp/pages/splashscreen_page.dart';
-import 'package:offersapp/utils.dart';
 import 'package:offersapp/utils/app_colors.dart';
 
 Future<void> main() async {
@@ -15,6 +13,8 @@ Future<void> main() async {
     statusBarColor: AppColors.primaryDarkColor, // status bar color
   ));
   await ScreenUtil.ensureScreenSize();
+  MobileAds.instance.initialize(); //<-- SEE HERE
+//RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("C1E4BB6BF7CC212BD14A28E2F8585667"))
 
   runApp(const MyApp());
 }

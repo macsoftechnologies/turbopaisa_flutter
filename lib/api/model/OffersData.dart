@@ -8,6 +8,7 @@ class OffersData {
   String? startDate;
   String? endDate;
   String? url;
+  bool? isBanner;
   List<Images>? images;
 
   OffersData(
@@ -19,7 +20,9 @@ class OffersData {
       this.startDate,
       this.endDate,
       this.url,
-      this.images,this.offerTagline});
+      this.images,
+      this.offerTagline,
+      this.isBanner = false});
 
   OffersData.fromJson(Map<String, dynamic> json) {
     offerId = json['offer_id'];

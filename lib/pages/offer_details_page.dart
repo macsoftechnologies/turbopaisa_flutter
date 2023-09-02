@@ -25,135 +25,207 @@ class _OfferDetailsPageState extends State<OfferDetailsPage> {
         backgroundColor: AppColors.primaryColor,
         title: Text(
           widget.data.offerTitle ?? "",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            height: 1.19,
+          ),
         ),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Container(
+          decoration: BoxDecoration(gradient: AppColors.appLoginGradientBg),
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 25.h),
           child: Column(
             children: [
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.network(widget.data.images![0].image.toString(),
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                      height: 160,
-                      errorBuilder: (context, error, stackTrace) => Image.asset(
-                            placeHolder,
-                            height: 160.h,
-                          )),
-                ),
-              ),
-              // SizedBox(
-              //   height: 20,
+              // ClipRRect(
+              //   borderRadius: BorderRadius.circular(10),
+              //   child: Image.network(widget.data.images![0].image.toString(),
+              //       fit: BoxFit.cover,
+              //       width: double.infinity,
+              //       height: 130.h,
+              //       errorBuilder: (context, error, stackTrace) => Image.asset(
+              //             placeHolder,
+              //             height: 130.h,
+              //           )),
               // ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.data.offerTitle ?? "",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
-                        ),
-                        Text(
-                          widget.data.offerTagline ?? "",
-                        )
-                      ],
-                    ),
-                    Container(
-                      //width: 250,
-                      padding: EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: AppColors.accentColor,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Text(
-                            "Get ₹ ${widget.data.offerAmount}",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Divider(
-                thickness: 2,
-                indent: 20,
-                endIndent: 20,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "About application",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Icon(Icons.keyboard_arrow_down)
-                      ],
-                    ),
-                    Text(
-                        // "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum doloreLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore",
-                        widget.data.offerDesc ?? "",
-                        textAlign: TextAlign.justify),
-                  ],
-                ),
-              ),
-              Divider(
-                thickness: 2,
-                indent: 20,
-                endIndent: 20,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Task (0/1)",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Icon(Icons.keyboard_arrow_down)
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      "Install Now ",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text("Install the app in your smartphone"),
+              Container(
+                width: 335.w,
+                height: 130.h,
+                decoration: ShapeDecoration(
+                  image: DecorationImage(
+                    image:
+                        NetworkImage(widget.data.images![0].image.toString()),
+                    fit: BoxFit.cover,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6.67),
+                  ),
+                  shadows: [
+                    BoxShadow(
+                      color: Color(0x11000000),
+                      blurRadius: 38.33,
+                      offset: Offset(2.32, 8),
+                      spreadRadius: 0,
+                    )
                   ],
                 ),
               ),
               SizedBox(
+                height: 25.h,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.data.offerTitle ?? "",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 18),
+                      ),
+                      Text(
+                        // widget.data.offerTagline ?? "",
+                        "Register",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          height: 1.38,
+                        ),
+                      )
+                    ],
+                  ),
+                  InkWell(
+                    onTap: () {
+                      _launchUrl(widget.data.url ?? "");
+                    },
+                    child: Container(
+                      constraints: BoxConstraints(minWidth: 83.w),
+                      height: 30.h,
+                      decoration: BoxDecoration(
+                        color: Color(0xFFED3E55),
+                        borderRadius: BorderRadius.circular(10.w),
+                      ),
+                      child: Center(
+                        child: Text(
+                          "Get ₹ ${widget.data.offerAmount}",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w600,
+                            height: 1.38,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 20.h,
+              ),
+              Divider(
+                thickness: 1.h,
+              ),
+              SizedBox(
+                height: 20.h,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "About application",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          height: 1.38,
+                        ),
+                      ),
+                      Icon(Icons.keyboard_arrow_down)
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  Text(
+                      // "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum doloreLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore",
+                      widget.data.offerDesc ?? "",
+                      textAlign: TextAlign.justify,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 10.sp,
+                        fontWeight: FontWeight.w500,
+                      )),
+                ],
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              Divider(
+                thickness: 1,
+                indent: 1,
+                endIndent: 1,
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Task (0/1)",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          height: 1.38,
+                        ),
+                      ),
+                      Icon(Icons.keyboard_arrow_down)
+                    ],
+                  ),
+                  SizedBox(
+                    height: 12.h,
+                  ),
+                  Text(
+                    "Install Now ",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  Text(
+                    "Install the app in your smartphone",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 10.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
                 height: 20,
               ),
-              Divider(),
+              Divider(
+                thickness: 1.h,
+              ),
               SizedBox(
                 height: 30,
               ),
@@ -162,17 +234,24 @@ class _OfferDetailsPageState extends State<OfferDetailsPage> {
                 text: TextSpan(
                   text: '12,000 ',
                   style: TextStyle(
-                    color: AppColors.accentColor,
+                    color: Color(0xFFED3E55),
+                    fontSize: 10,
+                    fontWeight: FontWeight.w500,
                   ),
                   children: <TextSpan>[
                     TextSpan(
-                        text: 'Users have already participated',
-                        style: TextStyle(color: Colors.black)),
+                      text: 'Users have already participated',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ],
                 ),
               ),
               SizedBox(
-                height: 20,
+                height: 20.h,
               ),
 
               InkWell(
@@ -181,17 +260,21 @@ class _OfferDetailsPageState extends State<OfferDetailsPage> {
                 },
                 child: Container(
                   width: 250,
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: AppColors.accentColor,
-                    borderRadius: BorderRadius.circular(10),
+                  height: 40,
+                  decoration: ShapeDecoration(
+                    color: Color(0xFFED3E55),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6.67),
+                    ),
                   ),
                   child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Text(
-                        "Register Now",
-                        style: TextStyle(color: Colors.white),
+                    child: Text(
+                      'Register Now',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 13.33,
+                        fontWeight: FontWeight.w600,
+                        height: 1.24,
                       ),
                     ),
                   ),

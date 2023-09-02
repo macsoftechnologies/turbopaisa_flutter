@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ import 'package:offersapp/pages/task_page.dart';
 import 'package:offersapp/pages/tutorial_page.dart';
 import 'package:offersapp/utils.dart';
 import 'package:offersapp/utils/app_colors.dart';
+import 'package:offersapp/widgets/banner_ad.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -291,6 +293,7 @@ class _HomePageState extends State<HomePage> {
                   strokeWidth: 1,
                 ),
               ),
+            // BannerAdWidget(),
             if (_selectedIndex == 0) buildAllOffers(allOffers),
             if (_selectedIndex == 1) buildAllOffers(myOffers),
             if (_selectedIndex == 2) buildAllOffers(upcomingOffers),
@@ -422,50 +425,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // Widget buildBanners() {
-  //   return Container(
-  //     // padding: EdgeInsets.all(10),
-  //     height: 160,
-  //     child: PageView(
-  //       children: [
-  //         Padding(
-  //           padding: const EdgeInsets.all(8.0),
-  //           child: ClipRRect(
-  //             borderRadius: BorderRadius.circular(20),
-  //             child: Image.network(
-  //               "https://previews.123rf.com/images/pattarasin/pattarasin1709/pattarasin170900006/85482183-sale-banner-template-design-big-sale-special-offer-end-of-season-special-offer-banner-vector.jpg",
-  //               fit: BoxFit.cover,
-  //             ),
-  //           ),
-  //         ),
-  //         Padding(
-  //           padding: const EdgeInsets.all(8.0),
-  //           child: ClipRRect(
-  //             borderRadius: BorderRadius.circular(20),
-  //             child: Image.network(
-  //               "https://www.shutterstock.com/image-vector/weekend-sale-special-offer-banner-260nw-794599204.jpg",
-  //               fit: BoxFit.cover,
-  //             ),
-  //           ),
-  //         ),
-  //         Padding(
-  //           padding: const EdgeInsets.all(8.0),
-  //           child: ClipRRect(
-  //             borderRadius: BorderRadius.circular(20),
-  //             child: Image.network(
-  //               "https://d2gg9evh47fn9z.cloudfront.net/800px_COLOURBOX47341799.jpg",
-  //               fit: BoxFit.cover,
-  //             ),
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
-
-  // PageController _pageController =
-  //     PageController(initialPage: 0, viewportFraction: 0.9);
-
   Widget buildBanners() {
     return Container(
       // padding: EdgeInsets.all(10),
@@ -528,215 +487,103 @@ class _HomePageState extends State<HomePage> {
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemBuilder: (context, index) {
-              return true
-                  ? InkWell(
-                      onTap: () {
-                        navigateToNext(
-                            context, OfferDetailsPage(data: offersData[index]));
-                      },
-                      child: Container(
-                        margin: EdgeInsets.symmetric(
-                            horizontal: 20.w, vertical: 10.h),
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 6.w, vertical: 6.w),
-                        width: 335,
-                        height: 87,
+              if (offersData[index].isBanner == true) {
+                return BannerAdWidget();
+              }
+              return InkWell(
+                onTap: () {
+                  navigateToNext(
+                      context, OfferDetailsPage(data: offersData[index]));
+                },
+                child: Container(
+                  margin:
+                      EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+                  padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 6.w),
+                  width: 335,
+                  height: 87,
+                  decoration: ShapeDecoration(
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6.67),
+                    ),
+                    shadows: [
+                      BoxShadow(
+                        color: Color(0x11000000),
+                        blurRadius: 38.33,
+                        offset: Offset(2.32, 8),
+                        spreadRadius: 0,
+                      )
+                    ],
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 100.w,
+                        height: 75.h,
                         decoration: ShapeDecoration(
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6.67),
+                          image: DecorationImage(
+                            image: NetworkImage(
+                                offersData[index].images![0].image.toString()),
+                            fit: BoxFit.cover,
                           ),
-                          shadows: [
-                            BoxShadow(
-                              color: Color(0x11000000),
-                              blurRadius: 38.33,
-                              offset: Offset(2.32, 8),
-                              spreadRadius: 0,
-                            )
-                          ],
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6)),
                         ),
-                        child: Row(
+                      ),
+                      SizedBox(
+                        width: 23.w,
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              width: 100.w,
-                              height: 75.h,
-                              decoration: ShapeDecoration(
-                                image: DecorationImage(
-                                  image: NetworkImage(offersData[index]
-                                      .images![0]
-                                      .image
-                                      .toString()),
-                                  fit: BoxFit.cover,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(6)),
+                            SizedBox(
+                              height: 4.h,
+                            ),
+                            Text(
+                              offersData[index].offerTitle ?? "",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 12,
+                                // fontFamily: 'Poppins',
+                                fontWeight: FontWeight.w600,
+                                height: 1.38,
                               ),
                             ),
                             SizedBox(
-                              width: 23.w,
+                              height: 2.h,
                             ),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(
-                                    height: 4.h,
-                                  ),
-                                  Text(
-                                    offersData[index].offerTitle ?? "",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12,
-                                      // fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w600,
-                                      height: 1.38,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 2.h,
-                                  ),
-                                  Text(
-                                    offersData[index].offerDesc ?? "",
-                                    maxLines: 2,
-                                    style: TextStyle(
-                                      color: Color(0xFF8C8C8C),
-                                      fontSize: 8,
-                                      // fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 7.h,
-                                  ),
-                                  Text(
-                                    "₹ ${offersData[index].offerAmount ?? ""}",
-                                    style: TextStyle(
-                                      color: Color(0xFFED3E55),
-                                      fontSize: 10,
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ],
+                            Text(
+                              offersData[index].offerDesc ?? "",
+                              maxLines: 2,
+                              style: TextStyle(
+                                color: Color(0xFF8C8C8C),
+                                fontSize: 8,
+                                // fontFamily: 'Poppins',
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 7.h,
+                            ),
+                            Text(
+                              "₹ ${offersData[index].offerAmount ?? ""}",
+                              style: TextStyle(
+                                color: Color(0xFFED3E55),
+                                fontSize: 10,
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                           ],
                         ),
                       ),
-                    )
-                  : InkWell(
-                      onTap: () {
-                        navigateToNext(
-                            context, OfferDetailsPage(data: offersData[index]));
-                        //_launchUrl(offersData[index].url ?? "");
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Card(
-                            shadowColor: Colors.white,
-                            elevation: 2,
-                            child: Container(
-                              padding: EdgeInsets.all(10),
-                              child: Row(
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: Image.network(
-                                      offersData[index]
-                                          .images![0]
-                                          .image
-                                          .toString(),
-                                      width: 120,
-                                      height: 75.h,
-                                      fit: BoxFit.cover,
-                                      errorBuilder:
-                                          (context, error, stackTrace) =>
-                                              Image.asset(
-                                        placeHolder,
-                                        width: 120,
-                                        height: 80,
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          offersData[index].offerTitle ?? "",
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 12,
-                                            fontFamily: 'Poppins',
-                                            fontWeight: FontWeight.w600,
-                                            height: 1.38,
-                                          ),
-                                        ),
-                                        Text(
-                                          offersData[index].offerDesc ?? "",
-                                          maxLines: 2,
-                                          style: TextStyle(
-                                            color: Color(0xFF8C8C8C),
-                                            fontSize: 8,
-                                            fontFamily: 'Poppins',
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                        Text(
-                                          "₹ ${offersData[index].offerAmount ?? ""}",
-                                          style: TextStyle(
-                                            color: Color(0xFFED3E55),
-                                            fontSize: 10,
-                                            fontFamily: 'Poppins',
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              // Row(
-                              //   children: [
-                              //     Image.asset(
-                              //       "assets/images/app_logo.jpeg",
-                              //       width: 80,
-                              //       height: 50,
-                              //     ),
-                              //     SizedBox(
-                              //       width: 20,
-                              //     ),
-                              //     Column(
-                              //       crossAxisAlignment: CrossAxisAlignment.start,
-                              //       children: [
-                              //         Text(
-                              //           "Carbury Play pad",
-                              //           style: TextStyle(fontWeight: FontWeight.bold),
-                              //         ),
-                              //         Text(
-                              //           "Learn play AR",
-                              //         ),
-                              //         Text(
-                              //           "50",
-                              //           style: TextStyle(
-                              //               color: Colors.purple,
-                              //               fontWeight: FontWeight.bold,
-                              //               fontSize: 20),
-                              //         ),
-                              //       ],
-                              //     ),
-                              //   ],
-                              // ),
-                            )),
-                      ),
-                    );
+                    ],
+                  ),
+                ),
+              );
             },
-            itemCount: offersData.length,
-          );
+            itemCount: offersData.length);
   }
 
   // List<OffersData> offersData = [];
@@ -756,9 +603,18 @@ class _HomePageState extends State<HomePage> {
 
       final client = await RestClient.getRestClient();
       var list = await client.getOffers(data.userId ?? "");
+      //Insert add placements [START]
+      var tempList = <OffersData>[];
+      for (int i = 0; i < list.length; i++) {
+        if (i != 0 && i % 3 == 0) {
+          tempList.add(OffersData(isBanner: true));
+        }
+        tempList.add(list[i]);
+      }
+      //Insert add placements [END]
       setState(() {
         // offersData = list;
-        allOffers = list;
+        allOffers = tempList;
       });
     } catch (e) {}
     setState(() {
@@ -780,9 +636,18 @@ class _HomePageState extends State<HomePage> {
 
       final client = await RestClient.getRestClient();
       var list = await client.getMyOffer(body);
+      //Insert add placements [START]
+      var tempList = <OffersData>[];
+      for (int i = 0; i < list.length; i++) {
+        if (i != 0 && i % 3 == 0) {
+          tempList.add(OffersData(isBanner: true));
+        }
+        tempList.add(list[i]);
+      }
+      //Insert add placements [END]
       setState(() {
         // offersData = list;
-        myOffers = list;
+        myOffers = tempList;
       });
     } catch (e) {}
     setState(() {
@@ -797,9 +662,18 @@ class _HomePageState extends State<HomePage> {
       });
       final client = await RestClient.getRestClient();
       var list = await client.getUpComingOffers();
+      //Insert add placements [START]
+      var tempList = <OffersData>[];
+      for (int i = 0; i < list.length; i++) {
+        if (i != 0 && i % 3 == 0) {
+          tempList.add(OffersData(isBanner: true));
+        }
+        tempList.add(list[i]);
+      }
+      //Insert add placements [END]
       setState(() {
         // offersData = list;
-        upcomingOffers = list;
+        upcomingOffers = tempList;
       });
     } catch (e) {}
     setState(() {
@@ -816,4 +690,9 @@ class _HomePageState extends State<HomePage> {
       });
     } catch (e) {}
   }
+}
+
+/// The base class for the different types of items the list can contain.
+abstract class ListItem {
+  dynamic buildItem();
 }

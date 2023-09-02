@@ -11,6 +11,7 @@ import 'package:offersapp/api/model/RegistrationResponse.dart';
 import 'package:offersapp/api/restclient.dart';
 import 'package:offersapp/generated/assets.dart';
 import 'package:offersapp/pages/dashboard_page.dart';
+import 'package:offersapp/pages/otp_verification_page.dart';
 import 'package:offersapp/utils.dart';
 
 class RegistrationPageNew extends StatefulWidget {
@@ -405,8 +406,10 @@ class _RegistrationPageNewState extends State<RegistrationPageNew> {
         // SharedPreferences prefs = await SharedPreferences.getInstance();
         // await prefs.setString("user", jsonEncode(data));
         Navigator.pop(context);
-        Navigator.pop(context);
-        showSnackBar(context, data.message ?? "");
+        // Navigator.pop(context);
+        navigateToNext(context,
+            VerificationPage(mobile: _mobile, userId: data.result!.userId!));
+        // showSnackBar(context, data.message ?? "");
       }
     } catch (e) {
       print(e);
