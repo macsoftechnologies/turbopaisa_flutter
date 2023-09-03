@@ -7,6 +7,7 @@ import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
 import 'package:circular_bottom_navigation/tab_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:offersapp/api/model/UserData.dart';
 import 'package:offersapp/api/restclient.dart';
 import 'package:offersapp/generated/assets.dart';
@@ -53,8 +54,13 @@ class _DashboardPageState extends State<DashboardPage>
     // kHeight = 62.0;
     // kMargin = 14.0;
     notchBottomBarController.addListener(() {
+      print("addListener called!");
       _animationController.reset();
       _animationController.forward();
+      setState(() {
+        selectTab = notchBottomBarController.index;
+        print("selected ${selectTab}");
+      });
     });
   }
 
@@ -66,6 +72,8 @@ class _DashboardPageState extends State<DashboardPage>
   ];
 
   Widget getPage(int index) {
+    print(index);
+    // return Text('$index');
     if (index == 0) {
       return HomePage();
     } else if (index == 1) {
@@ -103,52 +111,55 @@ class _DashboardPageState extends State<DashboardPage>
     return Scaffold(
       floatingActionButton: selectTab != 0
           ? null
-          : InkWell(
-              onTap: () {
-                // Navigator.of(context).push(
-                //   TutorialOverlay(
-                //     child: WheelWidget(),
-                //   ),
-                // );
-                loadSpinWheel();
-              },
-              child: Image.asset(
-                Assets.imagesFabWheel,
-                width: 80,
+          : Padding(
+            padding:  EdgeInsets.only(bottom: 135.h),
+            child: InkWell(
+                onTap: () {
+                  loadSpinWheel();
+                },
+                child: Image.asset(
+                  Assets.imagesFabWheel,
+                  width: 80,
+                ),
               ),
-            ),
+          ),
       // backgroundColor: AppColors.appGradientBg ,
       body: SafeArea(
-        child: Container(
-          decoration: BoxDecoration(gradient: AppColors.appGradientBg),
-          child: getPage(selectTab),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            Container(
+              // margin: EdgeInsets.only(bottom: 60.h),
+              decoration: BoxDecoration(gradient: AppColors.appGradientBg),
+              child: Column(
+                children: [
+                  Expanded(child: getPage(selectTab)),
+                  SizedBox(
+                    height: 65.h,
+                  ),
+                ],
+              ),
+            ),
+            Positioned(
+                bottom: 0, left: 0, right: 0, child: buildCustomBottomAppBar()),
+          ],
+        ),
+      ),
+      //   bottomNavigationBar: SafeArea(
+      //     child: CircularBottomNavigation(
+      //       controller: _navigationController,
+      //       tabItems,
+      //       selectedCallback: (value) {
+      //         setState(() {
+      //           selectTab = value!;
+      //         });
+      //       },
+      //     ),
+      //   ),
+      // );
 
-          // Column(
-          //   children: [
-          //
-          //     Expanded(
-          //       child: IndexedStack(
-          //         index: selectTab,
-          //         children: _widgetOptions,
-          //       ),
-          //     ),
-          //   ],
-          // ),
-        ),
-      ),
-      bottomNavigationBar: SafeArea(
-        child: CircularBottomNavigation(
-          controller: _navigationController,
-          tabItems,
-          selectedCallback: (value) {
-            setState(() {
-              selectTab = value!;
-            });
-          },
-        ),
-      ),
+      // bottomNavigationBar: buildCustomBottomAppBar(),
     );
-    // bottomNavigationBar: buildCustomBottomAppBar());
   }
 
   Future<void> loadSpinWheel() async {
@@ -205,19 +216,19 @@ class _DashboardPageState extends State<DashboardPage>
   var tabs = [
     {
       "title": "Home",
-      "icon": Assets.imagesHomeIcon,
+      "icon": Assets.svgTabsHome,
     },
     {
-      "title": "Wallet",
-      "icon": Assets.imagesWalletIcon,
+      "title": "My Wallet",
+      "icon": Assets.svgTabsWallet,
     },
     {
-      "title": "Refer&Earn",
-      "icon": Assets.imagesReferFriend,
+      "title": "Refer & Earn",
+      "icon": Assets.svgTabsShare,
     },
     {
-      "title": "Settings",
-      "icon": Assets.imagesProflieImage,
+      "title": "My Profile",
+      "icon": Assets.svgTabsProfile,
     },
   ];
 
@@ -247,17 +258,8 @@ class _DashboardPageState extends State<DashboardPage>
                 position: _itemPosByScrollPosition(scrollPosition),
                 color: Colors.white,
                 showShadow: false,
-                notchColor: Colors.green.shade300),
+                notchColor: Colors.white),
           ),
-          // Positioned(
-          //   left: kCircleRadius,
-          //   top: kMargin,
-          //   child: Icon(
-          //     Icons.home,
-          //     size: 20,
-          //   ),
-          // ),
-
           for (var i = 0; i < 4; i++) ...[
             if (i == currentIndex &&
                 (_animationController.value == 1.0 || _isInitial))
@@ -272,18 +274,11 @@ class _DashboardPageState extends State<DashboardPage>
                   },
                   child: Column(
                     children: [
-                      Image.asset(
+                      SvgPicture.asset(
                         tabs[i]['icon'] ?? "",
-                        height: 30,
-                      ),
-                      SizedBox(
-                        height: kCircleMargin,
-                      ),
-                      Text(
-                        tabs[i]['title'] ?? "",
-                        style: TextStyle(
-                          fontSize: 12,
-                        ),
+                        height: 23,
+                        width: 23,
+                        color: Color(0xFFED3E55),
                       ),
                     ],
                   ),
@@ -291,7 +286,7 @@ class _DashboardPageState extends State<DashboardPage>
               ),
             if (i != currentIndex)
               Positioned(
-                top: kMargin + (kHeight - kCircleRadius * 2) / 2,
+                top: kMargin + (kHeight - kCircleRadius * 2) / 2 + 5,
                 left: kCircleMargin + _itemPosByIndex(i),
                 child: InkWell(
                   onTap: () {
@@ -300,19 +295,33 @@ class _DashboardPageState extends State<DashboardPage>
                   },
                   child: Column(
                     children: [
-                      Image.asset(
+                      SvgPicture.asset(
                         tabs[i]['icon'] ?? "",
-                        height: 30,
-                      ),
-                      Text(
-                        tabs[i]['title'] ?? "",
-                        style: TextStyle(fontSize: 12),
+                        height: 23,
+                        width: 23,
                       ),
                     ],
                   ),
                 ),
               ),
           ],
+          for (var i = 0; i < 4; i++)
+            if (i == currentIndex)
+              Positioned(
+                bottom: 10,
+                left: kCircleMargin + _itemPosByIndex(i),
+                child: Column(
+                  children: [
+                    Text(
+                      tabs[i]['title'] ?? "",
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Color(0xFFED3E55),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
         ]);
       },
       animation: _animationController,

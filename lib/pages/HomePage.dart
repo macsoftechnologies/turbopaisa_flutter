@@ -428,7 +428,7 @@ class _HomePageState extends State<HomePage> {
   Widget buildBanners() {
     return Container(
       // padding: EdgeInsets.all(10),
-      height: 150,
+      height: 133.h,
       child: PageView.builder(
         controller: PageController(initialPage: 0, viewportFraction: 0.9),
         itemCount: banners.length,

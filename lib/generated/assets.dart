@@ -73,5 +73,9 @@ class Assets {
   static const String imagesWhiteCircle = 'assets/images/white_circle.png';
   static const String imagesYoutubeLogo = 'assets/images/youtube_logo.png';
   static const String svgRegisterRectangle = 'assets/svg/register_rectangle.svg';
+  static const String svgTabsHome = 'assets/svg/tabs_home.svg';
+  static const String svgTabsProfile = 'assets/svg/tabs_profile.svg';
+  static const String svgTabsShare = 'assets/svg/tabs_share.svg';
+  static const String svgTabsWallet = 'assets/svg/tabs_wallet.svg';
 
 }
