@@ -3,11 +3,14 @@ import 'dart:convert';
 
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:offersapp/api/model/RegistrationResponse.dart';
 import 'package:offersapp/api/model/ScratchCardResponse.dart';
 import 'package:offersapp/api/restclient.dart';
+import 'package:offersapp/utils.dart';
 import 'package:scratcher/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../api/model/UserData.dart';
 
@@ -97,18 +100,30 @@ class _ScratchCardPageState extends State<ScratchCardPage> {
                 updateToServer();
               },
               child: Container(
-                height: 260,
-                width: 260,
+                height: 260.w,
+                width: 260.h,
                 color: Colors.white,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Image.asset(
-                      "assets/images/scratch_card_cup.png",
-                      fit: BoxFit.contain,
-                      width: 120,
-                      height: 120,
+                    // Image.asset(
+                    //   "assets/images/scratch_card_cup.png",
+                    //   fit: BoxFit.contain,
+                    //   width: 120,
+                    //   height: 120,
+                    // ),
+                    // getNetworkImage(
+                    //   widget.data.scratchImage ?? "",
+                    //   fit: BoxFit.contain,
+                    //   placeholder: "assets/images/scratch_card_cup.png",
+                    //   width: 135.w,
+                    //   height: 95.h,
+                    // ),
+                    Image.network(
+                      widget.data.scratchImage ?? "",
+                      width: 135.w,
+                      height: 95.h,
                     ),
                     Column(
                       children: [
@@ -127,20 +142,9 @@ class _ScratchCardPageState extends State<ScratchCardPage> {
                             Colors.blue,
                           ],
                         ),
-                        Text(
-                          "Cashback Won",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 26,
-                          ),
-                        ),
-                        Text(
-                          "₹ ${widget.data.scratchAmount}",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 30,
-                          ),
-                        ),
+                        if (widget.data.type == "Cashback") ...buildCashback(),
+                        if (widget.data.type == "Vocher/Discount")
+                          ...buildClaimNow(),
                       ],
                     ),
                   ],
@@ -201,5 +205,114 @@ class _ScratchCardPageState extends State<ScratchCardPage> {
     } catch (e) {
       print(e);
     }
+  }
+
+  String getDesc() {
+    if (widget.data.type == "Cashback") {
+      return widget.data.yellowDesc ?? "";
+    } else if (widget.data.blueDesc?.isEmpty == false) {
+      return widget.data.blueDesc ?? "";
+    }
+    return widget.data.orangeDesc ?? "";
+  }
+
+  List<Widget> buildClaimNow() {
+    return [
+      Text(
+        "₹ ${widget.data.scratchAmount}",
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 24.71,
+          fontFamily: 'Poppins',
+          fontWeight: FontWeight.w600,
+          height: 1.19,
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          "${getDesc()}",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Color(0xFF170F49),
+            fontSize: 12,
+            // fontFamily: 'DM Sans',
+            fontWeight: FontWeight.w700,
+            height: 1.46,
+          ),
+        ),
+      ),
+      SizedBox(
+        height: 13.h,
+      ),
+      InkWell(
+        onTap: () {
+          if (widget.data.url != null && widget.data.url!.isNotEmpty) {
+            launchUrlBrowser(context, widget.data.url ?? "");
+          }
+        },
+        child: Container(
+          width: 132.w,
+          height: 25.h,
+          // padding: const EdgeInsets.symmetric(horizontal: 36.16, vertical: 20.26),
+          clipBehavior: Clip.antiAlias,
+          decoration: ShapeDecoration(
+            color: Color(0xFFED3E55),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+            shadows: [
+              BoxShadow(
+                color: Color(0x3A4A3AFF),
+                blurRadius: 17.08,
+                offset: Offset(0, 9.69),
+                spreadRadius: 0,
+              )
+            ],
+          ),
+          child: Center(
+            child: Text(
+              'Claim Now',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 8,
+                // fontFamily: 'DM Sans',
+                fontWeight: FontWeight.w700,
+                height: 2,
+              ),
+            ),
+          ),
+        ),
+      )
+    ];
+  }
+
+  List<Widget> buildCashback() {
+    return [
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          "${getDesc()}",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Color(0xFF170F49),
+            fontSize: 12,
+            // fontFamily: 'DM Sans',
+            fontWeight: FontWeight.w700,
+            height: 1.46,
+          ),
+        ),
+      ),
+      Text(
+        "₹ ${widget.data.scratchAmount}",
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 24.71,
+          fontFamily: 'Poppins',
+          fontWeight: FontWeight.w600,
+          height: 1.19,
+        ),
+      ),
+    ];
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:offersapp/generated/assets.dart';
@@ -88,10 +89,40 @@ showLoaderDialog(BuildContext context) {
     },
   );
 }
-//
-// Future<void> _launchUrl(BuildContext context, String _url) async {
-//   if (!await launchUrl(Uri.parse(_url))) {
-//     // throw Exception('Could not launch $_url');
-//     showSnackBar(context, 'Could not launch $_url');
-//   }
-// }
+
+Widget getNetworkImage(String? imageUrl,
+    {double? width,
+      double? height,
+      String? placeholder,
+      BoxFit? fit,
+
+      Key? key}) {
+  return CachedNetworkImage(
+    width: width ?? double.infinity,
+    height: height ?? double.infinity,
+    imageUrl: imageUrl ?? "",
+    fit: fit ?? BoxFit.cover,
+    key: key,
+    placeholder: (context, url) =>
+    new Image(
+      fit: BoxFit.cover,
+      image: AssetImage(placeholder ?? Assets.imagesAppLogo),
+      height: double.infinity,
+    ),
+    errorWidget: (context, url, error) =>
+    new Image(
+        fit: BoxFit.cover,
+        image: AssetImage(placeholder ?? Assets.imagesAppLogo)),
+  );
+}
+
+Future<void> launchUrlBrowser(BuildContext context, String _url) async {
+  print("launchUrlBrowser: called");
+  if (!await launchUrl(Uri.parse(_url),
+      mode: LaunchMode.externalApplication)) {
+    // throw Exception('Could not launch $_url');
+    showSnackBar(context, 'Could not launch $_url');
+  }
+}
+
+

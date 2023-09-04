@@ -257,7 +257,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                 child: Row(
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(left: 27.w),
+                      padding: EdgeInsets.only(left: 20.w),
                       child: Image.asset(
                         'assets/images/rate_us_icon.png',
                         //width: 20,
@@ -288,7 +288,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                 child: Row(
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(left: 27.w),
+                      padding: EdgeInsets.only(left: 20.w),
                       child: Image.asset(
                         'assets/images/support_icon.png',
                         //width: 20,

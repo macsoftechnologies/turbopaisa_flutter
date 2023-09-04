@@ -372,7 +372,7 @@ class _TaskListPageState extends State<TaskListPage> {
   Widget buildBanners() {
     return Container(
       // padding: EdgeInsets.all(10),
-      height: 150,
+      height: 133.h,
       child: PageView.builder(
         controller: _pageController,
         itemCount: banners.length,

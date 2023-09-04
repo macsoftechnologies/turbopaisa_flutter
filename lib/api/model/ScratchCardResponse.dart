@@ -34,9 +34,12 @@ class ScratchCardResponse {
 class ScratchCards {
   String? scratchId;
   String? scratchTitle;
+  String? scratchButtonTitle;
   String? scratchColor;
   String? scratchCode;
+  String? scratchImage;
   String? orangeDesc;
+  String? type;
   String? yellowDesc;
   String? blueDesc;
   String? offerTitle;
@@ -47,33 +50,38 @@ class ScratchCards {
   String? startDate;
   String? endDate;
   String? url;
-  int? scratch_status;
+  int? scratchStatus;
 
   ScratchCards(
       {this.scratchId,
-      this.scratchTitle,
-      this.scratchColor,
-      this.scratchCode,
-      this.orangeDesc,
-      this.yellowDesc,
-      this.blueDesc,
-      this.offerTitle,
-      this.state,
-      this.city,
-      this.pincode,
-      this.scratchAmount,
-      this.startDate,
-      this.endDate,
-      this.url,
-      this.scratch_status
-      });
+        this.scratchTitle,
+        this.scratchButtonTitle,
+        this.scratchColor,
+        this.scratchCode,
+        this.scratchImage,
+        this.orangeDesc,
+        this.type,
+        this.yellowDesc,
+        this.blueDesc,
+        this.offerTitle,
+        this.state,
+        this.city,
+        this.pincode,
+        this.scratchAmount,
+        this.startDate,
+        this.endDate,
+        this.url,
+        this.scratchStatus});
 
   ScratchCards.fromJson(Map<String, dynamic> json) {
     scratchId = json['scratch_id'];
     scratchTitle = json['scratch_title'];
+    scratchButtonTitle = json['scratch_button_title'];
     scratchColor = json['scratch_color'];
     scratchCode = json['scratch_code'];
+    scratchImage = json['scratch_image'];
     orangeDesc = json['orange_desc'];
+    type = json['type'];
     yellowDesc = json['yellow_desc'];
     blueDesc = json['blue_desc'];
     offerTitle = json['offer_title'];
@@ -84,16 +92,19 @@ class ScratchCards {
     startDate = json['start_date'];
     endDate = json['end_date'];
     url = json['url'];
-    scratch_status = json['scratch_status'];
+    scratchStatus = json['scratch_status'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['scratch_id'] = this.scratchId;
     data['scratch_title'] = this.scratchTitle;
+    data['scratch_button_title'] = this.scratchButtonTitle;
     data['scratch_color'] = this.scratchColor;
     data['scratch_code'] = this.scratchCode;
+    data['scratch_image'] = this.scratchImage;
     data['orange_desc'] = this.orangeDesc;
+    data['type'] = this.type;
     data['yellow_desc'] = this.yellowDesc;
     data['blue_desc'] = this.blueDesc;
     data['offer_title'] = this.offerTitle;
@@ -104,7 +115,7 @@ class ScratchCards {
     data['start_date'] = this.startDate;
     data['end_date'] = this.endDate;
     data['url'] = this.url;
-    data['scratch_status'] = this.scratch_status;
+    data['scratch_status'] = this.scratchStatus;
     return data;
   }
 }
