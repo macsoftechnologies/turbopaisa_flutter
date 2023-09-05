@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:offersapp/api/model/BannersResponse.dart';
+import 'package:offersapp/api/model/EarnGameResponses.dart';
 import 'package:offersapp/api/model/RegistrationResponse.dart';
 import 'package:offersapp/api/model/ScratchCardResponse.dart';
 import 'package:offersapp/api/model/SpinWheelResponse.dart';
@@ -21,6 +22,8 @@ import 'model/verify_otp_response.dart';
 part 'restclient.g.dart';
 
 const String BASE_URL = "https://macsof.in/advertiseApp/services/";
+
+//https://macsof.in/advertiseApp/services/earngames/getEarngames?user_id=3
 // const PLACE_HOLDER_PROFILE = "assets/images/profile_pic.png";
 
 @RestApi()
@@ -138,4 +141,9 @@ abstract class RestClient {
 
   @POST("spin/spinUserinsert")
   Future<RegistrationResponse> spinUserinsert(@Body() Map<String, String> body);
+
+//https://macsof.in/advertiseApp/services/earngames/getEarngames?user_id=3
+
+  @GET("earngames/getEarngames")
+  Future<EarnGameResponses> getEarngame(@Query("user_id") String userId);
 }
