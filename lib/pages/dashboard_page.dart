@@ -112,8 +112,8 @@ class _DashboardPageState extends State<DashboardPage>
       floatingActionButton: selectTab != 0
           ? null
           : Padding(
-            padding:  EdgeInsets.only(bottom: 135.h),
-            child: InkWell(
+              padding: EdgeInsets.only(bottom: 135.h),
+              child: InkWell(
                 onTap: () {
                   loadSpinWheel();
                 },
@@ -122,7 +122,7 @@ class _DashboardPageState extends State<DashboardPage>
                   width: 80,
                 ),
               ),
-          ),
+            ),
       // backgroundColor: AppColors.appGradientBg ,
       body: SafeArea(
         child: Stack(
@@ -171,16 +171,9 @@ class _DashboardPageState extends State<DashboardPage>
       UserData data = UserData.fromJson(jsonDecode(user!));
       var list = await client.getSpins(data.userId ?? "");
       Navigator.pop(context);
-      //
-      // if (list[0].spin_status != 0) {
-      //   // showSnackBar(context, "Offers are not available");
-      //   showBottomSheetMessage();
-      //   return;
-      // }
-      //
       Navigator.of(context).push(
         TutorialOverlay(
-          child: WheelWidget(data: list[0]),
+          child: WheelWidget(data: list.first),
         ),
       );
     } catch (e) {

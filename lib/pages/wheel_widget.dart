@@ -5,13 +5,16 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kbspinningwheel/kbspinningwheel.dart';
 import 'package:offersapp/api/model/RegistrationResponse.dart';
 import 'package:offersapp/api/model/SpinWheelResponse.dart';
 import 'package:offersapp/api/model/UserData.dart';
 import 'package:offersapp/api/restclient.dart';
 import 'package:offersapp/utils/app_colors.dart';
+import 'package:offersapp/widgets/spinning_wheel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class WheelWidget extends StatefulWidget {
   SpinWheelResponse data;
@@ -34,6 +37,12 @@ class _WheelWidgetState extends State<WheelWidget> {
     // 8: '100\₹',
   };
   bool isCongratulations = false;
+  bool isEnable = false;
+  SpinController _spinController = SpinController();
+
+  Image? bgImage;
+
+  //bgImage = new Image.memory(await http.readBytes(imageUrl));
   @override
   void initState() {
     super.initState();
@@ -41,6 +50,7 @@ class _WheelWidgetState extends State<WheelWidget> {
     widget.data.spinlist?.forEach((element) {
       labels.putIfAbsent(count++, () => "${element.amount}\₹");
     });
+    loadImage();
   }
 
   final StreamController _dividerController = StreamController<int>();
@@ -59,8 +69,7 @@ class _WheelWidgetState extends State<WheelWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Colors.black45,
-      backgroundColor: Color.fromRGBO(0, 0, 0, 0.8),
+      backgroundColor: Colors.black.withOpacity(0.8),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -82,55 +91,48 @@ class _WheelWidgetState extends State<WheelWidget> {
               ),
             ),
             SizedBox(
-              height: 60,
+              height: 120.h,
             ),
-            AbsorbPointer(
-              child: SpinningWheel(
-                // image: Image.asset('assets/images/roulette-8-300.png'),
-                image: Image.network(widget.data.spinImage ?? "",
-                //   loadingBuilder:  (context, child, loadingProgress) {
-                //   print(loadingProgress);
-                //   return Text("");
-                // },
-                ),
-                width: 310,
-                height: 310,
-                initialSpinAngle: _generateRandomAngle(),
-                spinResistance: 0.6,
-                canInteractWhileSpinning: false,
-                dividers: widget.data.spinlist?.length ?? 0,
-                onUpdate: (event) {
-                  // print(labels[event+1]);
-                  // HapticFeedback.lightImpact();
-                  return _dividerController.add(event+1);
-                },
-                onEnd: (event) {
-                  HapticFeedback.lightImpact();
-                  // print(event+1);
-                  print(labels[event + 1]);
-
-                  setState(() {
-                    isCongratulations = true;
-                  });
-                  updateToServer();
-                  return _dividerController.add(event+1);
-                },
-                secondaryImage:
-                    Image.asset('assets/images/roulette-center-300.png'),
-                secondaryImageHeight: 110,
-                secondaryImageWidth: 110,
-                shouldStartOrStop: _wheelNotifier.stream,
-              ),
-            ),
-            SizedBox(height: 30),
-            StreamBuilder(
-                stream: _dividerController.stream,
-                builder: (context, snapshot) {
-                  return isWheel && snapshot.hasData
-                      ? RouletteScore(labels, snapshot.data)
-                      : Container();
-                  return Container();
-                }),
+            bgImage == null
+                ? SizedBox(
+                    width: 300,
+                    height: 300,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 1,
+                      ),
+                    ),
+                  )
+                : SpinningWheelWidget(
+                    sectors: widget.data.spinlist?.reversed.toList() ?? [],
+                    width: 300,
+                    height: 300,
+                    image: bgImage!,
+                    // Image.network(
+                    //   widget.data.spinImage ?? "",
+                    // ),
+                    selectedIndex: findIndex(
+                        widget.data.spinlist?.reversed.toList(),
+                        widget.data.spinAmount),
+                    onEnd: () {
+                      HapticFeedback.lightImpact();
+                      setState(() {
+                        isCongratulations = true;
+                      });
+                      updateToServer();
+                    },
+                    controller: _spinController,
+                  ),
+            // buildOldSpin(),
+            // SizedBox(height: 30),
+            // StreamBuilder(
+            //     stream: _dividerController.stream,
+            //     builder: (context, snapshot) {
+            //       return isWheel && snapshot.hasData
+            //           ? RouletteScore(labels, snapshot.data)
+            //           : Container();
+            //     }),
 
             if (isCongratulations)
               Padding(
@@ -142,18 +144,22 @@ class _WheelWidgetState extends State<WheelWidget> {
               ),
             SizedBox(height: 10),
             InkWell(
-              onTap: () {
-                HapticFeedback.lightImpact();
-                _wheelNotifier.sink.add(_generateRandomVelocity());
-                setState(() {
-                  isWheel = true;
-                });
-              },
+              onTap: !isEnable
+                  ? null
+                  : () {
+                      HapticFeedback.lightImpact();
+                      // _wheelNotifier.sink.add(_generateRandomVelocity());
+                      setState(() {
+                        isWheel = true;
+                        isEnable = false;
+                      });
+                      _spinController.setValue(true);
+                    },
               child: Container(
-                width: 260,
+                width: 250.w,
                 padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: AppColors.accentColor,
+                  color: isEnable ? AppColors.accentColor : Color(0xFF424242),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Center(
@@ -161,7 +167,9 @@ class _WheelWidgetState extends State<WheelWidget> {
                     padding: const EdgeInsets.all(4.0),
                     child: Text(
                       "Click Here to Spin",
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(
+                        color: isEnable ? Colors.white : Color(0xFF858585),
+                      ),
                     ),
                   ),
                 ),
@@ -188,7 +196,7 @@ class _WheelWidgetState extends State<WheelWidget> {
             //       _wheelNotifier.sink.add(_generateRandomVelocity());
             //     }),
             SizedBox(
-              height: 20,
+              height: 40.h,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 26),
@@ -204,10 +212,51 @@ class _WheelWidgetState extends State<WheelWidget> {
     );
   }
 
+  // AbsorbPointer buildOldSpin() {
+  //   return AbsorbPointer(
+  //     child: SpinningWheel(
+  //       // image: Image.asset('assets/images/roulette-8-300.png'),
+  //       image: Image.network(
+  //         widget.data.spinImage ?? "",
+  //         //   loadingBuilder:  (context, child, loadingProgress) {
+  //         //   print(loadingProgress);
+  //         //   return Text("");
+  //         // },
+  //       ),
+  //       width: 310,
+  //       height: 310,
+  //       initialSpinAngle: _generateRandomAngle(),
+  //       spinResistance: 0.6,
+  //       canInteractWhileSpinning: false,
+  //       dividers: widget.data.spinlist?.length ?? 0,
+  //       onUpdate: (event) {
+  //         // print(labels[event+1]);
+  //         // HapticFeedback.lightImpact();
+  //         return _dividerController.add(event + 1);
+  //       },
+  //       onEnd: (event) {
+  //         HapticFeedback.lightImpact();
+  //         // print(event+1);
+  //         print(labels[event + 1]);
+  //
+  //         setState(() {
+  //           isCongratulations = true;
+  //         });
+  //         updateToServer();
+  //         return _dividerController.add(event + 1);
+  //       },
+  //       secondaryImage: Image.asset('assets/images/roulette-center-300.png'),
+  //       secondaryImageHeight: 110,
+  //       secondaryImageWidth: 110,
+  //       shouldStartOrStop: _wheelNotifier.stream,
+  //     ),
+  //   );
+  // }
+  //
+  // // double _generateRandomVelocity() => (Random().nextDouble() * 6000) + 2000;
   // double _generateRandomVelocity() => (Random().nextDouble() * 6000) + 2000;
-  double _generateRandomVelocity() => (Random().nextDouble() * 6000) + 2000;
-
-  double _generateRandomAngle() => Random().nextDouble() * pi * 2;
+  //
+  // double _generateRandomAngle() => Random().nextDouble() * pi * 2;
 
   Future<void> updateToServer() async {
     //scratchcardUserinsert
@@ -227,6 +276,22 @@ class _WheelWidgetState extends State<WheelWidget> {
     } catch (e) {
       print(e);
     }
+  }
+
+  findIndex(List<Spinlist>? list, String? spinAmount) {
+    return list?.indexWhere((element) => element.amount == spinAmount);
+  }
+
+  Future<void> loadImage() async {
+    var bgImage = Image.memory(
+      await http.readBytes(
+        Uri.parse(widget.data.spinImage ?? ""),
+      ),
+    );
+    setState(() {
+      this.bgImage = bgImage;
+      isEnable = widget.data.spin_status == 0;
+    });
   }
 }
 
