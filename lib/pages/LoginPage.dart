@@ -36,7 +36,6 @@ class _LoginPageState extends State<LoginPage> {
   String _udid = 'Unknown';
   String? _ipAddress;
 
-
   @override
   void initState() {
     super.initState();
@@ -103,7 +102,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-
     var commonSpace = 16.h;
     var textStyle = TextStyle(
       color: Colors.black,
@@ -570,6 +568,14 @@ class _LoginPageState extends State<LoginPage> {
     try {
       if (_advertisingId == null) {
         showSnackBar(context, "Advertise Id is missing.");
+        return;
+      }
+      if (_email.trim().isEmpty) {
+        showSnackBar(context, "Username/Email cannot be blank.");
+        return;
+      }
+      if (_password.trim().isEmpty) {
+        showSnackBar(context, "Password cannot be blank.");
         return;
       }
       showLoaderDialog(context);
