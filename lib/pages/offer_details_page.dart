@@ -1,8 +1,10 @@
+import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:offersapp/api/model/OffersData.dart';
+import 'package:offersapp/api/restclient.dart';
 import 'package:offersapp/utils.dart';
 import 'package:offersapp/utils/app_colors.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -17,6 +19,14 @@ class OfferDetailsPage extends StatefulWidget {
 }
 
 class _OfferDetailsPageState extends State<OfferDetailsPage> {
+  bool isTaskLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    loadOfferDetails();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -178,48 +188,20 @@ class _OfferDetailsPageState extends State<OfferDetailsPage> {
               SizedBox(
                 height: 10.h,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Task (0/1)",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          height: 1.38,
-                        ),
-                      ),
-                      Icon(Icons.keyboard_arrow_down)
-                    ],
-                  ),
-                  SizedBox(
-                    height: 12.h,
-                  ),
-                  Text(
-                    "Install Now ",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w600,
+              isTaskLoading
+                  ? CircularProgressIndicator(
+                      strokeWidth: 1,
+                    )
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) => buildTask(
+                          index + 1,
+                          offerDetails?.tasks?.length ?? 0,
+                          offerDetails?.tasks![index]),
+                      itemCount: offerDetails?.tasks?.length ?? 0,
                     ),
-                  ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  Text(
-                    "Install the app in your smartphone",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 10.sp,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
+              // buildTask(),
               SizedBox(
                 height: 20,
               ),
@@ -230,26 +212,27 @@ class _OfferDetailsPageState extends State<OfferDetailsPage> {
                 height: 30,
               ),
               //Spacer(),
-              RichText(
-                text: TextSpan(
-                  text: '12,000 ',
-                  style: TextStyle(
-                    color: Color(0xFFED3E55),
-                    fontSize: 10,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: 'Users have already participated',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 10,
-                        fontWeight: FontWeight.w500,
-                      ),
+              if (offerDetails?.availedusers != 0)
+                RichText(
+                  text: TextSpan(
+                    text: offerDetails?.availedusers.toString() ?? "",
+                    style: TextStyle(
+                      color: Color(0xFFED3E55),
+                      fontSize: 10,
+                      fontWeight: FontWeight.w500,
                     ),
-                  ],
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: ' Users have already participated',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 10,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
               SizedBox(
                 height: 20.h,
               ),
@@ -287,6 +270,72 @@ class _OfferDetailsPageState extends State<OfferDetailsPage> {
     ));
   }
 
+  Column buildTask(int index, int total, Tasks? task) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        InkWell(
+          onTap: () {
+            setState(() {
+              task?.isShow = !(task.isShow!);
+            });
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Task (${index}/${total})",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    height: 1.38,
+                  ),
+                ),
+                Icon(task?.isShow == true
+                    ? Icons.keyboard_arrow_down
+                    : Icons.keyboard_arrow_up)
+              ],
+            ),
+          ),
+        ),
+        if (task?.isShow == true) ...showOrHideTask(task, index != (total)),
+      ],
+    );
+  }
+
+  List<Widget> showOrHideTask(Tasks? task, bool isLastItem) {
+    return [
+      SizedBox(
+        height: 12.h,
+      ),
+      Text(
+        // "Install Now ",
+        task?.taskName ?? "",
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 12.sp,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      SizedBox(
+        height: 10.h,
+      ),
+      Text(
+        // "Install the app in your smartphone",
+        task?.description ?? "",
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 10.sp,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+      if (isLastItem) Divider(),
+    ];
+  }
+
   HtmlEscape htmlEscape = HtmlEscape();
 
   Future<void> _launchUrl(String _url) async {
@@ -294,5 +343,33 @@ class _OfferDetailsPageState extends State<OfferDetailsPage> {
       // throw Exception('Could not launch $_url');
       showSnackBar(context, 'Could not launch $_url');
     }
+  }
+
+  OffersData? offerDetails;
+
+  Future<void> loadOfferDetails() async {
+    //getOfferDetailsById
+    try {
+      setState(() {
+        isTaskLoading = true;
+      });
+      final client = await RestClient.getRestClient();
+
+      Map<String, String> body = HashMap();
+      body.putIfAbsent("offer_id", () => widget.data.offerId ?? "");
+
+      List<OffersData> response = await client.getOfferDetailsById(body);
+      response.first.tasks?.forEach((e) {
+        e.isShow = true;
+      });
+      if (response.isNotEmpty) {
+        setState(() {
+          offerDetails = response.first;
+        });
+      }
+    } catch (e) {}
+    setState(() {
+      isTaskLoading = false;
+    });
   }
 }

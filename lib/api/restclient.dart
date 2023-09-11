@@ -146,4 +146,8 @@ abstract class RestClient {
 
   @GET("earngames/getEarngames")
   Future<EarnGameResponses> getEarngame(@Query("user_id") String userId);
+
+  @POST("offers/getOfferDetailsById")
+  Future<List<OffersData>> getOfferDetailsById(@Body() Map<String, String> body);
+
 }
