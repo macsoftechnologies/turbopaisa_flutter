@@ -171,13 +171,18 @@ class _DashboardPageState extends State<DashboardPage>
       UserData data = UserData.fromJson(jsonDecode(user!));
       var list = await client.getSpins(data.userId ?? "");
       Navigator.pop(context);
-      Navigator.of(context).push(
-        TutorialOverlay(
-          child: WheelWidget(data: list.first),
-        ),
-      );
+      if (list.isNotEmpty) {
+        Navigator.of(context).push(
+          TutorialOverlay(
+            child: WheelWidget(data: list.first),
+          ),
+        );
+      } else {
+        showSnackBar(context, "No Spins are available.");
+      }
     } catch (e) {
       Navigator.pop(context);
+      showSnackBar(context, "Failed to load Spins.");
     }
   }
 

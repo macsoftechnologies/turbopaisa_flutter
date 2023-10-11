@@ -450,7 +450,7 @@ class _EarOnGamesPageState extends State<EarOnGamesPage> {
   HtmlEscape htmlEscape = HtmlEscape();
 
   Future<void> _launchUrl(String _url) async {
-    if (!await launchUrl(Uri.parse(_url))) {
+    if (!await launchUrl(Uri.parse(_url), mode: LaunchMode.externalApplication)) {
       // throw Exception('Could not launch $_url');
       showSnackBar(context, 'Could not launch $_url');
     }

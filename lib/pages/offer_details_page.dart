@@ -21,6 +21,8 @@ class OfferDetailsPage extends StatefulWidget {
 class _OfferDetailsPageState extends State<OfferDetailsPage> {
   bool isTaskLoading = false;
 
+  bool isShowDesc = true;
+
   @override
   void initState() {
     super.initState();
@@ -148,33 +150,44 @@ class _OfferDetailsPageState extends State<OfferDetailsPage> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "About application",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          height: 1.38,
+                  InkWell(
+                    onTap: () {
+                      setState(() {
+                        isShowDesc = !isShowDesc;
+                      });
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "About application",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            height: 1.38,
+                          ),
                         ),
-                      ),
-                      Icon(Icons.keyboard_arrow_down)
-                    ],
+                        Icon(isShowDesc == true
+                            ? Icons.keyboard_arrow_down
+                            : Icons.keyboard_arrow_up)
+                        // Icon(Icons.keyboard_arrow_down)
+                      ],
+                    ),
                   ),
                   SizedBox(
                     height: 10.h,
                   ),
-                  Text(
-                      // "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum doloreLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore",
-                      widget.data.offerDesc ?? "",
-                      textAlign: TextAlign.justify,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 10.sp,
-                        fontWeight: FontWeight.w500,
-                      )),
+                  if (isShowDesc)
+                    Text(
+                        // "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum doloreLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore",
+                        widget.data.offerDesc ?? "",
+                        textAlign: TextAlign.justify,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 10.sp,
+                          fontWeight: FontWeight.w500,
+                        )),
                 ],
               ),
               SizedBox(
@@ -339,7 +352,8 @@ class _OfferDetailsPageState extends State<OfferDetailsPage> {
   HtmlEscape htmlEscape = HtmlEscape();
 
   Future<void> _launchUrl(String _url) async {
-    if (!await launchUrl(Uri.parse(_url))) {
+    print(_url);
+    if (!await launchUrl(Uri.parse(_url,),mode: LaunchMode.externalApplication)) {
       // throw Exception('Could not launch $_url');
       showSnackBar(context, 'Could not launch $_url');
     }
