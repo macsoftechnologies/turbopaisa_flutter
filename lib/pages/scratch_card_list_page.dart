@@ -309,8 +309,10 @@ class _ScratchCardListPageState extends State<ScratchCardListPage> {
                                     .push(
                                       TutorialOverlay(
                                         child: ScratchCardPage(
-                                            data: scratchCardResponse!
-                                                .cards![index]),
+                                          data: scratchCardResponse!
+                                              .cards![index],
+                                          banners: banners,
+                                        ),
                                       ),
                                     )
                                     .whenComplete(() => loadScratchCards());
@@ -621,19 +623,24 @@ class _ScratchCardListPageState extends State<ScratchCardListPage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: getNetworkImage(
-                      banners[index].bannerImage ?? "",
-                    )
+              child: InkWell(
+                onTap: () {
+                  launchUrlBrowser(context, banners[index].url ?? "");
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: getNetworkImage(
+                        banners[index].bannerImage ?? "",
+                      )
 
-                    // Image.network(
-                    //   banners[index].bannerImage ?? "",
-                    //   fit: BoxFit.cover,
-                    // ),
-                    ),
+                      // Image.network(
+                      //   banners[index].bannerImage ?? "",
+                      //   fit: BoxFit.cover,
+                      // ),
+                      ),
+                ),
               ),
             ),
             // Center(

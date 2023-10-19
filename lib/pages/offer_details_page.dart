@@ -4,9 +4,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:offersapp/api/model/OffersData.dart';
+import 'package:offersapp/api/model/UserData.dart';
 import 'package:offersapp/api/restclient.dart';
 import 'package:offersapp/utils.dart';
 import 'package:offersapp/utils/app_colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class OfferDetailsPage extends StatefulWidget {
@@ -22,10 +24,12 @@ class _OfferDetailsPageState extends State<OfferDetailsPage> {
   bool isTaskLoading = false;
 
   bool isShowDesc = true;
+  OffersData? offerDetails;
 
   @override
   void initState() {
     super.initState();
+    offerDetails = widget.data;
     loadOfferDetails();
   }
 
@@ -36,7 +40,7 @@ class _OfferDetailsPageState extends State<OfferDetailsPage> {
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor,
         title: Text(
-          widget.data.offerTitle ?? "",
+          offerDetails?.offerTitle ?? "",
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.white,
@@ -51,11 +55,12 @@ class _OfferDetailsPageState extends State<OfferDetailsPage> {
         child: Container(
           decoration: BoxDecoration(gradient: AppColors.appLoginGradientBg),
           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 25.h),
+          height: MediaQuery.of(context).size.height,
           child: Column(
             children: [
               // ClipRRect(
               //   borderRadius: BorderRadius.circular(10),
-              //   child: Image.network(widget.data.images![0].image.toString(),
+              //   child: Image.network(offerDetails.images![0].image.toString(),
               //       fit: BoxFit.cover,
               //       width: double.infinity,
               //       height: 130.h,
@@ -64,28 +69,36 @@ class _OfferDetailsPageState extends State<OfferDetailsPage> {
               //             height: 130.h,
               //           )),
               // ),
-              Container(
-                width: 335.w,
-                height: 130.h,
-                decoration: ShapeDecoration(
-                  image: DecorationImage(
-                    image:
-                        NetworkImage(widget.data.images![0].image.toString()),
-                    fit: BoxFit.cover,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6.67),
-                  ),
-                  shadows: [
-                    BoxShadow(
-                      color: Color(0x11000000),
-                      blurRadius: 38.33,
-                      offset: Offset(2.32, 8),
-                      spreadRadius: 0,
-                    )
-                  ],
+              if (offerDetails?.images?.isNotEmpty == true)
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(6),
+                  child: getNetworkImage(
+                      offerDetails!.images![0].image.toString(),
+                      width: 335.w,
+                      height: 130.h),
                 ),
-              ),
+                // Container(
+                //   width: 335.w,
+                //   height: 130.h,
+                //   decoration: ShapeDecoration(
+                //     image: DecorationImage(
+                //       image: NetworkImage(
+                //           offerDetails!.images![0].image.toString()),
+                //       fit: BoxFit.cover,
+                //     ),
+                //     shape: RoundedRectangleBorder(
+                //       borderRadius: BorderRadius.circular(6.67),
+                //     ),
+                //     shadows: [
+                //       BoxShadow(
+                //         color: Color(0x11000000),
+                //         blurRadius: 38.33,
+                //         offset: Offset(2.32, 8),
+                //         spreadRadius: 0,
+                //       )
+                //     ],
+                //   ),
+                // ),
               SizedBox(
                 height: 25.h,
               ),
@@ -96,12 +109,12 @@ class _OfferDetailsPageState extends State<OfferDetailsPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.data.offerTitle ?? "",
+                        offerDetails?.offerTitle ?? "",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18),
                       ),
                       Text(
-                        // widget.data.offerTagline ?? "",
+                        // offerDetails.offerTagline ?? "",
                         "Register",
                         style: TextStyle(
                           color: Colors.black,
@@ -114,7 +127,7 @@ class _OfferDetailsPageState extends State<OfferDetailsPage> {
                   ),
                   InkWell(
                     onTap: () {
-                      _launchUrl(widget.data.url ?? "");
+                      _launchUrl(offerDetails?.url ?? "");
                     },
                     child: Container(
                       constraints: BoxConstraints(minWidth: 83.w),
@@ -125,7 +138,7 @@ class _OfferDetailsPageState extends State<OfferDetailsPage> {
                       ),
                       child: Center(
                         child: Text(
-                          "Get ₹ ${widget.data.offerAmount}",
+                          "Get ₹ ${offerDetails?.offerAmount}",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 12.sp,
@@ -181,7 +194,7 @@ class _OfferDetailsPageState extends State<OfferDetailsPage> {
                   if (isShowDesc)
                     Text(
                         // "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum doloreLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore",
-                        widget.data.offerDesc ?? "",
+                        offerDetails?.offerDesc ?? "",
                         textAlign: TextAlign.justify,
                         style: TextStyle(
                           color: Colors.black,
@@ -252,7 +265,7 @@ class _OfferDetailsPageState extends State<OfferDetailsPage> {
 
               InkWell(
                 onTap: () {
-                  _launchUrl(widget.data.url ?? "");
+                  _launchUrl(offerDetails?.url ?? "");
                 },
                 child: Container(
                   width: 250,
@@ -353,13 +366,15 @@ class _OfferDetailsPageState extends State<OfferDetailsPage> {
 
   Future<void> _launchUrl(String _url) async {
     print(_url);
-    if (!await launchUrl(Uri.parse(_url,),mode: LaunchMode.externalApplication)) {
+    if (!await launchUrl(
+        Uri.parse(
+          _url,
+        ),
+        mode: LaunchMode.externalApplication)) {
       // throw Exception('Could not launch $_url');
       showSnackBar(context, 'Could not launch $_url');
     }
   }
-
-  OffersData? offerDetails;
 
   Future<void> loadOfferDetails() async {
     //getOfferDetailsById
@@ -368,9 +383,13 @@ class _OfferDetailsPageState extends State<OfferDetailsPage> {
         isTaskLoading = true;
       });
       final client = await RestClient.getRestClient();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var user = await prefs.getString("user");
+      UserData data = UserData.fromJson(jsonDecode(user!));
 
       Map<String, String> body = HashMap();
-      body.putIfAbsent("offer_id", () => widget.data.offerId ?? "");
+      body.putIfAbsent("offer_id", () => offerDetails?.offerId ?? "");
+      body.putIfAbsent("user_id", () => data.userId ?? "");
 
       List<OffersData> response = await client.getOfferDetailsById(body);
       response.first.tasks?.forEach((e) {

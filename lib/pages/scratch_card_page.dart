@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:offersapp/api/model/BannersResponse.dart';
 import 'package:offersapp/api/model/RegistrationResponse.dart';
 import 'package:offersapp/api/model/ScratchCardResponse.dart';
 import 'package:offersapp/api/restclient.dart';
@@ -16,8 +17,10 @@ import '../api/model/UserData.dart';
 
 class ScratchCardPage extends StatefulWidget {
   final ScratchCards data;
+  List<BannerData> banners = [];
 
-  ScratchCardPage({Key? key, required this.data}) : super(key: key);
+  ScratchCardPage({Key? key, required this.data, required this.banners})
+      : super(key: key);
 
   @override
   _ScratchCardPageState createState() => _ScratchCardPageState();
@@ -163,25 +166,57 @@ class _ScratchCardPageState extends State<ScratchCardPage> {
           SizedBox(
             height: 30,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 26),
-            child: Image.asset(
-              'assets/images/scratch_banner.png',
-              //width: 300,
-              fit: BoxFit.cover,
-            ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 26),
-            child: Image.asset(
-              'assets/images/eog_banner.png',
-              fit: BoxFit.cover,
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 26),
+          //   child: Image.asset(
+          //     'assets/images/scratch_banner.png',
+          //     //width: 300,
+          //     fit: BoxFit.cover,
+          //   ),
+          // ),
+          // SizedBox(
+          //   height: 20,
+          // ),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 26),
+          //   child: Image.asset(
+          //     'assets/images/eog_banner.png',
+          //     fit: BoxFit.cover,
+          //   ),
+          // ),
+          buildBanners(),
         ],
+      ),
+    );
+  }
+
+  Widget buildBanners() {
+    return Container(
+      // padding: EdgeInsets.all(10),
+      height: 133.h,
+      child: PageView.builder(
+        controller: PageController(initialPage: 0, viewportFraction: 0.9),
+        itemCount: widget.banners.length,
+        itemBuilder: (context, index) => Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              child: InkWell(
+                onTap: () {
+                  launchUrlBrowser(context, widget.banners[index].url ?? "");
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: getNetworkImage(
+                        widget.banners[index].bannerImage ?? "",
+                      )),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -36,6 +36,7 @@ class BannerData {
   String? status;
   String? createdAt;
   String? updatedAt;
+  String? url;
 
   BannerData(
       {this.bannerId,
@@ -45,7 +46,9 @@ class BannerData {
       this.priority,
       this.status,
       this.createdAt,
-      this.updatedAt});
+      this.updatedAt,
+      this.url,
+      });
 
   BannerData.fromJson(Map<String, dynamic> json) {
     bannerId = json['banner_id'];
@@ -56,6 +59,7 @@ class BannerData {
     status = json['status'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    url = json['url'];
   }
 
   Map<String, dynamic> toJson() {
@@ -68,6 +72,7 @@ class BannerData {
     data['status'] = this.status;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
+    data['url'] = this.url;
     return data;
   }
 }

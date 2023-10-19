@@ -42,6 +42,7 @@ class Assets {
   static const String imagesPasswordIcon = 'assets/images/password_icon.png';
   static const String imagesPhoneIcon = 'assets/images/phone_icon.png';
   static const String imagesPrivacyPolicy = 'assets/images/privacy_policy.png';
+  static const String imagesProfileAvatar = 'assets/images/profile_avatar.png';
   static const String imagesProfileUser = 'assets/images/profile_user.png';
   static const String imagesProfileUsers = 'assets/images/profile_users.png';
   static const String imagesProflieImage = 'assets/images/proflie_image.png';

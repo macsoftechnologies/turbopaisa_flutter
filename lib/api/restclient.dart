@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:offersapp/api/model/BannersResponse.dart';
+import 'package:offersapp/api/model/ChangePasswordResponse.dart';
 import 'package:offersapp/api/model/EarnGameResponses.dart';
 import 'package:offersapp/api/model/RegistrationResponse.dart';
 import 'package:offersapp/api/model/ScratchCardResponse.dart';
@@ -118,7 +119,7 @@ abstract class RestClient {
   Future<List<OffersData>> getOffers(@Query("user_id") String userId);
 
   @GET("offers/getupcomingOffers")
-  Future<List<OffersData>> getUpComingOffers();
+  Future<List<OffersData>> getUpComingOffers(@Query("user_id") String userId);
 
   @POST("offers/getMyOffer")
   Future<List<OffersData>> getMyOffer(@Body() Map<String, String> body);
@@ -149,5 +150,11 @@ abstract class RestClient {
 
   @POST("offers/getOfferDetailsById")
   Future<List<OffersData>> getOfferDetailsById(@Body() Map<String, String> body);
+
+  @POST("users/withdrawAmount")
+  Future<RegistrationResponse> doWithdrawAmount(@Body() Map<String, String> body);
+
+  @POST("users/changePassword")
+  Future<ChangePasswordResponse> doChangePassword(@Body() Map<String, String> body);
 
 }

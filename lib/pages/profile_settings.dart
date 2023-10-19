@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:offersapp/api/model/WalletResponse.dart';
 import 'package:offersapp/api/restclient.dart';
 import 'package:offersapp/pages/LoginPage.dart';
+import 'package:offersapp/pages/change_password.dart';
 import 'package:offersapp/pages/dashboard_page.dart';
 import 'package:offersapp/pages/privacy_policy.dart';
 import 'package:offersapp/pages/terms_and_condtions.dart';
@@ -175,7 +176,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                     ),
                     ClipRRect(
                       child: Image.asset(
-                        'assets/images/proflie_image.png',
+                        'assets/images/profile_avatar.png',
                         width: 88.w,
                         // height: 200,
                         //height: 100,
@@ -281,6 +282,38 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                 indent: 10.0,
                 endIndent: 10.0,
               ),
+
+              InkWell(
+                onTap: () {
+                  navigateToNext(context, ChangePasswordPage());
+                },
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(left: 20.w),
+                      child: Icon(
+                        Icons.lock,
+                        size: 20.w,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 20.sp,
+                    ),
+                    Text(
+                      "Change Password",
+                      style: textStyle,
+                    )
+                  ],
+                ),
+              ),
+              Divider(
+                //width: 5,
+                color: Colors.black12,
+                thickness: 1,
+                height: 30.h,
+                indent: 10.0,
+                endIndent: 10.0,
+              ),
               InkWell(
                 onTap: () {
                   showSnackBar(context, "Coming soon!");
@@ -303,7 +336,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                     ),
                     Spacer(),
                     Padding(
-                      padding:   EdgeInsets.only(right: 10.w),
+                      padding: EdgeInsets.only(right: 10.w),
                       child: Image.asset(
                         'assets/images/up_arrow.png',
                         //width: 20,
@@ -327,7 +360,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                 child: Row(
                   children: [
                     Padding(
-                      padding:   EdgeInsets.only(left: 20.w),
+                      padding: EdgeInsets.only(left: 20.w),
                       child: Image.asset(
                         'assets/images/privacy_policy.png',
                         // width: 20,
@@ -342,7 +375,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                     ),
                     Spacer(),
                     Padding(
-                      padding:  EdgeInsets.only(right: 10.w),
+                      padding: EdgeInsets.only(right: 10.w),
                       child: Icon(Icons.arrow_forward_ios_outlined),
                     ),
                   ],

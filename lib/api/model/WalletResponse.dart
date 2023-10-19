@@ -2,15 +2,21 @@ class WalletResponse {
   double? wallet;
   double? taskearnings;
   double? withdraw;
+  String? minimumwithdrawamount;
   List<Transactions>? transactions;
 
   WalletResponse(
-      {this.wallet, this.taskearnings, this.withdraw, this.transactions});
+      {this.wallet,
+      this.taskearnings,
+      this.withdraw,
+      this.transactions,
+      this.minimumwithdrawamount});
 
   WalletResponse.fromJson(Map<String, dynamic> json) {
     wallet = json['wallet'].toDouble();
     taskearnings = json['taskearnings'].toDouble();
     withdraw = json['withdraw'].toDouble();
+    minimumwithdrawamount = json['minimumwithdrawamount'];
     if (json['transactions'] != null) {
       transactions = <Transactions>[];
       json['transactions'].forEach((v) {
@@ -24,6 +30,7 @@ class WalletResponse {
     data['wallet'] = this.wallet;
     data['taskearnings'] = this.taskearnings;
     data['withdraw'] = this.withdraw;
+    data['minimumwithdrawamount'] = this.minimumwithdrawamount;
     if (this.transactions != null) {
       data['transactions'] = this.transactions!.map((v) => v.toJson()).toList();
     }

@@ -439,7 +439,11 @@ class _TaskListPageState extends State<TaskListPage> {
         isLoading = true;
       });
       final client = await RestClient.getRestClient();
-      var list = await client.getUpComingOffers();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var user = await prefs.getString("user");
+      UserData data = UserData.fromJson(jsonDecode(user!));
+      var list = await client.getUpComingOffers(data.userId.toString());
+
       //Insert add placements [START]
       var tempList = <OffersData>[];
       for (int i = 0; i < list.length; i++) {

@@ -66,7 +66,7 @@ navigateToNextReplace(BuildContext context, Widget target) {
   );
 }
 
-showLoaderDialog(BuildContext context) {
+showLoaderDialog(BuildContext context, {String? message}) {
   AlertDialog alert = AlertDialog(
     content: new Row(
       children: [
@@ -74,7 +74,7 @@ showLoaderDialog(BuildContext context) {
         Container(
           margin: EdgeInsets.only(left: 7),
           child: Text(
-            "Pleas wait...",
+            message ?? "Pleas wait...",
             style: TextStyle(fontSize: 12.sp),
           ),
         ),
@@ -92,25 +92,22 @@ showLoaderDialog(BuildContext context) {
 
 Widget getNetworkImage(String? imageUrl,
     {double? width,
-      double? height,
-      String? placeholder,
-      BoxFit? fit,
-
-      Key? key}) {
+    double? height,
+    String? placeholder,
+    BoxFit? fit,
+    Key? key}) {
   return CachedNetworkImage(
     width: width ?? double.infinity,
     height: height ?? double.infinity,
     imageUrl: imageUrl ?? "",
     fit: fit ?? BoxFit.cover,
     key: key,
-    placeholder: (context, url) =>
-    new Image(
+    placeholder: (context, url) => new Image(
       fit: BoxFit.cover,
       image: AssetImage(placeholder ?? Assets.imagesAppLogo),
       height: double.infinity,
     ),
-    errorWidget: (context, url, error) =>
-    new Image(
+    errorWidget: (context, url, error) => new Image(
         fit: BoxFit.cover,
         image: AssetImage(placeholder ?? Assets.imagesAppLogo)),
   );
@@ -118,11 +115,8 @@ Widget getNetworkImage(String? imageUrl,
 
 Future<void> launchUrlBrowser(BuildContext context, String _url) async {
   print("launchUrlBrowser: called");
-  if (!await launchUrl(Uri.parse(_url),
-      mode: LaunchMode.externalApplication)) {
+  if (!await launchUrl(Uri.parse(_url), mode: LaunchMode.externalApplication)) {
     // throw Exception('Could not launch $_url');
     showSnackBar(context, 'Could not launch $_url');
   }
 }
-
-

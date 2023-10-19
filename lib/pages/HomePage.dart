@@ -436,13 +436,18 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: Image.network(
-                    banners[index].bannerImage ?? "",
-                    fit: BoxFit.cover,
+              child: InkWell(
+                onTap: () {
+                  launchUrlBrowser(context, banners[index].url ?? "");
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Image.network(
+                      banners[index].bannerImage ?? "",
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
@@ -459,7 +464,8 @@ class _HomePageState extends State<HomePage> {
   HtmlEscape htmlEscape = HtmlEscape();
 
   Future<void> _launchUrl(String _url) async {
-    if (!await launchUrl(Uri.parse(_url), mode: LaunchMode.externalApplication)) {
+    if (!await launchUrl(Uri.parse(_url),
+        mode: LaunchMode.externalApplication)) {
       // throw Exception('Could not launch $_url');
       showSnackBar(context, 'Could not launch $_url');
     }
@@ -517,19 +523,26 @@ class _HomePageState extends State<HomePage> {
                   ),
                   child: Row(
                     children: [
-                      Container(
-                        width: 100.w,
-                        height: 75.h,
-                        decoration: ShapeDecoration(
-                          image: DecorationImage(
-                            image: NetworkImage(
-                                offersData[index].images![0].image.toString()),
-                            fit: BoxFit.cover,
-                          ),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6)),
-                        ),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(6),
+                        child: getNetworkImage(
+                            offersData[index].images![0].image.toString(),
+                            width: 100.w,
+                            height: 75.h),
                       ),
+                      // Container(
+                      //   width: 100.w,
+                      //   height: 75.h,
+                      //   decoration: ShapeDecoration(
+                      //     image: DecorationImage(
+                      //       image: NetworkImage(
+                      //           offersData[index].images![0].image.toString()),
+                      //       fit: BoxFit.cover,
+                      //     ),
+                      //     shape: RoundedRectangleBorder(
+                      //         borderRadius: BorderRadius.circular(6)),
+                      //   ),
+                      // ),
                       SizedBox(
                         width: 23.w,
                       ),
@@ -616,7 +629,11 @@ class _HomePageState extends State<HomePage> {
         // offersData = list;
         allOffers = tempList;
       });
-    } catch (e) {}
+    } catch (e) {
+      setState(() {
+        allOffers = [];
+      });
+    }
     setState(() {
       isLoading = false;
     });
@@ -649,7 +666,11 @@ class _HomePageState extends State<HomePage> {
         // offersData = list;
         myOffers = tempList;
       });
-    } catch (e) {}
+    } catch (e) {
+      setState(() {
+        myOffers = [];
+      });
+    }
     setState(() {
       isLoading = false;
     });
@@ -661,7 +682,10 @@ class _HomePageState extends State<HomePage> {
         isLoading = true;
       });
       final client = await RestClient.getRestClient();
-      var list = await client.getUpComingOffers();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var user = await prefs.getString("user");
+      UserData data = UserData.fromJson(jsonDecode(user!));
+      var list = await client.getUpComingOffers(data.userId.toString());
       //Insert add placements [START]
       var tempList = <OffersData>[];
       for (int i = 0; i < list.length; i++) {
@@ -675,7 +699,11 @@ class _HomePageState extends State<HomePage> {
         // offersData = list;
         upcomingOffers = tempList;
       });
-    } catch (e) {}
+    } catch (e) {
+      setState(() {
+        upcomingOffers = [];
+      });
+    }
     setState(() {
       isLoading = false;
     });
@@ -688,7 +716,11 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         banners = list.banner?.cast<BannerData>() ?? [];
       });
-    } catch (e) {}
+    } catch (e) {
+      setState(() {
+        banners = [];
+      });
+    }
   }
 }
 
