@@ -50,6 +50,7 @@ class _DashboardPageState extends State<DashboardPage>
   @override
   void initState() {
     super.initState();
+    _determinePosition();
     notchBottomBarController = NotchBottomBarController(index: 0);
     _navigationController = CircularBottomNavigationController(selectedPos);
     _animationController =
@@ -65,7 +66,7 @@ class _DashboardPageState extends State<DashboardPage>
         print("selected ${selectTab}");
       });
     });
-    _determinePosition();
+
   }
 
   /// Determine the current position of the device.
