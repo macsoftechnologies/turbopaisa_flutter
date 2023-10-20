@@ -467,7 +467,12 @@ class _WalletBalacePageState extends State<WalletBalacePage> {
     if (walletResponse == null || walletResponse!.wallet! <= 0) {
       return;
     }
-
+    print(walletResponse?.minimumwithdrawamount);
+    var minAmt = double.parse(walletResponse?.minimumwithdrawamount ?? "200.0");
+    if (walletResponse!.wallet! < minAmt) {
+      showMinimumPopup(minAmt);
+      return;
+    }
     var h1textStyle = TextStyle(
       color: Colors.black,
       fontSize: 10.sp,
@@ -485,87 +490,109 @@ class _WalletBalacePageState extends State<WalletBalacePage> {
 
     TextEditingController _amountController = TextEditingController();
     await showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (context) => Container(
-        padding: EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-              topRight: Radius.circular(10), topLeft: Radius.circular(10)),
-        ),
-        constraints: BoxConstraints(maxHeight: 300),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Withdraw Wallet Amount : ',
-              style: h1textStyle,
-            ),
-            TextField(
-              keyboardType:
-                  TextInputType.numberWithOptions(signed: false, decimal: true),
-              decoration: InputDecoration(
-                hintText: "Enter Amount (₹)",
-                hintStyle: textStyle.copyWith(
-                  color: Color(0xFF8C8C8C),
-                ),
-                prefixIcon: Padding(
-                  padding: EdgeInsets.only(right: 20.w),
-                  child: Icon(
-                    Icons.wallet,
-                    size: 20.w,
-                  ),
-                ),
-                prefixIconConstraints: BoxConstraints(minWidth: 30.w),
-              ),
-              style: textStyle.copyWith(
-                color: Colors.black,
-              ),
-              controller: _amountController,
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            Center(
-              child: InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                  // showSnackBar(context, _amountController.text);
-                  doWithdrawAmount(_amountController.text);
-                },
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (context) => StatefulBuilder(
+              builder: (context, setState) => SingleChildScrollView(
                 child: Container(
-                  width: 250.w,
-                  height: 40.h,
-                  // padding: EdgeInsets.all(8),
-                  decoration: ShapeDecoration(
-                    color: Color(0xFFED3E55),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(6.67),
-                    ),
+                  padding: EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(10),
+                        topLeft: Radius.circular(10)),
                   ),
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Text(
-                        "Submit",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          // fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w600,
-                          height: 1.19,
+                  constraints: BoxConstraints(minHeight: 400),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Withdraw Wallet Amount : ',
+                        style: h1textStyle,
+                      ),
+                      TextField(
+                        onChanged: (value) {
+                          setState(() {});
+                        },
+                        keyboardType: TextInputType.numberWithOptions(
+                            signed: false, decimal: true),
+                        decoration: InputDecoration(
+                          errorText: (_amountController.text.isNotEmpty &&
+                                  double.parse(_amountController.text) > minAmt)
+                              ? "Entered amount should be less than ${walletResponse!.wallet}"
+                              : null,
+                          hintText: "Enter Amount (₹)",
+                          hintStyle: textStyle.copyWith(
+                            color: Color(0xFF8C8C8C),
+                          ),
+                          prefixIcon: Padding(
+                            padding: EdgeInsets.only(right: 20.w),
+                            child: Icon(Icons.wallet,
+                                size: 20.w,
+                                color: (_amountController.text.isNotEmpty &&
+                                        double.parse(_amountController.text) >
+                                            minAmt)
+                                    ? Colors.red
+                                    : Colors.black),
+                          ),
+                          prefixIconConstraints: BoxConstraints(minWidth: 30.w),
+                        ),
+                        style: textStyle.copyWith(
+                          color: Colors.black,
+                        ),
+                        controller: _amountController,
+                      ),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      Center(
+                        child: InkWell(
+                          onTap: () {
+                            // showSnackBar(context, _amountController.text);
+                            if ((_amountController.text.isNotEmpty &&
+                                double.parse(_amountController.text) >
+                                    minAmt)) {
+                              debugPrint(
+                                  "Entered amount greater than wallet balance.");
+                              return;
+                            }
+                            Navigator.pop(context);
+                            doWithdrawAmount(_amountController.text);
+                          },
+                          child: Container(
+                            width: 250.w,
+                            height: 40.h,
+                            // padding: EdgeInsets.all(8),
+                            decoration: ShapeDecoration(
+                              color: Color(0xFFED3E55),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6.67),
+                              ),
+                            ),
+                            child: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Text(
+                                  "Submit",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    // fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w600,
+                                    height: 1.19,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ),
-    );
+            ));
   }
 
   Future<void> doWithdrawAmount(String text) async {
@@ -590,5 +617,115 @@ class _WalletBalacePageState extends State<WalletBalacePage> {
       showSnackBar(context, "Failed to Withdraw Amount. Please try again");
       Navigator.pop(context);
     }
+  }
+
+  void showMinimumPopup(double minAmt) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          contentPadding: EdgeInsets.all(6),
+          title: null,
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+          content: Container(
+            height: 140.h,
+            // width: 311.w,
+            child: Column(
+              children: [
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(
+                        Icons.close,
+                        size: 20,
+                      )),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text:
+                            'Minimum Withdrawl is RS ${minAmt.toStringAsFixed(0)}\nYou have  insufficient funds to withdraw. \n',
+                        style: TextStyle(
+                          color: Color(0xFF170F49),
+                          fontSize: 12,
+                          // fontFamily: 'DM Sans',
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      TextSpan(
+                        text: 'Any questions please write to us ?',
+                        style: TextStyle(
+                          color: Color(0xFFED3E55),
+                          fontSize: 12,
+                          // fontFamily: 'DM Sans',
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    width: 132.63,
+                    height: 23.95,
+                    // padding: const EdgeInsets.symmetric(horizontal: 36.16, vertical: 20.26),
+                    clipBehavior: Clip.antiAlias,
+                    decoration: ShapeDecoration(
+                      color: Color(0xFFE3EAFF),
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(width: 1, color: Color(0xFFED3E55)),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      shadows: [
+                        BoxShadow(
+                          color: Color(0x3A4A3AFF),
+                          blurRadius: 17.08,
+                          offset: Offset(0, 9.69),
+                          spreadRadius: 0,
+                        )
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Contact Us',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 8,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }

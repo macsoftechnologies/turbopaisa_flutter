@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:offersapp/api/model/ChangePasswordResponse.dart';
 import 'package:offersapp/api/model/UserData.dart';
 import 'package:offersapp/api/model/verify_otp_response.dart';
 import 'package:offersapp/api/restclient.dart';
@@ -234,14 +235,19 @@ class _VerificationPageState extends State<VerificationPage> {
                           height: 1.59,
                         ),
                       ),
-                      Text(
-                        'Resend',
-                        style: TextStyle(
-                          color: Color(0xFFED3E55),
-                          fontSize: 12.sp,
-                          // fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w600,
-                          height: 1.59,
+                      InkWell(
+                        onTap: () {
+                          resendOtpApi();
+                        },
+                        child: Text(
+                          'Resend',
+                          style: TextStyle(
+                            color: Color(0xFFED3E55),
+                            fontSize: 12.sp,
+                            // fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w600,
+                            height: 1.59,
+                          ),
                         ),
                       ),
                       SizedBox(
@@ -331,6 +337,30 @@ class _VerificationPageState extends State<VerificationPage> {
     } catch (e) {
       print(e);
       showSnackBar(context, "Invalid OTP.");
+      Navigator.pop(context);
+    }
+  }
+
+  Future<void> resendOtpApi() async {
+    try {
+      FocusManager.instance.primaryFocus?.unfocus();
+
+      showLoaderDialog(context);
+      final client = await RestClient.getRestClient();
+
+      Map<String, String> body = HashMap();
+      body.putIfAbsent("mobile", () => widget.mobile);
+      ChangePasswordResponse data = await client.resendOtp(body);
+      if (data.status != 200) {
+        showSnackBar(context, data.result ?? "");
+        Navigator.pop(context);
+      } else {
+        Navigator.pop(context);
+        showSnackBar(context, data.message ?? "");
+      }
+    } catch (e) {
+      print(e);
+      showSnackBar(context, "Failed to resend password.");
       Navigator.pop(context);
     }
   }

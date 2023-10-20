@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:offersapp/api/model/WalletResponse.dart';
 import 'package:offersapp/api/restclient.dart';
 import 'package:offersapp/pages/LoginPage.dart';
+import 'package:offersapp/pages/add_bank_details.dart';
 import 'package:offersapp/pages/change_password.dart';
 import 'package:offersapp/pages/dashboard_page.dart';
 import 'package:offersapp/pages/privacy_policy.dart';
@@ -253,6 +254,70 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
               // ),
               InkWell(
                 onTap: () {
+                  navigateToNext(context, ChangePasswordPage());
+                },
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(left: 20.w),
+                      child: Icon(
+                        Icons.lock,
+                        size: 20.w,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 20.sp,
+                    ),
+                    Text(
+                      "Update Password",
+                      style: textStyle,
+                    )
+                  ],
+                ),
+              ),
+              Divider(
+                //width: 5,
+                color: Colors.black12,
+                thickness: 1,
+                height: 30.h,
+                indent: 10.0,
+                endIndent: 10.0,
+              ),
+
+              InkWell(
+                onTap: () {
+                 navigateToNext(context, AddBankDetailsPage());
+                },
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(left: 20.w),
+                      child: Icon(
+                        Icons.security,
+                        size: 20.w,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 20.sp,
+                    ),
+                    Text(
+                      "Payment Details",
+                      style: textStyle,
+                    )
+                  ],
+                ),
+              ),
+              Divider(
+                //width: 5,
+                color: Colors.black12,
+                thickness: 1,
+                height: 30.h,
+                indent: 10.0,
+                endIndent: 10.0,
+              ),
+
+              InkWell(
+                onTap: () {
                   showSnackBar(context, "App is not available in Store.");
                 },
                 child: Row(
@@ -283,37 +348,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                 endIndent: 10.0,
               ),
 
-              InkWell(
-                onTap: () {
-                  navigateToNext(context, ChangePasswordPage());
-                },
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: 20.w),
-                      child: Icon(
-                        Icons.lock,
-                        size: 20.w,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 20.sp,
-                    ),
-                    Text(
-                      "Change Password",
-                      style: textStyle,
-                    )
-                  ],
-                ),
-              ),
-              Divider(
-                //width: 5,
-                color: Colors.black12,
-                thickness: 1,
-                height: 30.h,
-                indent: 10.0,
-                endIndent: 10.0,
-              ),
+
               InkWell(
                 onTap: () {
                   showSnackBar(context, "Coming soon!");

@@ -157,4 +157,10 @@ abstract class RestClient {
   @POST("users/changePassword")
   Future<ChangePasswordResponse> doChangePassword(@Body() Map<String, String> body);
 
+  @POST("users/resendOtp")
+  Future<ChangePasswordResponse> resendOtp(@Body() Map<String, String> body);
+
+  @POST("users/addBeneficiary")
+  Future<ChangePasswordResponse> addBeneficiary(@Body() Map<String, String> body);
+
 }

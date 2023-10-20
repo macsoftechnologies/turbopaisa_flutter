@@ -11,10 +11,13 @@ import 'package:offersapp/api/model/RegistrationResponse.dart';
 import 'package:offersapp/api/model/SpinWheelResponse.dart';
 import 'package:offersapp/api/model/UserData.dart';
 import 'package:offersapp/api/restclient.dart';
+import 'package:offersapp/utils.dart';
 import 'package:offersapp/utils/app_colors.dart';
 import 'package:offersapp/widgets/spinning_wheel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+
+import '../api/model/BannersResponse.dart';
 
 class WheelWidget extends StatefulWidget {
   SpinWheelResponse data;
@@ -41,6 +44,7 @@ class _WheelWidgetState extends State<WheelWidget> {
   SpinController _spinController = SpinController();
 
   Image? bgImage;
+  List<BannerData> banners = [];
 
   //bgImage = new Image.memory(await http.readBytes(imageUrl));
   @override
@@ -51,6 +55,21 @@ class _WheelWidgetState extends State<WheelWidget> {
       labels.putIfAbsent(count++, () => "${element.amount}\₹");
     });
     loadImage();
+    loadBannersData();
+  }
+
+  Future<void> loadBannersData() async {
+    try {
+      final client = await RestClient.getRestClient();
+      var list = await client.getBanners("home");
+      setState(() {
+        banners = list.banner?.cast<BannerData>() ?? [];
+      });
+    } catch (e) {
+      setState(() {
+        banners = [];
+      });
+    }
   }
 
   final StreamController _dividerController = StreamController<int>();
@@ -198,14 +217,51 @@ class _WheelWidgetState extends State<WheelWidget> {
             SizedBox(
               height: 40.h,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 26),
-              child: Image.asset(
-                'assets/images/scratch_banner.png',
-                //width: 300,
-                fit: BoxFit.cover,
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 26),
+            //   child: Image.asset(
+            //     'assets/images/scratch_banner.png',
+            //     //width: 300,
+            //     fit: BoxFit.cover,
+            //   ),
+            // ),
+            buildBanners(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildBanners() {
+    return Container(
+      // padding: EdgeInsets.all(10),
+      height: 133.h,
+      child: PageView.builder(
+        controller: PageController(initialPage: 0, viewportFraction: 0.9),
+        itemCount: banners.length,
+        itemBuilder: (context, index) => Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              child: InkWell(
+                onTap: () {
+                  launchUrlBrowser(context, banners[index].url ?? "");
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Image.network(
+                      banners[index].bannerImage ?? "",
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
               ),
             ),
+            // Center(
+            //     child: Text(
+            //         "${(index + 1).toString() ?? ""}/${banners.length.toString()}"))
           ],
         ),
       ),

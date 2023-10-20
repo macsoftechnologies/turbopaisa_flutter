@@ -155,7 +155,7 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             ClipRRect(
                               child: Image.asset(
-                                'assets/images/proflie_image.png',
+                                'assets/images/profile_avatar.png',
                                 fit: BoxFit.cover,
                                 width: 32.w,
                                 // height: 200,
