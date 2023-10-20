@@ -146,7 +146,7 @@ class _ScratchCardListPageState extends State<ScratchCardListPage> {
                                     height: 6.h,
                                   ),
                                   Text(
-                                    "₹ ${scratchCardResponse?.wallet?.toStringAsFixed(2) ?? "0.0"}",
+                                    "₹ ${originalCardResponse?.wallet?.toStringAsFixed(2) ?? "0.0"}",
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 15.86,
@@ -212,7 +212,7 @@ class _ScratchCardListPageState extends State<ScratchCardListPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "₹ ${scratchCardResponse?.moneywon?.toStringAsFixed(2) ?? "0.00"}",
+                            "₹ ${originalCardResponse?.moneywon?.toStringAsFixed(2) ?? "0.00"}",
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 14.sp,
@@ -232,40 +232,83 @@ class _ScratchCardListPageState extends State<ScratchCardListPage> {
                         ],
                       ),
                     ),
-                    SizedBox(
-                      width: 20.w,
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          index = 1;
+                          switchTabs();
+                        });
+                      },
+                      child: Container(
+                        width: 98.w,
+                        height: 53.h,
+                        // padding:
+                        //     EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.red),
+                            color: index == 1
+                                ? Color(0xFFED3E55)
+                                : Color(0xFFE3EAFF),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Scratch Cards',
+                              style: TextStyle(
+                                color: index == 1 ? Colors.white : Colors.black,
+                                fontSize: 9,
+                                fontWeight: FontWeight.w600,
+                                height: 1.84,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                    Container(
-                      width: 140.w,
-                      height: 53.h,
-                      // padding:
-                      //     EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                      decoration: BoxDecoration(
-                          color: Color(0xFFED3E55),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "${scratchCardResponse?.scratchcardwon ?? "0"}",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              height: 1.19,
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          index = 2;
+                          switchTabs();
+                        });
+                      },
+                      child: Container(
+                        width: 98.w,
+                        height: 53.h,
+                        // padding:
+                        //     EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                        decoration: BoxDecoration(
+                            color: index == 2
+                                ? Color(0xFFED3E55)
+                                : Color(0xFFE3EAFF),
+                            border: Border.all(color: Colors.red),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "${originalCardResponse?.scratchcardwon ?? "0"}",
+                              style: TextStyle(
+                                color: index == 2 ? Colors.white : Colors.black,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                height: 1.19,
+                              ),
                             ),
-                          ),
-                          Text(
-                            'Scratch Cards Won',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 9,
-                              fontWeight: FontWeight.w600,
-                              height: 1.84,
+                            Text(
+                              'Cards Won',
+                              style: TextStyle(
+                                color: index == 2 ? Colors.white : Colors.black,
+                                fontSize: 9,
+                                fontWeight: FontWeight.w600,
+                                height: 1.84,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -273,7 +316,7 @@ class _ScratchCardListPageState extends State<ScratchCardListPage> {
                 SizedBox(
                   height: 20,
                 ),
-                if (!isLoading && scratchCardResponse?.cards?.length == 0)
+                if (!isLoading && cards?.length == 0)
                   Container(
                     constraints: BoxConstraints(minHeight: 200),
                     child: Center(child: Text("No Scatchcards Available.")),
@@ -290,7 +333,7 @@ class _ScratchCardListPageState extends State<ScratchCardListPage> {
                         child: GridView.builder(
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
-                          itemCount: scratchCardResponse?.cards?.length ?? 0,
+                          itemCount: cards?.length ?? 0,
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2,
@@ -300,17 +343,14 @@ class _ScratchCardListPageState extends State<ScratchCardListPage> {
                           itemBuilder: (context, index) {
                             return InkWell(
                               onTap: () {
-                                if (scratchCardResponse!
-                                        .cards![index].scratchStatus !=
-                                    0) {
+                                if (cards![index].scratchStatus != 0) {
                                   return;
                                 }
                                 Navigator.of(context)
                                     .push(
                                       TutorialOverlay(
                                         child: ScratchCardPage(
-                                          data: scratchCardResponse!
-                                              .cards![index],
+                                          data: cards![index],
                                           banners: banners,
                                         ),
                                       ),
@@ -318,9 +358,7 @@ class _ScratchCardListPageState extends State<ScratchCardListPage> {
                                     .whenComplete(() => loadScratchCards());
                               },
                               child: Container(
-                                child: scratchCardResponse!
-                                            .cards![index].scratchStatus ==
-                                        0
+                                child: cards![index].scratchStatus == 0
                                     ? buildCard(index)
                                     : Container(
                                         decoration: BoxDecoration(
@@ -338,9 +376,7 @@ class _ScratchCardListPageState extends State<ScratchCardListPage> {
                                             //   height: 120,
                                             // ),
                                             getNetworkImage(
-                                              scratchCardResponse!.cards![index]
-                                                      .scratchImage ??
-                                                  "",
+                                              cards![index].scratchImage ?? "",
                                               fit: BoxFit.contain,
                                               width: 80.w,
                                               height: 80.h,
@@ -356,18 +392,12 @@ class _ScratchCardListPageState extends State<ScratchCardListPage> {
                                             SizedBox(
                                               height: 10.h,
                                             ),
-                                            if (scratchCardResponse!
-                                                    .cards![index].type ==
+                                            if (cards![index].type ==
                                                 "Cashback")
-                                              ...buildCashback(
-                                                  scratchCardResponse!
-                                                      .cards![index]),
-                                            if (scratchCardResponse!
-                                                    .cards![index].type ==
+                                              ...buildCashback(cards![index]),
+                                            if (cards![index].type ==
                                                 "Vocher/Discount")
-                                              ...buildClaimNow(
-                                                  scratchCardResponse!
-                                                      .cards![index])
+                                              ...buildClaimNow(cards![index])
                                           ],
                                         ),
                                       ),
@@ -417,13 +447,16 @@ class _ScratchCardListPageState extends State<ScratchCardListPage> {
     );
   }
 
-  ScratchCardResponse? scratchCardResponse;
+  // ScratchCardResponse? scratchCardResponse;
+  ScratchCardResponse? originalCardResponse;
+  List<ScratchCards>? cards = [];
   bool isLoading = false;
+  int index = 1;
 
   Future<void> loadScratchCards() async {
     try {
       setState(() {
-        this.scratchCardResponse = null;
+        this.originalCardResponse = null;
         isLoading = true;
       });
       final client = await RestClient.getRestClient();
@@ -435,32 +468,50 @@ class _ScratchCardListPageState extends State<ScratchCardListPage> {
           await client.getScratchcards(data.userId ?? "");
       // await client.getScratchcards("1");
       setState(() {
-        this.scratchCardResponse = scratchCardResponse;
+        this.originalCardResponse = scratchCardResponse;
         isLoading = false;
+        switchTabs();
       });
+      switchTabs();
     } catch (e) {
       print(e);
       setState(() {
-        scratchCardResponse = null;
+        originalCardResponse = null;
         isLoading = false;
       });
     }
   }
 
+  void switchTabs() {
+    if (index == 1) {
+      cards = originalCardResponse?.cards
+              ?.where((element) =>
+                  element.scratchStatus == 0 || element.scratchStatus == 2)
+              .toList() ??
+          [];
+    } else {
+      cards = originalCardResponse?.cards
+              ?.where((element) =>
+                  element.scratchStatus != 0 && element.scratchStatus != 1)
+              .toList() ??
+          [];
+    }
+  }
+
   Widget buildCard(int index) {
-    if (scratchCardResponse?.cards![index].scratchColor == "Green") {
+    if (cards![index].scratchColor == "Green") {
       return Image.asset(
         'assets/images/scratch_green.png',
       );
-    } else if (scratchCardResponse?.cards![index].scratchColor == "Yellow") {
+    } else if (cards![index].scratchColor == "Yellow") {
       return Image.asset(
         'assets/images/scratch_yellow.png',
       );
-    } else if (scratchCardResponse?.cards![index].scratchColor == "Orange") {
+    } else if (cards![index].scratchColor == "Orange") {
       return Image.asset(
         'assets/images/scratch_orange.png',
       );
-    } else if (scratchCardResponse?.cards![index].scratchColor == "Blue") {
+    } else if (cards![index].scratchColor == "Blue") {
       return Image.asset(
         'assets/images/scratch_blue.png',
       );

@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
@@ -8,6 +9,8 @@ import 'package:circular_bottom_navigation/tab_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:offersapp/api/model/ChangePasswordResponse.dart';
 import 'package:offersapp/api/model/UserData.dart';
 import 'package:offersapp/api/restclient.dart';
 import 'package:offersapp/generated/assets.dart';
@@ -62,6 +65,65 @@ class _DashboardPageState extends State<DashboardPage>
         print("selected ${selectTab}");
       });
     });
+    _determinePosition();
+  }
+
+  /// Determine the current position of the device.
+  ///
+  /// When the location services are not enabled or permissions
+  /// are denied the `Future` will return an error.
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+    Position position = await Geolocator.getCurrentPosition();
+    //Save location details..
+    saveGeo(position);
+    return position;
+  }
+
+  Future<void> saveGeo(Position position) async {
+    try {
+      final client = await RestClient.getRestClient();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var user = await prefs.getString("user");
+      UserData userData = UserData.fromJson(jsonDecode(user!));
+      Map<String, String> body = HashMap();
+      body.putIfAbsent("user_id", () => userData.userId.toString());
+      body.putIfAbsent("latitude", () => position.latitude.toString());
+      body.putIfAbsent("longitude", () => position.longitude.toString());
+      ChangePasswordResponse data = await client.addBeneficiary(body);
+    } catch (e) {}
   }
 
   final List<Widget> _widgetOptions = <Widget>[
