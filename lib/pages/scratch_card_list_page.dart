@@ -343,9 +343,13 @@ class _ScratchCardListPageState extends State<ScratchCardListPage> {
                           itemBuilder: (context, index) {
                             return InkWell(
                               onTap: () {
+                                if (cards![index].scratchStatus == 2) {
+                                  showSnackBar(context, "Coming soon!");
+                                }
                                 if (cards![index].scratchStatus != 0) {
                                   return;
                                 }
+
                                 Navigator.of(context)
                                     .push(
                                       TutorialOverlay(
@@ -358,8 +362,28 @@ class _ScratchCardListPageState extends State<ScratchCardListPage> {
                                     .whenComplete(() => loadScratchCards());
                               },
                               child: Container(
-                                child: cards![index].scratchStatus == 0
-                                    ? buildCard(index)
+                                child: (cards![index].scratchStatus == 0 ||
+                                        cards![index].scratchStatus == 2)
+                                    ? Stack(
+                                        children: [
+                                          buildCard(index,
+                                              cards![index].scratchStatus == 2),
+                                          if (cards![index].scratchStatus == 2)
+                                            Center(
+                                              child: Container(
+                                                color: Colors.white,
+                                                width: 180.w,
+                                                padding: EdgeInsets.all(8),
+                                                child: Text(
+                                                  "Coming soon!",
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontSize: 12.sp),
+                                                ),
+                                              ),
+                                            )
+                                        ],
+                                      )
                                     : Container(
                                         decoration: BoxDecoration(
                                             color: Colors.white,
@@ -492,28 +516,37 @@ class _ScratchCardListPageState extends State<ScratchCardListPage> {
     } else {
       cards = originalCardResponse?.cards
               ?.where((element) =>
-                  element.scratchStatus != 0 && element.scratchStatus != 1)
+                  element.scratchStatus != 0 && element.scratchStatus == 1)
               .toList() ??
           [];
     }
   }
 
-  Widget buildCard(int index) {
+  Widget buildCard(int index, bool isComingSoon) {
+    //isComingSoon ??? show dark color for card
     if (cards![index].scratchColor == "Green") {
       return Image.asset(
         'assets/images/scratch_green.png',
+        color: isComingSoon ? Colors.green : null,
+        colorBlendMode: isComingSoon ? BlendMode.multiply : null,
       );
     } else if (cards![index].scratchColor == "Yellow") {
       return Image.asset(
         'assets/images/scratch_yellow.png',
+        color: isComingSoon ? Colors.yellow : null,
+        colorBlendMode: isComingSoon ? BlendMode.multiply : null,
       );
     } else if (cards![index].scratchColor == "Orange") {
       return Image.asset(
         'assets/images/scratch_orange.png',
+        color: isComingSoon ? Colors.orange.withOpacity(0.5) : null,
+        colorBlendMode: isComingSoon ? BlendMode.multiply : null,
       );
     } else if (cards![index].scratchColor == "Blue") {
       return Image.asset(
         'assets/images/scratch_blue.png',
+        color: isComingSoon ? Colors.blue : null,
+        colorBlendMode: isComingSoon ? BlendMode.multiply : null,
       );
     }
     return SizedBox();

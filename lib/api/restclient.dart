@@ -16,6 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../utils.dart';
 import 'PrettyDioLogger.dart';
 import 'StringResponseConverter.dart';
+import 'model/BankDetailsResponse.dart';
 import 'model/OffersData.dart';
 import 'model/UserData.dart';
 import 'model/verify_otp_response.dart';
@@ -165,5 +166,8 @@ abstract class RestClient {
 
   @POST("users/updatelocation")
   Future<ChangePasswordResponse> updatelocation(@Body() Map<String, String> body);
+
+  @POST("cashfreepayout/getBeneficiaryDetailsById")
+  Future<List<BankDetailsResponse>> getBeneficiaryDetailsById(@Body() Map<String, String> body);
 
 }

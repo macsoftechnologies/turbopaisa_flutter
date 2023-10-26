@@ -354,12 +354,18 @@ class _WalletBalacePageState extends State<WalletBalacePage> {
                                           width: 42,
                                           height: 42,
                                           decoration: ShapeDecoration(
-                                            color: Color(0xFFFEC7A4),
+                                            color: getIcon(walletResponse
+                                                    ?.transactions![index]
+                                                    .transactionFrom)
+                                                .withOpacity(0.3),
+                                            //Color(0xFFFEC7A4),
                                             shape: OvalBorder(),
                                           ),
                                           child: Icon(
                                             Icons.account_balance_wallet,
-                                            color: Colors.orange,
+                                            color: getIcon(walletResponse
+                                                ?.transactions![index]
+                                                .transactionFrom),
                                             size: 22.w,
                                           ),
                                         ),
@@ -393,7 +399,9 @@ class _WalletBalacePageState extends State<WalletBalacePage> {
                                               height: 10,
                                             ),
                                             Text(
-                                              "${walletResponse?.transactions![index].transactionAt ?? ""}",
+                                              "${walletResponse?.transactions![index].transactionAt ?? ""}" +
+                                                  " • "
+                                                      "${walletResponse?.transactions![index].transactionFrom ?? ""}",
                                               style: TextStyle(
                                                 color: Color(0xFF8C8C8C),
                                                 fontSize: 10.sp,
@@ -727,5 +735,13 @@ class _WalletBalacePageState extends State<WalletBalacePage> {
         );
       },
     );
+  }
+
+  Color getIcon(String? transactionFrom) {
+    // if (transactionFrom == "Spin") return Color(0xFFFEC7A4);
+    // if (transactionFrom == "Scratch Card") return Colors.blue.withOpacity(0.5);
+    if (transactionFrom == "Spin") return Colors.orange;
+    if (transactionFrom == "Scratch Card") return Colors.blue;
+    return Colors.purple;
   }
 }

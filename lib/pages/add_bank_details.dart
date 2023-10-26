@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:offersapp/api/model/BankDetailsResponse.dart';
 import 'package:offersapp/api/model/RegistrationResponse.dart';
 import 'package:offersapp/api/model/UserData.dart';
 import 'package:offersapp/api/restclient.dart';
@@ -23,10 +24,18 @@ class AddBankDetailsPage extends StatefulWidget {
 }
 
 class _AddBankDetailsPageState extends State<AddBankDetailsPage> {
-  String _upiId = "";
-  String _accountNumber = "";
-  String _ifscCode = "";
-  String _bankName = "";
+  TextEditingController _upiId = new TextEditingController();
+  TextEditingController _accountNumber = new TextEditingController();
+  TextEditingController _ifscCode = new TextEditingController();
+  TextEditingController _bankName = new TextEditingController();
+
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    loadData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -132,6 +141,11 @@ class _AddBankDetailsPageState extends State<AddBankDetailsPage> {
                       SizedBox(
                         height: 30.sp,
                       ),
+                      if (isLoading)
+                        Center(
+                            child: CircularProgressIndicator(
+                          strokeWidth: 1,
+                        )),
                       Text(
                         'Enter your UPI ID',
                         style: h1textStyle,
@@ -147,9 +161,7 @@ class _AddBankDetailsPageState extends State<AddBankDetailsPage> {
                         style: textStyle.copyWith(
                           color: Colors.black,
                         ),
-                        onChanged: (value) {
-                          _upiId = value;
-                        },
+                        controller: _upiId,
                       ),
                       SizedBox(
                         height: commonSpace,
@@ -169,9 +181,7 @@ class _AddBankDetailsPageState extends State<AddBankDetailsPage> {
                         style: textStyle.copyWith(
                           color: Colors.black,
                         ),
-                        onChanged: (value) {
-                          _accountNumber = value;
-                        },
+                        controller: _accountNumber,
                       ),
                       SizedBox(
                         height: commonSpace,
@@ -191,9 +201,7 @@ class _AddBankDetailsPageState extends State<AddBankDetailsPage> {
                         style: textStyle.copyWith(
                           color: Colors.black,
                         ),
-                        onChanged: (value) {
-                          _ifscCode = value;
-                        },
+                        controller: _ifscCode,
                       ),
                       SizedBox(
                         height: commonSpace,
@@ -213,13 +221,12 @@ class _AddBankDetailsPageState extends State<AddBankDetailsPage> {
                         style: textStyle.copyWith(
                           color: Colors.black,
                         ),
-                        onChanged: (value) {
-                          _bankName = value;
-                        },
+                        controller: _bankName,
                       ),
                       SizedBox(
                         height: 40.sp,
                       ),
+                      if(!isLoading)
                       InkWell(
                         onTap: () {
                           HapticFeedback.lightImpact();
@@ -280,15 +287,14 @@ class _AddBankDetailsPageState extends State<AddBankDetailsPage> {
     );
   }
 
-
   Future<void> submitData() async {
     try {
       FocusManager.instance.primaryFocus?.unfocus();
 
-      if (_upiId.isNotEmpty ||
-          (_accountNumber.isNotEmpty &&
-              _ifscCode.isNotEmpty &&
-              _bankName.isNotEmpty)) {
+      if (_upiId.text.isNotEmpty ||
+          (_accountNumber.text.isNotEmpty &&
+              _ifscCode.text.isNotEmpty &&
+              _bankName.text.isNotEmpty)) {
         showLoaderDialog(context);
         final client = await RestClient.getRestClient();
         SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -296,10 +302,10 @@ class _AddBankDetailsPageState extends State<AddBankDetailsPage> {
         UserData userData = UserData.fromJson(jsonDecode(user!));
         Map<String, String> body = HashMap();
         body.putIfAbsent("user_id", () => userData.userId.toString());
-        body.putIfAbsent("bank_account", () => _accountNumber);
-        body.putIfAbsent("bank_ifsc", () => _ifscCode);
-        body.putIfAbsent("bank_name", () => _bankName);
-        body.putIfAbsent("upi_id", () => _upiId);
+        body.putIfAbsent("bank_account", () => _accountNumber.text.trim());
+        body.putIfAbsent("bank_ifsc", () => _ifscCode.text.trim());
+        body.putIfAbsent("bank_name", () => _bankName.text.trim());
+        body.putIfAbsent("upi_id", () => _upiId.text.trim());
 
         ChangePasswordResponse data = await client.addBeneficiary(body);
         if (data.status != 200) {
@@ -317,5 +323,34 @@ class _AddBankDetailsPageState extends State<AddBankDetailsPage> {
       showSnackBar(context, "Failed to save bank details.");
       Navigator.pop(context);
     }
+  }
+
+  Future<void> loadData() async {
+    try {
+      // showLoaderDialog(context);
+      final client = await RestClient.getRestClient();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var user = await prefs.getString("user");
+      UserData userData = UserData.fromJson(jsonDecode(user!));
+      Map<String, String> body = HashMap();
+      body.putIfAbsent("user_id", () => userData.userId.toString());
+
+      List<BankDetailsResponse> data =
+          await client.getBeneficiaryDetailsById(body);
+      if (data.isNotEmpty) {
+        BankDetailsResponse detailsResponse = data.first;
+        setState(() {
+          _upiId.text = detailsResponse.upiId ?? "";
+          _accountNumber.text = detailsResponse.accountNumber ?? "";
+          _ifscCode.text = detailsResponse.ifscCode ?? "";
+          _bankName.text = detailsResponse.bankName ?? "";
+        });
+      }
+    } catch (e) {
+      print(e);
+    }
+    setState(() {
+      isLoading = false;
+    });
   }
 }
