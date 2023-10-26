@@ -18,6 +18,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 import '../api/model/BannersResponse.dart';
+import '../api/model/ScratchCardResponse.dart';
 
 class WheelWidget extends StatefulWidget {
   SpinWheelResponse data;
@@ -112,37 +113,38 @@ class _WheelWidgetState extends State<WheelWidget> {
             SizedBox(
               height: 120.h,
             ),
-            bgImage == null
-                ? SizedBox(
-                    width: 300,
-                    height: 300,
-                    child: Center(
-                      child: CircularProgressIndicator(
-                        color: Colors.white,
-                        strokeWidth: 1,
+            if (!isCongratulations)
+              bgImage == null
+                  ? SizedBox(
+                      width: 300,
+                      height: 300,
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 1,
+                        ),
                       ),
+                    )
+                  : SpinningWheelWidget(
+                      sectors: widget.data.spinlist?.reversed.toList() ?? [],
+                      width: 300,
+                      height: 300,
+                      image: bgImage!,
+                      // Image.network(
+                      //   widget.data.spinImage ?? "",
+                      // ),
+                      selectedIndex: findIndex(
+                          widget.data.spinlist?.reversed.toList(),
+                          widget.data.spinAmount),
+                      onEnd: () {
+                        HapticFeedback.lightImpact();
+                        setState(() {
+                          isCongratulations = true;
+                        });
+                        updateToServer();
+                      },
+                      controller: _spinController,
                     ),
-                  )
-                : SpinningWheelWidget(
-                    sectors: widget.data.spinlist?.reversed.toList() ?? [],
-                    width: 300,
-                    height: 300,
-                    image: bgImage!,
-                    // Image.network(
-                    //   widget.data.spinImage ?? "",
-                    // ),
-                    selectedIndex: findIndex(
-                        widget.data.spinlist?.reversed.toList(),
-                        widget.data.spinAmount),
-                    onEnd: () {
-                      HapticFeedback.lightImpact();
-                      setState(() {
-                        isCongratulations = true;
-                      });
-                      updateToServer();
-                    },
-                    controller: _spinController,
-                  ),
             // buildOldSpin(),
             // SizedBox(height: 30),
             // StreamBuilder(
@@ -153,47 +155,48 @@ class _WheelWidgetState extends State<WheelWidget> {
             //           : Container();
             //     }),
 
-            if (isCongratulations)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: Text(
-                  "Congratulations 🎉",
-                  style: TextStyle(color: Colors.white, fontSize: 18),
-                ),
-              ),
+            if (isCongratulations) buildClaimNow(widget.data),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(vertical: 16.0),
+            //   child: Text(
+            //     "Congratulations 🎉",
+            //     style: TextStyle(color: Colors.white, fontSize: 18),
+            //   ),
+            // ),
             SizedBox(height: 10),
-            InkWell(
-              onTap: !isEnable
-                  ? null
-                  : () {
-                      HapticFeedback.lightImpact();
-                      // _wheelNotifier.sink.add(_generateRandomVelocity());
-                      setState(() {
-                        isWheel = true;
-                        isEnable = false;
-                      });
-                      _spinController.setValue(true);
-                    },
-              child: Container(
-                width: 250.w,
-                padding: EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: isEnable ? AppColors.accentColor : Color(0xFF424242),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Text(
-                      "Click Here to Spin",
-                      style: TextStyle(
-                        color: isEnable ? Colors.white : Color(0xFF858585),
+            if (!isCongratulations)
+              InkWell(
+                onTap: !isEnable
+                    ? null
+                    : () {
+                        HapticFeedback.lightImpact();
+                        // _wheelNotifier.sink.add(_generateRandomVelocity());
+                        setState(() {
+                          isWheel = true;
+                          isEnable = false;
+                        });
+                        _spinController.setValue(true);
+                      },
+                child: Container(
+                  width: 250.w,
+                  padding: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: isEnable ? AppColors.accentColor : Color(0xFF424242),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Text(
+                        "Click Here to Spin",
+                        style: TextStyle(
+                          color: isEnable ? Colors.white : Color(0xFF858585),
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
             // new ElevatedButton(
             //     // child: new Text(
             //     //   "Click Here to Spin",
@@ -225,9 +228,106 @@ class _WheelWidgetState extends State<WheelWidget> {
             //     fit: BoxFit.cover,
             //   ),
             // ),
+
             buildBanners(),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget buildClaimNow(SpinWheelResponse data) {
+    return Container(
+      // color: Colors.white,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      margin: EdgeInsets.all(16),
+      padding: EdgeInsets.all(8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: getNetworkImage(
+              data.spin_add_image ?? "",
+              fit: BoxFit.contain,
+              width: 100.w,
+              height: 80.h,
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  // "${getDesc(data)}",
+                  "${data.spinDesc}",
+                  textAlign: TextAlign.center,
+                  maxLines: 3,
+                  style: TextStyle(
+                    color: Color(0xFF170F49),
+                    fontSize: 12,
+                    // fontFamily: 'DM Sans',
+                    fontWeight: FontWeight.w700,
+                    height: 1.46,
+                  ),
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  if (data.url != null && data.url!.isNotEmpty) {
+                    launchUrlBrowser(context, data.url ?? "");
+                    Navigator.pop(context, true);
+                  }
+                },
+                child: Container(
+                  width: 132.w,
+                  height: 25.h,
+                  // padding: const EdgeInsets.symmetric(horizontal: 36.16, vertical: 20.26),
+                  clipBehavior: Clip.antiAlias,
+                  decoration: ShapeDecoration(
+                    color: Color(0xFFED3E55),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4)),
+                    shadows: [
+                      BoxShadow(
+                        color: Color(0x3A4A3AFF),
+                        blurRadius: 17.08,
+                        offset: Offset(0, 9.69),
+                        spreadRadius: 0,
+                      )
+                    ],
+                  ),
+                  child: Center(
+                    child: Text(
+                      data.btn_text ?? 'Claim Now',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 8,
+                        // fontFamily: 'DM Sans',
+                        fontWeight: FontWeight.w700,
+                        height: 2,
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+          // SizedBox(
+          //   height: 13.h,
+          // ),
+          Spacer(),
+          InkWell(
+              onTap: () {
+                Navigator.pop(context, true);
+              },
+              child: Icon(Icons.close)),
+        ],
       ),
     );
   }

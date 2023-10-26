@@ -123,7 +123,7 @@ class _DashboardPageState extends State<DashboardPage>
       body.putIfAbsent("user_id", () => userData.userId.toString());
       body.putIfAbsent("latitude", () => position.latitude.toString());
       body.putIfAbsent("longitude", () => position.longitude.toString());
-      ChangePasswordResponse data = await client.addBeneficiary(body);
+      ChangePasswordResponse data = await client.updatelocation(body);
     } catch (e) {}
   }
 
@@ -233,6 +233,10 @@ class _DashboardPageState extends State<DashboardPage>
       var user = await prefs.getString("user");
       UserData data = UserData.fromJson(jsonDecode(user!));
       var list = await client.getSpins(data.userId ?? "");
+
+      // Map<String, String> body = HashMap();
+      // body.putIfAbsent("user_id", () => data.userId.toString());
+      // var list = await client.getMySpinCards(body);
       Navigator.pop(context);
       if (list.isNotEmpty) {
         Navigator.of(context).push(

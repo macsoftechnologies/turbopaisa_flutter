@@ -141,6 +141,9 @@ abstract class RestClient {
   @GET("spin/getSpins")
   Future<List<SpinWheelResponse>> getSpins(@Query("user_id") String userId);
 
+  @POST("spin/getMySpinCards")
+  Future<List<SpinWheelResponse>> getMySpinCards(@Body() Map<String, String> body);
+
   @POST("spin/spinUserinsert")
   Future<RegistrationResponse> spinUserinsert(@Body() Map<String, String> body);
 
