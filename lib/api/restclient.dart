@@ -23,7 +23,8 @@ import 'model/verify_otp_response.dart';
 
 part 'restclient.g.dart';
 
-const String BASE_URL = "https://macsof.in/advertiseApp/services/";
+// const String BASE_URL = "https://macsof.in/advertiseApp/services/";
+const String BASE_URL = "https://app.turbopaisa.com/services/";
 
 //https://macsof.in/advertiseApp/services/earngames/getEarngames?user_id=3
 // const PLACE_HOLDER_PROFILE = "assets/images/profile_pic.png";

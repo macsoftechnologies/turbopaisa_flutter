@@ -252,7 +252,7 @@ class _WheelWidgetState extends State<WheelWidget> {
             padding: const EdgeInsets.all(8.0),
             child: getNetworkImage(
               data.spin_add_image ?? "",
-              fit: BoxFit.contain,
+              fit: BoxFit.fitWidth,
               width: 100.w,
               height: 80.h,
             ),
@@ -260,19 +260,22 @@ class _WheelWidgetState extends State<WheelWidget> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  // "${getDesc(data)}",
-                  "${data.spinDesc}",
-                  textAlign: TextAlign.center,
-                  maxLines: 3,
-                  style: TextStyle(
-                    color: Color(0xFF170F49),
-                    fontSize: 12,
-                    // fontFamily: 'DM Sans',
-                    fontWeight: FontWeight.w700,
-                    height: 1.46,
+              Container(
+                constraints: BoxConstraints(maxWidth: 180),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    // "${getDesc(data)}",
+                    "${data.spinDesc}",
+                    textAlign: TextAlign.justify,
+                    maxLines: 3,
+                    style: TextStyle(
+                      color: Color(0xFF170F49),
+                      fontSize: 12,
+                      // fontFamily: 'DM Sans',
+                      fontWeight: FontWeight.w700,
+                      height: 1.46,
+                    ),
                   ),
                 ),
               ),
@@ -419,7 +422,7 @@ class _WheelWidgetState extends State<WheelWidget> {
     try {
       final client = await RestClient.getRestClient();
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      var user = await prefs.getString("user");
+      var user = prefs.getString("user");
       UserData data = UserData.fromJson(jsonDecode(user!));
       Map<String, String> body = HashMap();
       body.putIfAbsent("user_id", () => data.userId.toString());
@@ -427,7 +430,7 @@ class _WheelWidgetState extends State<WheelWidget> {
       body.putIfAbsent("amount", () => widget.data.spinAmount ?? "");
       RegistrationResponse response = await client.spinUserinsert(body);
       if (response.status == 200) {
-        Navigator.pop(context, true);
+        // Navigator.pop(context, true);
       }
     } catch (e) {
       print(e);

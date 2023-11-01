@@ -471,6 +471,19 @@ class _WalletBalacePageState extends State<WalletBalacePage> {
     return 2;
   }
 
+  String? checkWithdraw(
+      TextEditingController amountController, double minAmount) {
+    if (amountController.text.isNotEmpty) {
+      if (double.parse(amountController.text) > walletResponse!.wallet!) {
+        return "Entered amount should be less than ${walletResponse!.wallet}";
+      }
+      if (double.parse(amountController.text) < minAmount) {
+        return "Minimum should  be $minAmount";
+      }
+    }
+    return null;
+  }
+
   Future<void> showWithdrawPopup() async {
     if (walletResponse == null || walletResponse!.wallet! <= 0) {
       return;
@@ -526,10 +539,13 @@ class _WalletBalacePageState extends State<WalletBalacePage> {
                         keyboardType: TextInputType.numberWithOptions(
                             signed: false, decimal: true),
                         decoration: InputDecoration(
-                          errorText: (_amountController.text.isNotEmpty &&
-                                  double.parse(_amountController.text) > minAmt)
-                              ? "Entered amount should be less than ${walletResponse!.wallet}"
-                              : null,
+                          errorText:
+                              // (_amountController.text.isNotEmpty &&
+                              //         double.parse(_amountController.text) >
+                              //             walletResponse!.wallet!)
+                              checkWithdraw(_amountController, minAmt),
+                          // ? "Entered amount should be less than ${walletResponse!.wallet}"
+                          // : null,
                           hintText: "Enter Amount (₹)",
                           hintStyle: textStyle.copyWith(
                             color: Color(0xFF8C8C8C),
@@ -538,11 +554,11 @@ class _WalletBalacePageState extends State<WalletBalacePage> {
                             padding: EdgeInsets.only(right: 20.w),
                             child: Icon(Icons.wallet,
                                 size: 20.w,
-                                color: (_amountController.text.isNotEmpty &&
-                                        double.parse(_amountController.text) >
-                                            minAmt)
-                                    ? Colors.red
-                                    : Colors.black),
+                                color:
+                                    checkWithdraw(_amountController, minAmt) !=
+                                            null
+                                        ? Colors.red
+                                        : Colors.black),
                           ),
                           prefixIconConstraints: BoxConstraints(minWidth: 30.w),
                         ),
@@ -558,11 +574,11 @@ class _WalletBalacePageState extends State<WalletBalacePage> {
                         child: InkWell(
                           onTap: () {
                             // showSnackBar(context, _amountController.text);
-                            if ((_amountController.text.isNotEmpty &&
-                                double.parse(_amountController.text) >
-                                    minAmt)) {
-                              debugPrint(
-                                  "Entered amount greater than wallet balance.");
+                            var message;
+                            if (message =
+                                checkWithdraw(_amountController, minAmt) !=
+                                    null) {
+                              debugPrint(message);
                               return;
                             }
                             Navigator.pop(context);

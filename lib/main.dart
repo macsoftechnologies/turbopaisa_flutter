@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,9 +15,10 @@ Future<void> main() async {
   ));
   await ScreenUtil.ensureScreenSize();
   MobileAds.instance.initialize(); //<-- SEE HERE
-  MobileAds.instance.updateRequestConfiguration(
-    RequestConfiguration(testDeviceIds: ["C1E4BB6BF7CC212BD14A28E2F8585667"]),
-  );
+  if (kDebugMode)
+    MobileAds.instance.updateRequestConfiguration(
+      RequestConfiguration(testDeviceIds: ["C1E4BB6BF7CC212BD14A28E2F8585667"]),
+    );
 //RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("C1E4BB6BF7CC212BD14A28E2F8585667"))
 
   runApp(const MyApp());
