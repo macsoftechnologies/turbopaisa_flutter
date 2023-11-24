@@ -77,28 +77,28 @@ class _OfferDetailsPageState extends State<OfferDetailsPage> {
                       width: 335.w,
                       height: 130.h),
                 ),
-                // Container(
-                //   width: 335.w,
-                //   height: 130.h,
-                //   decoration: ShapeDecoration(
-                //     image: DecorationImage(
-                //       image: NetworkImage(
-                //           offerDetails!.images![0].image.toString()),
-                //       fit: BoxFit.cover,
-                //     ),
-                //     shape: RoundedRectangleBorder(
-                //       borderRadius: BorderRadius.circular(6.67),
-                //     ),
-                //     shadows: [
-                //       BoxShadow(
-                //         color: Color(0x11000000),
-                //         blurRadius: 38.33,
-                //         offset: Offset(2.32, 8),
-                //         spreadRadius: 0,
-                //       )
-                //     ],
-                //   ),
-                // ),
+              // Container(
+              //   width: 335.w,
+              //   height: 130.h,
+              //   decoration: ShapeDecoration(
+              //     image: DecorationImage(
+              //       image: NetworkImage(
+              //           offerDetails!.images![0].image.toString()),
+              //       fit: BoxFit.cover,
+              //     ),
+              //     shape: RoundedRectangleBorder(
+              //       borderRadius: BorderRadius.circular(6.67),
+              //     ),
+              //     shadows: [
+              //       BoxShadow(
+              //         color: Color(0x11000000),
+              //         blurRadius: 38.33,
+              //         offset: Offset(2.32, 8),
+              //         spreadRadius: 0,
+              //       )
+              //     ],
+              //   ),
+              // ),
               SizedBox(
                 height: 25.h,
               ),
@@ -278,7 +278,7 @@ class _OfferDetailsPageState extends State<OfferDetailsPage> {
                   ),
                   child: Center(
                     child: Text(
-                      'Register Now',
+                      offerDetails?.offerButtonTitle ?? 'Click Now',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 13.33,

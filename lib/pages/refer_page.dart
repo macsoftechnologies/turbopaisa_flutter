@@ -287,8 +287,10 @@ class _ReferPageState extends State<ReferPage> {
                   await FlutterShare.share(
                       title: 'Share',
                       text: 'Try the best application to earn cash.',
+                      // linkUrl:
+                      //     "http://turbopaisa.com/referal?code=${data?.userUniqueId ?? "User id is missing"}",
                       linkUrl:
-                          "http://turbopaisa.com/referal?code=${data?.userUniqueId ?? "User id is missing"}",
+                      "https://play.google.com/store/apps/details?id=com.tejkun.turbopaisa",
                       chooserTitle: 'Share');
                 },
                 child:
