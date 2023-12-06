@@ -40,10 +40,39 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    loadData();
+    scrollController.addListener(pagination);
+    _futureData = loadData();
     loadBannersData();
     loadWallet();
   }
+
+  //
+  var scrollController = ScrollController();
+  static const int PAGE_SIZE = 10;
+  int start = 1;
+  Future<List<OffersData>>? _futureData;
+
+  void pagination() {
+    if (isLoading) {
+      return;
+    }
+    if ((scrollController.position.pixels ==
+        scrollController.position.maxScrollExtent)) {
+      setState(() {
+        isLoading = true;
+        start = start + 1; //+= PAGE_SIZE;
+        if (_selectedIndex == 0) {
+          loadData();
+        } else if (_selectedIndex == 1) {
+          loadMyOffersData();
+        } else if (_selectedIndex == 2) {
+          loadUpcomingOffers();
+        }
+      });
+    }
+  }
+
+  //
 
   WalletResponse? walletResponse;
 
@@ -55,7 +84,7 @@ class _HomePageState extends State<HomePage> {
       UserData data = UserData.fromJson(jsonDecode(user!));
 
       WalletResponse scratchCardResponse =
-          await client.getTransactions(data.userId ?? "");
+          await client.getTransactions(data.userId ?? "",1,1);
       setState(() {
         this.walletResponse = scratchCardResponse;
       });
@@ -131,6 +160,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     double clipperHeight = 160.0;
     return SingleChildScrollView(
+      controller: scrollController,
       child: Container(
         child: Column(
           children: [
@@ -287,12 +317,12 @@ class _HomePageState extends State<HomePage> {
             SizedBox(
               height: 25.h,
             ),
-            if (isLoading)
-              Center(
-                child: CircularProgressIndicator(
-                  strokeWidth: 1,
-                ),
-              ),
+            // if (isLoading)
+            //   Center(
+            //     child: CircularProgressIndicator(
+            //       strokeWidth: 1,
+            //     ),
+            //   ),
             // BannerAdWidget(),
             if (_selectedIndex == 0) buildAllOffers(allOffers),
             if (_selectedIndex == 1) buildAllOffers(myOffers),
@@ -330,6 +360,7 @@ class _HomePageState extends State<HomePage> {
         },
         onValueChanged: (value) {
           setState(() {
+            start = 1;
             groupValue = value!;
             _selectedIndex = value;
             print(value);
@@ -491,8 +522,15 @@ class _HomePageState extends State<HomePage> {
             key: UniqueKey(),
             scrollDirection: Axis.vertical,
             physics: NeverScrollableScrollPhysics(),
+            // controller: scrollController,
             shrinkWrap: true,
             itemBuilder: (context, index) {
+              if (isLoading && index == offersData.length) {
+                return Center(
+                    child: CircularProgressIndicator(
+                  strokeWidth: 1,
+                ));
+              }
               if (offersData[index].isBanner == true) {
                 return BannerAdWidget();
               }
@@ -596,7 +634,8 @@ class _HomePageState extends State<HomePage> {
                 ),
               );
             },
-            itemCount: offersData.length);
+            itemCount: offersData.length + (isLoading ? 1 : 0),
+          );
   }
 
   // List<OffersData> offersData = [];
@@ -605,7 +644,7 @@ class _HomePageState extends State<HomePage> {
   List<OffersData> upcomingOffers = [];
   List<BannerData> banners = [];
 
-  Future<void> loadData() async {
+  Future<List<OffersData>> loadData() async {
     try {
       setState(() {
         isLoading = true;
@@ -615,28 +654,39 @@ class _HomePageState extends State<HomePage> {
       UserData data = UserData.fromJson(jsonDecode(user!));
 
       final client = await RestClient.getRestClient();
-      var list = await client.getOffers(data.userId ?? "");
+      // var list = await client.getOffers(data.userId ?? "");
+      var list =
+          await client.getofferDetails(data.userId ?? "", start, PAGE_SIZE);
       //Insert add placements [START]
       var tempList = <OffersData>[];
+      int count = allOffers.length;
       for (int i = 0; i < list.length; i++) {
-        if (i != 0 && i % 3 == 0) {
+        if (i != 0 && count % 3 == 0) {
           tempList.add(OffersData(isBanner: true));
         }
         tempList.add(list[i]);
+        count++;
       }
       //Insert add placements [END]
       setState(() {
         // offersData = list;
-        allOffers = tempList;
+        if (start == 1) {
+          allOffers = tempList;
+        } else {
+          allOffers.addAll(tempList);
+        }
       });
     } catch (e) {
       setState(() {
-        allOffers = [];
+        if (start == 1) {
+          allOffers = [];
+        }
       });
     }
     setState(() {
       isLoading = false;
     });
+    return allOffers;
   }
 
   Future<void> loadMyOffersData() async {
@@ -652,23 +702,32 @@ class _HomePageState extends State<HomePage> {
       body.putIfAbsent("user_id", () => data.userId.toString());
 
       final client = await RestClient.getRestClient();
-      var list = await client.getMyOffer(body);
+      // var list = await client.getMyOffer(body);
+      var list =
+          await client.getMyOffersDetailspagination(start, PAGE_SIZE, body);
       //Insert add placements [START]
+      int count = myOffers.length;
       var tempList = <OffersData>[];
       for (int i = 0; i < list.length; i++) {
-        if (i != 0 && i % 3 == 0) {
+        if (i != 0 && count % 3 == 0) {
           tempList.add(OffersData(isBanner: true));
         }
         tempList.add(list[i]);
+        count++;
       }
       //Insert add placements [END]
       setState(() {
-        // offersData = list;
-        myOffers = tempList;
+        if (start == 1) {
+          myOffers = tempList;
+        } else {
+          myOffers.addAll(tempList);
+        }
       });
     } catch (e) {
       setState(() {
-        myOffers = [];
+        if (start == 1) {
+          myOffers = [];
+        }
       });
     }
     setState(() {
@@ -685,23 +744,32 @@ class _HomePageState extends State<HomePage> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var user = await prefs.getString("user");
       UserData data = UserData.fromJson(jsonDecode(user!));
-      var list = await client.getUpComingOffers(data.userId.toString());
+      var list = await client.getUpcomingofferDetails(
+          data.userId.toString(), start, PAGE_SIZE);
       //Insert add placements [START]
+      int count = myOffers.length;
       var tempList = <OffersData>[];
       for (int i = 0; i < list.length; i++) {
-        if (i != 0 && i % 3 == 0) {
+        if (i != 0 && count % 3 == 0) {
           tempList.add(OffersData(isBanner: true));
         }
         tempList.add(list[i]);
+        count++;
       }
       //Insert add placements [END]
       setState(() {
         // offersData = list;
-        upcomingOffers = tempList;
+        if (start == 1) {
+          upcomingOffers = tempList;
+        } else {
+          upcomingOffers.addAll(tempList);
+        }
       });
     } catch (e) {
       setState(() {
-        upcomingOffers = [];
+        if (start == 1) {
+          upcomingOffers = [];
+        }
       });
     }
     setState(() {

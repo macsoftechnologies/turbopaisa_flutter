@@ -123,8 +123,27 @@ abstract class RestClient {
   @GET("offers/getupcomingOffers")
   Future<List<OffersData>> getUpComingOffers(@Query("user_id") String userId);
 
+  @GET("offers/getupcomingofferDetails")
+  Future<List<OffersData>> getUpcomingofferDetails(
+      @Query("user_id") String userId,
+      @Query("pagenumber") int pagenumber,
+      @Query("count") int count);
+
+  @POST("offers/getMyOffersDetailspagination")
+  Future<List<OffersData>> getMyOffersDetailspagination(
+      @Query("pagenumber") int pagenumber,
+      @Query("count") int count,
+      @Body() Map<String, String> body);
+
   @POST("offers/getMyOffer")
   Future<List<OffersData>> getMyOffer(@Body() Map<String, String> body);
+
+  @GET("offers/getofferDetails")
+  Future<List<OffersData>> getofferDetails(
+    @Query("user_id") String userId,
+    @Query("pagenumber") int pagenumber,
+    @Query("count") int count,
+  );
 
   @GET("offers/getBanner")
   Future<BannersResponse> getBanners(@Query("type") String type);
@@ -132,8 +151,15 @@ abstract class RestClient {
   @GET("scratchcard/getScratchcards")
   Future<ScratchCardResponse> getScratchcards(@Query("user_id") String userId);
 
-  @GET("cashfreepayout/getTransactions")
-  Future<WalletResponse> getTransactions(@Query("user_id") String userId);
+  // @GET("cashfreepayout/getTransactions")
+  // Future<WalletResponse> getTransactions(@Query("user_id") String userId);
+
+  @GET("cashfreepayout/getMyTransactions?user_id=2&pagenumber=1&count=10")
+  Future<WalletResponse> getTransactions(
+    @Query("user_id") String userId,
+    @Query("pagenumber") int pagenumber,
+    @Query("count") int count,
+  );
 
   @POST("scratchcard/scratchcardUserinsert")
   Future<RegistrationResponse> scratchcardUserinsert(
@@ -143,7 +169,8 @@ abstract class RestClient {
   Future<List<SpinWheelResponse>> getSpins(@Query("user_id") String userId);
 
   @POST("spin/getMySpinCards")
-  Future<List<SpinWheelResponse>> getMySpinCards(@Body() Map<String, String> body);
+  Future<List<SpinWheelResponse>> getMySpinCards(
+      @Body() Map<String, String> body);
 
   @POST("spin/spinUserinsert")
   Future<RegistrationResponse> spinUserinsert(@Body() Map<String, String> body);
@@ -154,24 +181,29 @@ abstract class RestClient {
   Future<EarnGameResponses> getEarngame(@Query("user_id") String userId);
 
   @POST("offers/getOfferDetailsById")
-  Future<List<OffersData>> getOfferDetailsById(@Body() Map<String, String> body);
+  Future<List<OffersData>> getOfferDetailsById(
+      @Body() Map<String, String> body);
 
   @POST("users/withdrawAmount")
-  Future<RegistrationResponse> doWithdrawAmount(@Body() Map<String, String> body);
+  Future<RegistrationResponse> doWithdrawAmount(
+      @Body() Map<String, String> body);
 
   @POST("users/changePassword")
-  Future<ChangePasswordResponse> doChangePassword(@Body() Map<String, String> body);
+  Future<ChangePasswordResponse> doChangePassword(
+      @Body() Map<String, String> body);
 
   @POST("users/resendOtp")
   Future<ChangePasswordResponse> resendOtp(@Body() Map<String, String> body);
 
   @POST("users/addBeneficiary")
-  Future<ChangePasswordResponse> addBeneficiary(@Body() Map<String, String> body);
+  Future<ChangePasswordResponse> addBeneficiary(
+      @Body() Map<String, String> body);
 
   @POST("users/updatelocation")
-  Future<ChangePasswordResponse> updatelocation(@Body() Map<String, String> body);
+  Future<ChangePasswordResponse> updatelocation(
+      @Body() Map<String, String> body);
 
   @POST("cashfreepayout/getBeneficiaryDetailsById")
-  Future<List<BankDetailsResponse>> getBeneficiaryDetailsById(@Body() Map<String, String> body);
-
+  Future<List<BankDetailsResponse>> getBeneficiaryDetailsById(
+      @Body() Map<String, String> body);
 }

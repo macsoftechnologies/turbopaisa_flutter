@@ -241,7 +241,7 @@ class _OfferDetailsPageState extends State<OfferDetailsPage> {
               if (offerDetails?.availedusers != 0)
                 RichText(
                   text: TextSpan(
-                    text: offerDetails?.availedusers.toString() ?? "",
+                    text: offerDetails?.availedusers?.toString() ?? "",
                     style: TextStyle(
                       color: Color(0xFFED3E55),
                       fontSize: 10,

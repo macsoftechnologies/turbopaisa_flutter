@@ -43,7 +43,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
       UserData data = UserData.fromJson(jsonDecode(user!));
 
       WalletResponse scratchCardResponse =
-          await client.getTransactions(data.userId ?? "");
+          await client.getTransactions(data.userId ?? "",1,1);
       setState(() {
         this.walletResponse = scratchCardResponse;
       });

@@ -22,10 +22,29 @@ class WalletBalacePage extends StatefulWidget {
 }
 
 class _WalletBalacePageState extends State<WalletBalacePage> {
+  var scrollController = ScrollController();
+  static const int PAGE_SIZE = 10;
+  int start = 1;
+
   @override
   void initState() {
     super.initState();
+    scrollController.addListener(pagination);
     loadWallet();
+  }
+
+  void pagination() {
+    if (isLoading) {
+      return;
+    }
+    if ((scrollController.position.pixels ==
+        scrollController.position.maxScrollExtent)) {
+      setState(() {
+        isLoading = true;
+        start = start + 1; //+= PAGE_SIZE;
+        loadWallet();
+      });
+    }
   }
 
   bool isLoading = false;
@@ -42,9 +61,14 @@ class _WalletBalacePageState extends State<WalletBalacePage> {
       UserData data = UserData.fromJson(jsonDecode(user!));
 
       WalletResponse scratchCardResponse =
-          await client.getTransactions(data.userId ?? "");
+          await client.getTransactions(data.userId ?? "", start, PAGE_SIZE);
       setState(() {
-        this.walletResponse = scratchCardResponse;
+        if (start == 1) {
+          walletResponse = scratchCardResponse;
+        } else {
+          walletResponse?.transactions
+              ?.addAll(scratchCardResponse.transactions ?? []);
+        }
       });
     } catch (e) {
       print(e);
@@ -202,13 +226,8 @@ class _WalletBalacePageState extends State<WalletBalacePage> {
               ),
             ]),
             Expanded(
-              child: (isLoading)
-                  ? Center(
-                      child: CircularProgressIndicator(
-                        strokeWidth: 1,
-                      ),
-                    )
-                  : SingleChildScrollView(
+              child: SingleChildScrollView(
+                      controller: scrollController,
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20.w),
                         child: Column(
@@ -346,6 +365,15 @@ class _WalletBalacePageState extends State<WalletBalacePage> {
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
                               itemBuilder: (context, index) {
+                                if (isLoading &&
+                                    index ==
+                                        (walletResponse?.transactions?.length ??
+                                            0)) {
+                                  return Center(
+                                      child: CircularProgressIndicator(
+                                    strokeWidth: 1,
+                                  ));
+                                }
                                 return Column(
                                   children: [
                                     Row(
@@ -450,7 +478,8 @@ class _WalletBalacePageState extends State<WalletBalacePage> {
                                 );
                               },
                               itemCount:
-                                  walletResponse?.transactions?.length ?? 0,
+                                  (walletResponse?.transactions?.length ?? 0) +
+                                      (isLoading ? 1 : 0),
                             ),
                           ],
                         ),
